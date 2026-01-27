@@ -17,14 +17,6 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/visual-studio-marketplace/v/fabioc-aloha.youtube-mcp-tools?label=Version" alt="Dynamic Version">
-  <img src="https://img.shields.io/visual-studio-marketplace/i/fabioc-aloha.youtube-mcp-tools?label=Installs" alt="Dynamic Installs">
-  <img src="https://img.shields.io/visual-studio-marketplace/r/fabioc-aloha.youtube-mcp-tools?label=Rating" alt="Dynamic Rating">
-  <img src="https://vsmarketplacebadges.dev/version/fabioc-aloha.youtube-mcp-tools.png" alt="VSM Version">
-  <img src="https://vsmarketplacebadges.dev/installs-short/fabioc-aloha.youtube-mcp-tools.png" alt="VSM Installs">
-</p>
-
-<p align="center">
   <strong>🎬 Bring YouTube video intelligence directly into VS Code</strong><br>
   Search • Analyze • Transcribe • Generate Flashcards
 </p>
