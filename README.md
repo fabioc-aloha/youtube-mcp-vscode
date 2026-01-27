@@ -6,17 +6,22 @@
 
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
-    <img src="https://img.shields.io/visual-studio-marketplace/v/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white&label=Version" alt="Version">
+    <img src="https://img.shields.io/badge/Version-0.1.1-blue?style=for-the-badge&logo=visual-studio-code" alt="Version">
   </a>
   <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
-    <img src="https://img.shields.io/visual-studio-marketplace/i/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white&label=Installs" alt="Installs">
-  </a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
-    <img src="https://img.shields.io/visual-studio-marketplace/r/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white&label=Rating" alt="Rating">
+    <img src="https://img.shields.io/badge/Marketplace-VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code" alt="VS Code Marketplace">
   </a>
   <a href="https://github.com/fabioc-aloha/youtube-mcp-vscode/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT">
   </a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/visual-studio-marketplace/v/fabioc-aloha.youtube-mcp-tools?label=Version" alt="Dynamic Version">
+  <img src="https://img.shields.io/visual-studio-marketplace/i/fabioc-aloha.youtube-mcp-tools?label=Installs" alt="Dynamic Installs">
+  <img src="https://img.shields.io/visual-studio-marketplace/r/fabioc-aloha.youtube-mcp-tools?label=Rating" alt="Dynamic Rating">
+  <img src="https://vsmarketplacebadges.dev/version/fabioc-aloha.youtube-mcp-tools.png" alt="VSM Version">
+  <img src="https://vsmarketplacebadges.dev/installs-short/fabioc-aloha.youtube-mcp-tools.png" alt="VSM Installs">
 </p>
 
 <p align="center">
