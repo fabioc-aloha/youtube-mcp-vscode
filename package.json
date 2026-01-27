@@ -1,0 +1,178 @@
+{
+  "name": "youtube-mcp-tools",
+  "displayName": "YouTube MCP Tools",
+  "description": "YouTube search, analysis, and learning tools powered by MCP",
+  "version": "0.1.0",
+  "publisher": "fabioc-aloha",
+  
+  "engines": {
+    "vscode": "^1.108.1"
+  },
+  "categories": [
+    "Other",
+    "Education",
+    "Data Science"
+  ],
+  "keywords": [
+    "youtube",
+    "mcp",
+    "ai",
+    "learning",
+    "flashcards",
+    "transcript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabioc-aloha/youtube-mcp-vscode"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "youtubeMcp.search",
+        "title": "Search YouTube",
+        "category": "YouTube MCP",
+        "icon": "$(search)"
+      },
+      {
+        "command": "youtubeMcp.analyzeVideo",
+        "title": "Analyze Video",
+        "category": "YouTube MCP",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "youtubeMcp.getTranscript",
+        "title": "Get Transcript",
+        "category": "YouTube MCP",
+        "icon": "$(file-text)"
+      },
+      {
+        "command": "youtubeMcp.generateFlashcards",
+        "title": "Generate Flashcards",
+        "category": "YouTube MCP",
+        "icon": "$(note)"
+      },
+      {
+        "command": "youtubeMcp.showQuotaStatus",
+        "title": "Show Quota Status",
+        "category": "YouTube MCP",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "youtubeMcp.openSettings",
+        "title": "Open Settings",
+        "category": "YouTube MCP",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "youtubeMcp.refreshHistory",
+        "title": "Refresh History",
+        "category": "YouTube MCP",
+        "icon": "$(refresh)"
+      }
+    ],
+    "configuration": {
+      "title": "YouTube MCP Tools",
+      "properties": {
+        "youtubeMcp.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "YouTube Data API v3 key",
+          "scope": "application"
+        },
+        "youtubeMcp.preferredDuration": {
+          "type": "string",
+          "enum": ["any", "short", "medium", "long"],
+          "default": "any",
+          "description": "Preferred video duration for search results"
+        },
+        "youtubeMcp.maxResults": {
+          "type": "number",
+          "default": 10,
+          "minimum": 1,
+          "maximum": 50,
+          "description": "Maximum number of search results"
+        },
+        "youtubeMcp.autoAnalyze": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically analyze videos when selected"
+        },
+        "youtubeMcp.defaultRegion": {
+          "type": "string",
+          "default": "US",
+          "description": "Default region code for searches"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "youtubeMcp",
+          "title": "YouTube MCP",
+          "icon": "$(play-circle)"
+        }
+      ]
+    },
+    "views": {
+      "youtubeMcp": [
+        {
+          "id": "youtubeMcp.searchResults",
+          "name": "Search Results"
+        },
+        {
+          "id": "youtubeMcp.recentVideos",
+          "name": "Recent Videos"
+        },
+        {
+          "id": "youtubeMcp.flashcards",
+          "name": "Flashcards"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "youtubeMcp.search",
+          "when": "view == youtubeMcp.searchResults",
+          "group": "navigation"
+        },
+        {
+          "command": "youtubeMcp.refreshHistory",
+          "when": "view == youtubeMcp.recentVideos",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.108.1",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.27.2",
+    "eslint": "^9.39.2",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.52.0"
+  },
+  "dependencies": {}
+}
