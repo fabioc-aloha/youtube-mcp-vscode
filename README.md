@@ -1,75 +1,218 @@
 # YouTube MCP Tools for VS Code
 
-A **self-sufficient** VS Code extension that brings YouTube video intelligence directly into your editor. Search videos, analyze content, generate transcripts, and create study flashcards - all running entirely within the extension with zero external dependencies.
+<p align="center">
+  <img src="media/banner.png" alt="YouTube MCP Tools Banner" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
+    <img src="https://img.shields.io/visual-studio-marketplace/v/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white&label=VS%20Code" alt="VS Code Marketplace">
+  </a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
+    <img src="https://img.shields.io/visual-studio-marketplace/i/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white" alt="Installs">
+  </a>
+  <a href="https://github.com/fabioc-aloha/youtube-mcp-vscode/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT">
+  </a>
+</p>
+
+<p align="center">
+  <strong>🎬 Bring YouTube video intelligence directly into VS Code</strong><br>
+  Search • Analyze • Transcribe • Generate Flashcards
+</p>
+
+---
 
 ## ✨ Features
 
-### 🔍 YouTube Search
-
-Search for videos directly from VS Code and see results in a dedicated tree view.
-
-### 📊 Video Analysis
-
-Analyze any YouTube video to get AI-powered insights about its content, themes, key concepts, and quality assessment.
-
-### 📝 Transcript Extraction
-
-Get timestamped transcripts from any YouTube video for reference, note-taking, or content analysis.
-
-### 🎴 Study Flashcards
-
-Generate educational flashcards from video content - perfect for learning and retention.
-
-### 📈 Quota Monitoring
-
-Track your YouTube API quota usage to stay within limits.
+| Feature                           | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| 🔍**YouTube Search**        | Search videos directly from VS Code with instant results     |
+| 📊**Video Analysis**        | AI-powered insights: summaries, key concepts, quality scores |
+| 📝**Transcript Extraction** | Get timestamped transcripts for any video with captions      |
+| 🎴**Flashcard Generation**  | Create study flashcards from video content automatically     |
+| 📈**Quota Monitoring**      | Track your YouTube API usage in real-time                    |
 
 ## 🚀 Self-Sufficient Architecture
 
-This extension requires **no external servers or MCP connections**. All functionality runs directly within VS Code:
+This extension requires **zero external servers or dependencies**. Everything runs directly within VS Code:
 
-- **Direct YouTube Data API v3** integration for search and video details
-- **Built-in transcript extraction** from YouTube's caption system
-- **Local content analysis** for summaries, concepts, and quality assessment
-- **Intelligent flashcard generation** based on extracted concepts
+```
+┌─────────────────────────────────────────────────────────┐
+│                   VS Code Extension                     │
+├─────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
+│  │   Search    │  │ Transcripts │  │    Analysis     │  │
+│  │   Engine    │  │  Service    │  │     Engine      │  │
+│  └──────┬──────┘  └──────┬──────┘  └────────┬────────┘  │
+│         │                │                  │           │
+│         └────────────────┼──────────────────┘           │
+│                          ▼                              │
+│              ┌───────────────────────┐                  │
+│              │  YouTube Data API v3  │                  │
+│              └───────────────────────┘                  │
+└─────────────────────────────────────────────────────────┘
+```
 
-## Commands
+## 📦 Installation
 
-- `YouTube: Search Videos` - Search for YouTube videos
-- `YouTube: Analyze Video` - Analyze a video by URL or ID
-- `YouTube: Get Transcript` - Extract transcript from a video
-- `YouTube: Generate Flashcards` - Create flashcards from video content
-- `YouTube: Show Quota Status` - Check API quota usage
-- `YouTube: Settings` - Configure extension settings
-- `YouTube: Refresh Views` - Refresh all tree views
+1. Open VS Code
+2. Press `Ctrl+P` / `Cmd+P`
+3. Type `ext install fabioc-aloha.youtube-mcp-tools`
+4. Press Enter
 
-## Settings
+**Or** search for "YouTube MCP Tools" in the Extensions view.
 
-- `youtube-mcp.apiKey` - Your YouTube Data API key
-- `youtube-mcp.preferredDuration` - Preferred video duration filter
-- `youtube-mcp.maxResults` - Maximum search results (1-50)
-- `youtube-mcp.autoAnalyze` - Auto-analyze videos when selected
-- `youtube-mcp.defaultRegion` - Default region for search results
+## ⚙️ Setup
 
-## Requirements
+### Get a YouTube API Key
 
-- YouTube Data API key ([Get one here](https://console.cloud.google.com/apis/credentials))
+1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+2. Create a new project (or select existing)
+3. Enable the **YouTube Data API v3**
+4. Create an API Key
+5. Copy the key
 
-## Getting Started
+### Configure the Extension
 
-1. Install the extension
-2. Open Command Palette (Ctrl+Shift+P)
-3. Run `YouTube: Settings` to configure your API key
-4. Start searching and analyzing videos!
+**Option 1: VS Code Settings** (Recommended)
 
-## Activity Bar
+```
+Ctrl+, → Search "youtubeMcp.apiKey" → Paste your key
+```
 
-Look for the YouTube icon in the Activity Bar to access:
+**Option 2: .env File**
+Create a `.env` file in your workspace root:
 
-- **Search Results** - Videos from your last search
-- **Recent Videos** - Videos you've recently viewed
-- **Flashcards** - Generated study flashcards
+```env
+YOUTUBE_API_KEY=your-api-key-here
+```
 
-## License
+## 🎯 Commands
 
-MIT
+| Command                              | Description                      |
+| ------------------------------------ | -------------------------------- |
+| `YouTube MCP: Search YouTube`      | Search for videos by keyword     |
+| `YouTube MCP: Analyze Video`       | Get comprehensive video analysis |
+| `YouTube MCP: Get Transcript`      | Extract timestamped transcript   |
+| `YouTube MCP: Generate Flashcards` | Create flashcards from video     |
+| `YouTube MCP: Show Quota Status`   | Check API quota usage            |
+| `YouTube MCP: Open Settings`       | Configure extension settings     |
+
+Access all commands via `Ctrl+Shift+P` / `Cmd+Shift+P`.
+
+## 📊 Video Analysis Output
+
+When you analyze a video, you get:
+
+```markdown
+# Video Title
+
+**Channel:** Channel Name
+**Duration:** 15m 30s
+**Views:** 1,234,567 | **Likes:** 45,678
+
+---
+
+## Summary
+Brief overview of the video content...
+
+### Detailed
+In-depth analysis of the video...
+
+## Key Points
+- Important point 1
+- Important point 2
+- Important point 3
+
+## Key Concepts
+### Machine Learning
+Definition and context...
+*Type: term | Mentions: 15*
+
+## Quality Assessment
+| Metric | Score |
+|--------|-------|
+| Overall | **85**/100 |
+| Clarity | 90/100 |
+| Depth | 80/100 |
+| Structure | 85/100 |
+| Engagement | 82/100 |
+```
+
+## 🎴 Flashcard Generation
+
+Flashcards are generated from:
+
+- **Key Points** extracted from the video
+- **Concepts** identified in the content
+- **Topics** covered in the video
+
+Perfect for:
+
+- 📚 Learning new technologies
+- 🎓 Studying for certifications
+- 💡 Retaining video course content
+
+## ⚙️ Settings
+
+| Setting                          | Default | Description                      |
+| -------------------------------- | ------- | -------------------------------- |
+| `youtubeMcp.apiKey`            | -       | Your YouTube Data API key        |
+| `youtubeMcp.maxResults`        | 10      | Search results (1-50)            |
+| `youtubeMcp.preferredDuration` | any     | Filter: any, short, medium, long |
+| `youtubeMcp.defaultRegion`     | US      | Region code for searches         |
+| `youtubeMcp.autoAnalyze`       | false   | Auto-analyze on video select     |
+
+## 📁 Activity Bar Views
+
+Look for the **YouTube** icon in the Activity Bar:
+
+- **🔍 Search Results** - Videos from your last search
+- **📜 Recent Videos** - Your video history
+- **🎴 Flashcards** - Generated study cards
+
+## 🔒 Privacy & Security
+
+- ✅ API keys stored locally in VS Code settings or `.env`
+- ✅ No data sent to third-party servers
+- ✅ No telemetry or tracking
+- ✅ All processing happens locally
+
+## 📝 Requirements
+
+- VS Code 1.108.1 or higher
+- YouTube Data API key ([Get one free](https://console.cloud.google.com/apis/credentials))
+
+## 🤝 Contributing
+
+Contributions welcome! Please see our [GitHub repository](https://github.com/fabioc-aloha/youtube-mcp-vscode).
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<p align="center">
+  <a href="https://correax.com">
+    <img src="media/correax-logo.png" alt="CorreaX" height="32">
+  </a>
+</p>
+
+<p align="center">
+  <strong>Made with ❤️ by <a href="https://correax.com">CorreaX</a></strong><br>
+  <sub>Building intelligent tools for developers</sub>
+</p>
+
+<p align="center">
+  <a href="https://github.com/fabioc-aloha/youtube-mcp-vscode/issues">Report Bug</a> •
+  <a href="https://github.com/fabioc-aloha/youtube-mcp-vscode/issues">Request Feature</a> •
+  <a href="https://github.com/fabioc-aloha/youtube-mcp-vscode/stargazers">⭐ Star on GitHub</a>
+</p>

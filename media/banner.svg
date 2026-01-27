@@ -1,0 +1,79 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff0000"/>
+      <stop offset="100%" style="stop-color:#cc0000"/>
+    </linearGradient>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007acc"/>
+      <stop offset="100%" style="stop-color:#005a9e"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1280" height="640" fill="url(#bgGrad)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="100" cy="100" r="200" fill="#ff0000" opacity="0.05"/>
+  <circle cx="1180" cy="540" r="250" fill="#007acc" opacity="0.05"/>
+  <circle cx="640" cy="320" r="400" fill="#ffffff" opacity="0.02"/>
+  
+  <!-- YouTube Play Button -->
+  <g transform="translate(340, 220)">
+    <rect x="0" y="0" width="200" height="140" rx="30" fill="url(#redGrad)"/>
+    <polygon points="75,35 75,105 135,70" fill="white"/>
+  </g>
+  
+  <!-- Plus sign -->
+  <g transform="translate(560, 260)">
+    <rect x="25" y="0" width="10" height="60" fill="white" opacity="0.8"/>
+    <rect x="0" y="25" width="60" height="10" fill="white" opacity="0.8"/>
+  </g>
+  
+  <!-- VS Code Icon -->
+  <g transform="translate(640, 220)">
+    <rect x="0" y="0" width="140" height="140" rx="20" fill="url(#blueGrad)"/>
+    <path d="M105,25 L55,60 L55,80 L105,115 L120,105 L120,35 Z" fill="white" opacity="0.9"/>
+    <path d="M55,60 L25,45 L25,95 L55,80 Z" fill="white" opacity="0.7"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="640" y="440" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="bold" fill="white" text-anchor="middle">
+    YouTube MCP Tools
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="640" y="490" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#a0a0a0" text-anchor="middle">
+    Search • Analyze • Transcribe • Learn
+  </text>
+  
+  <!-- Feature badges -->
+  <g transform="translate(340, 530)">
+    <rect x="0" y="0" width="140" height="36" rx="18" fill="#ff0000" opacity="0.2"/>
+    <text x="70" y="24" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#ff6b6b" text-anchor="middle">🔍 Search</text>
+  </g>
+  <g transform="translate(500, 530)">
+    <rect x="0" y="0" width="140" height="36" rx="18" fill="#007acc" opacity="0.2"/>
+    <text x="70" y="24" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#69b4ff" text-anchor="middle">📊 Analyze</text>
+  </g>
+  <g transform="translate(660, 530)">
+    <rect x="0" y="0" width="140" height="36" rx="18" fill="#28a745" opacity="0.2"/>
+    <text x="70" y="24" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#6bcf7f" text-anchor="middle">📝 Transcripts</text>
+  </g>
+  <g transform="translate(820, 530)">
+    <rect x="0" y="0" width="140" height="36" rx="18" fill="#fd7e14" opacity="0.2"/>
+    <text x="70" y="24" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#ffb86c" text-anchor="middle">🎴 Flashcards</text>
+  </g>
+  
+  <!-- Zero dependencies badge -->
+  <g transform="translate(540, 580)">
+    <rect x="0" y="0" width="200" height="30" rx="15" fill="white" opacity="0.1"/>
+    <text x="100" y="21" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#888" text-anchor="middle">✨ Zero External Dependencies</text>
+  </g>
+</svg>

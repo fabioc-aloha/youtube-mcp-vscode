@@ -1,10 +1,14 @@
 {
   "name": "youtube-mcp-tools",
   "displayName": "YouTube MCP Tools",
-  "description": "YouTube search, analysis, and learning tools powered by MCP",
+  "description": "Search YouTube, analyze videos, extract transcripts, and generate flashcards - all within VS Code. Zero external dependencies.",
   "version": "0.1.0",
   "publisher": "fabioc-aloha",
-  
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#1a1a2e",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.108.1"
   },
@@ -15,16 +19,24 @@
   ],
   "keywords": [
     "youtube",
-    "mcp",
-    "ai",
-    "learning",
+    "video",
+    "transcript",
     "flashcards",
-    "transcript"
+    "learning",
+    "education",
+    "analysis",
+    "study",
+    "ai"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/fabioc-aloha/youtube-mcp-vscode"
   },
+  "homepage": "https://github.com/fabioc-aloha/youtube-mcp-vscode#readme",
+  "bugs": {
+    "url": "https://github.com/fabioc-aloha/youtube-mcp-vscode/issues"
+  },
+  "license": "MIT",
   "activationEvents": [
     "onStartupFinished"
   ],
