@@ -6,10 +6,13 @@
 
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
-    <img src="https://img.shields.io/visual-studio-marketplace/v/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white&label=VS%20Code" alt="VS Code Marketplace">
+    <img src="https://img.shields.io/visual-studio-marketplace/v/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white&label=Version" alt="Version">
   </a>
   <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
-    <img src="https://img.shields.io/visual-studio-marketplace/i/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white" alt="Installs">
+    <img src="https://img.shields.io/visual-studio-marketplace/i/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white&label=Installs" alt="Installs">
+  </a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
+    <img src="https://img.shields.io/visual-studio-marketplace/r/fabioc-aloha.youtube-mcp-tools?style=for-the-badge&logo=visual-studio-code&logoColor=white&label=Rating" alt="Rating">
   </a>
   <a href="https://github.com/fabioc-aloha/youtube-mcp-vscode/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT">
@@ -25,19 +28,19 @@
 
 ## ✨ Features
 
-| Feature                           | Description                                                  |
-| --------------------------------- | ------------------------------------------------------------ |
-| 🔍**YouTube Search**        | Search videos directly from VS Code with instant results     |
-| 📊**Video Analysis**        | AI-powered insights: summaries, key concepts, quality scores |
-| 📝**Transcript Extraction** | Get timestamped transcripts for any video with captions      |
-| 🎴**Flashcard Generation**  | Create study flashcards from video content automatically     |
-| 📈**Quota Monitoring**      | Track your YouTube API usage in real-time                    |
+| Feature | Description |
+|---------|-------------|
+| 🔍 **YouTube Search** | Search videos directly from VS Code with instant results |
+| 📊 **Video Analysis** | AI-powered insights: summaries, key concepts, quality scores |
+| 📝 **Transcript Extraction** | Get timestamped transcripts for any video with captions |
+| 🎴 **Flashcard Generation** | Create study flashcards from video content automatically |
+| 📈 **Quota Monitoring** | Track your YouTube API usage in real-time |
 
 ## 🚀 Self-Sufficient Architecture
 
 This extension requires **zero external servers or dependencies**. Everything runs directly within VS Code:
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                   VS Code Extension                     │
 ├─────────────────────────────────────────────────────────┤
@@ -90,14 +93,14 @@ YOUTUBE_API_KEY=your-api-key-here
 
 ## 🎯 Commands
 
-| Command                              | Description                      |
-| ------------------------------------ | -------------------------------- |
-| `YouTube MCP: Search YouTube`      | Search for videos by keyword     |
-| `YouTube MCP: Analyze Video`       | Get comprehensive video analysis |
-| `YouTube MCP: Get Transcript`      | Extract timestamped transcript   |
-| `YouTube MCP: Generate Flashcards` | Create flashcards from video     |
-| `YouTube MCP: Show Quota Status`   | Check API quota usage            |
-| `YouTube MCP: Open Settings`       | Configure extension settings     |
+| Command | Description |
+|---------|-------------|
+| `YouTube MCP: Search YouTube` | Search for videos by keyword |
+| `YouTube MCP: Analyze Video` | Get comprehensive video analysis |
+| `YouTube MCP: Get Transcript` | Extract timestamped transcript |
+| `YouTube MCP: Generate Flashcards` | Create flashcards from video |
+| `YouTube MCP: Show Quota Status` | Check API quota usage |
+| `YouTube MCP: Open Settings` | Configure extension settings |
 
 Access all commands via `Ctrl+Shift+P` / `Cmd+Shift+P`.
 
@@ -156,13 +159,13 @@ Perfect for:
 
 ## ⚙️ Settings
 
-| Setting                          | Default | Description                      |
-| -------------------------------- | ------- | -------------------------------- |
-| `youtubeMcp.apiKey`            | -       | Your YouTube Data API key        |
-| `youtubeMcp.maxResults`        | 10      | Search results (1-50)            |
-| `youtubeMcp.preferredDuration` | any     | Filter: any, short, medium, long |
-| `youtubeMcp.defaultRegion`     | US      | Region code for searches         |
-| `youtubeMcp.autoAnalyze`       | false   | Auto-analyze on video select     |
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `youtubeMcp.apiKey` | - | Your YouTube Data API key |
+| `youtubeMcp.maxResults` | 10 | Search results (1-50) |
+| `youtubeMcp.preferredDuration` | any | Filter: any, short, medium, long |
+| `youtubeMcp.defaultRegion` | US | Region code for searches |
+| `youtubeMcp.autoAnalyze` | false | Auto-analyze on video select |
 
 ## 📁 Activity Bar Views
 
