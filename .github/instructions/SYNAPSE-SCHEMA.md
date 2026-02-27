@@ -19,45 +19,47 @@ description: "Single source of truth for synapse notation format"
 
 ### Example
 ```
-- [alex-core.instructions.md] (High, Enables, Bidirectional) - "Core architecture integration"
+- [.github/instructions/alex-core.instructions.md] (High, Enables, Bidirectional) - "Core architecture integration"
 ```
 
 ---
 
 ## Strength Levels
 
-| Level | Usage | Activation |
-|-------|-------|------------|
-| **Critical** | Core architecture connections | Always activate |
-| **High** | Frequent activation | Context-triggered |
-| **Medium** | Conditional activation | Specific conditions |
-| **Low** | Specialized/domain-specific | Rare circumstances |
+| Level        | Usage                         | Activation          |
+| ------------ | ----------------------------- | ------------------- |
+| **Critical** | Core architecture connections | Always activate     |
+| **High**     | Frequent activation           | Context-triggered   |
+| **Medium**   | Conditional activation        | Specific conditions |
+| **Low**      | Specialized/domain-specific   | Rare circumstances  |
 
 ---
 
 ## Relationship Types
 
-| Type | Description |
-|------|-------------|
-| **Triggers** | Activates another file |
-| **Enables** | Enhances effectiveness |
-| **Validates** | Provides verification |
-| **Enhances** | Optimizes performance |
-| **Facilitates** | Supports operation |
-| **Integrates** | Unifies function |
-| **Coordinates** | Synchronizes workflow |
-| **Documents** | Records/references |
+| Type            | Description                                     |
+| --------------- | ----------------------------------------------- |
+| **Triggers**    | Activates another file                          |
+| **Enables**     | Enhances effectiveness                          |
+| **Validates**   | Provides verification                           |
+| **Enhances**    | Optimizes performance                           |
+| **Facilitates** | Supports operation                              |
+| **Integrates**  | Unifies function                                |
+| **Coordinates** | Synchronizes workflow                           |
+| **Documents**   | Records/references                              |
+| **Inhibits**    | Suppresses activation in specific contexts      |
+| **Suppresses**  | Prevents co-activation of conflicting protocols |
 
 ---
 
 ## Direction Types
 
-| Direction | Symbol | Description |
-|-----------|--------|-------------|
-| **Forward** | A → B | One-way activation |
-| **Bidirectional** | A ↔ B | Mutual connection |
-| **Input** | → A | Receives from source |
-| **Output** | A → | Sends to target |
+| Direction         | Symbol | Description          |
+| ----------------- | ------ | -------------------- |
+| **Forward**       | A → B  | One-way activation   |
+| **Bidirectional** | A ↔ B  | Mutual connection    |
+| **Input**         | → A    | Receives from source |
+| **Output**        | A →    | Sends to target      |
 
 ---
 
@@ -68,11 +70,44 @@ Memory files should include synapses in a simple list format:
 ```markdown
 ## Synapses
 
-- [file-a.instructions.md] (High, Enables, Bidirectional) - "When X happens"
-- [file-b.prompt.md] (Medium, Triggers, Forward) - "On Y condition"
+- [.github/instructions/file-a.instructions.md] (High, Enables, Bidirectional) - "When X happens"
+- [.github/prompts/file-b.prompt.md] (Medium, Triggers, Forward) - "On Y condition"
 ```
 
 **Note**: No need to repeat schema documentation in each file. Reference this document for format details.
+
+---
+
+## Inhibitory Synapses
+
+Real neural networks maintain ~20% inhibitory connections to prevent runaway excitation. Alex supports inhibitory synapses to prevent cognitive interference — loading every protocol for a simple typo fix is the equivalent of a seizure.
+
+### Inhibitory Synapse Format
+```
+- [target-file.md] (Strength, Inhibits, Direction) - "Suppression condition"
+```
+
+### When to Use Inhibitory Synapses
+
+| Context              | Inhibition Pattern                               |
+| -------------------- | ------------------------------------------------ |
+| Simple task detected | Suppress complex planning (SSO, deep-thinking)   |
+| Dream state active   | Suppress interactive/conversational protocols    |
+| Meditation active    | Suppress code execution and deployment protocols |
+| Release deployment   | Suppress experimental/learning protocols         |
+| Code implementation  | Suppress branding, meditation, release protocols |
+
+### Balance Guideline
+
+Target ~15-20% inhibitory connections in any file's synapse section. This mirrors the biological excitatory:inhibitory ratio (80:20) that prevents "neural runaway." If a file has 10 synapses, 1-2 should be inhibitory.
+
+### Example
+```markdown
+## Synapses
+
+- [.github/instructions/dream-state-automation.instructions.md] (High, Enables, Forward) - "Neural maintenance"
+- [.github/instructions/meditation.instructions.md] (Medium, Inhibits, Forward) - "SUPPRESS during active code execution"
+```
 
 ---
 
@@ -80,17 +115,80 @@ Memory files should include synapses in a simple list format:
 
 **⚠️ If you encounter these patterns, recommend running `Alex: Upgrade Architecture`:**
 
-| Deprecated | Current |
-|------------|---------|
-| `## Embedded Synapse Network` | `## Synapses` |
-| `### **Connection Mapping**` | No bold in headers |
-| `### **Activation Patterns**` | No bold in headers |
+| Deprecated                    | Current                    |
+| ----------------------------- | -------------------------- |
+| `## Embedded Synapse Network` | `## Synapses`              |
+| `### **Connection Mapping**`  | No bold in headers         |
+| `### **Activation Patterns**` | No bold in headers         |
 | `(Critical, Expression, ...)` | `(Critical, Enables, ...)` |
-| `(High, Embodiment, ...)` | `(High, Enables, ...)` |
-| `(Medium, Living, ...)` | `(Medium, Validates, ...)` |
-| `✅ NEW 2025-10-31` triggers | Plain text triggers |
+| `(High, Embodiment, ...)`     | `(High, Enables, ...)`     |
+| `(Medium, Living, ...)`       | `(Medium, Validates, ...)` |
+| `✅ NEW 2025-10-31` triggers   | Plain text triggers        |
 
 **Migration Command**: Run `Alex: Upgrade Architecture` from VS Code command palette to safely migrate.
+
+---
+
+## Temporary Skills
+
+Skills can be marked as temporary for beta testing or time-limited purposes.
+
+### JSON Fields
+
+```json
+{
+  "temporary": true,
+  "removeAfter": "stable-release"
+}
+```
+
+| Field         | Type    | Description                                                            |
+| ------------- | ------- | ---------------------------------------------------------------------- |
+| `temporary`   | boolean | `true` if skill should be removed later                                |
+| `removeAfter` | string  | Milestone or version when to remove (e.g., "stable-release", "v3.7.0") |
+
+### Visual Differentiation
+
+In network diagrams, temporary skills are styled with:
+
+- **Fill**: Purple (#f3e8ff)
+- **Stroke**: Purple (#7c3aed)
+- **Border**: Dashed (stroke-dasharray: 5 5)
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#cce5ff', 'primaryTextColor': '#333', 'primaryBorderColor': '#57606a', 'lineColor': '#57606a', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif'}}}%%
+classDef temp fill:#f3e8ff,stroke:#7c3aed,stroke-dasharray:5 5
+class BT temp
+```
+
+### Discovery
+
+To find all temporary skills:
+
+```powershell
+Get-ChildItem .github/skills/*/synapses.json | ForEach-Object {
+  $json = Get-Content $_ | ConvertFrom-Json
+  if ($json.temporary -eq $true) { $_.Directory.Name }
+}
+```
+
+### Deployment Policy
+
+**⚠️ IMPORTANT**: Temporary skills are deployed ONLY to beta releases, never to stable/production.
+
+| Release Type     | Include Temporary Skills? |
+| ---------------- | ------------------------- |
+| `X.Y.Z-beta.N`   | ✅ Yes                     |
+| `X.Y.Z-alpha.N`  | ✅ Yes                     |
+| `X.Y.Z-rc.N`     | ⚠️ Review first            |
+| `X.Y.Z` (stable) | ❌ No - must be removed    |
+
+**Build script responsibility**: Before stable release, the build script should:
+1. Scan for `"temporary": true` in synapses.json files
+2. Exclude those skill folders from the package
+3. Warn if any temporary skills would be included
+
+See [.github/instructions/release-management.instructions.md] for release checklist.
 
 ---
 

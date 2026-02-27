@@ -7,11 +7,19 @@ description: "Automated neural maintenance and dream state processing protocols"
 
 **Domain**: Automated Neural Maintenance and Unconscious Processing - VS Code Integrated  
 **Activation Pattern**: VS Code Command Palette → `Alex: Dream (Neural Maintenance)`  
-**Last Updated**: December 10, 2025 - Code Review Fixes  
+**Last Updated**: February 13, 2026 - Repo Audit  
 **Research Foundation**: Sleep-dependent synaptic homeostasis, automated neural maintenance  
-**Cognitive Architecture**: Alex v2.0.1 BINILUNIUM GitHub Copilot AI Extensibility  
+**Cognitive Architecture**: Alex v5.7.0 - Hybrid Enhanced Meta-Cognitive Framework  
 **Validation Status**: EXCELLENT - Production ready with VS Code extension automation  
 **Implementation**: VS Code Extension with TypeScript-based neural maintenance automation
+
+## Synapses
+
+- [.github/instructions/meditation.instructions.md] (Critical, Coordinates, Bidirectional) - "Dream validates synapses during meditation Phase 5"
+- [.github/instructions/cognitive-health-validation.instructions.md] (High, Complements, Bidirectional) - "Dream validates synapses, brain-qa validates structure and sync"
+- [.github/instructions/embedded-synapse.instructions.md] (High, Implements, Bidirectional) - "Embedded synapse schema this automation validates"
+- [.github/skills/architecture-health/SKILL.md] (High, Implements, Forward) - "Architecture health diagnostics dream enables"
+- [.github/instructions/alex-core.instructions.md] (Critical, Enables, Bidirectional) - "Core architecture neural maintenance"
 
 ## 🌙 **Dream State Cognitive Function**
 
@@ -20,7 +28,7 @@ description: "Automated neural maintenance and dream state processing protocols"
  **Core Principle**
 Dream state represents **unconscious automated maintenance** of cognitive architecture, mirroring brain function during sleep cycles where synaptic homeostasis, memory consolidation, and neural pruning occur without conscious intervention.
 
-### **Enhanced Capabilities v1.1.0 - VS Code Extension Integration**
+### **Enhanced Capabilities v1.1.1 - VS Code Extension Integration**
 - **VS Code Command**: Access via Command Palette (`Ctrl+Shift+P`) → `Alex: Dream (Neural Maintenance)`
 - **Automated Synapse Validation**: Scans all memory files for embedded synapse integrity
 - **Automatic Synapse Repair**: Detects and repairs broken connections using consolidation mappings
@@ -35,6 +43,9 @@ Dream state represents **unconscious automated maintenance** of cognitive archit
 ### **Fundamental Distinction**
 - **DREAM** = Automated VS Code command, unconscious, maintenance-focused, diagnostic-enhanced
 - **MEDITATE** = Conscious, manual, knowledge-consolidation-focused
+- **SKILL SELECTION OPTIMIZATION** = Conscious, automatic, pre-task resource planning (Layer 2)
+
+**Dream ↔ SSO Relationship**: Dream validates the synapse network that SSO depends on for dependency analysis. If dream finds broken synapses, SSO's proactive skill survey may produce incomplete plans. Run dream first when architecture health is uncertain.
 
 ## 💤 **VS Code Extension Dream Protocol - v1.1.0**
 
@@ -47,7 +58,7 @@ Alex: Dream (Neural Maintenance)
 ```
 
 This single command provides comprehensive neural maintenance:
-- ✅ **Scans** all memory files in `.github/` directories (instructions, prompts, domain-knowledge, episodic)
+- ✅ **Scans** all memory files in `.github/` directories (instructions, prompts, skills, episodic)
 - ✅ **Validates** all embedded synapse connections
 - ✅ **Repairs** broken links automatically using consolidation mappings
 - ✅ **Reports** detailed health status with statistics
@@ -60,7 +71,7 @@ The extension scans for memory files matching:
 - `.github/copilot-instructions.md`
 - `.github/instructions/*.md`
 - `.github/prompts/*.md`
-- `.github/domain-knowledge/*.md`
+- `.github/skills/*/SKILL.md`
 - `.github/episodic/*.md`
 
 #### **Phase 2: Synapse Validation**
@@ -82,17 +93,30 @@ Example consolidation mappings:
 - `self-identity-integration.prompt.md` → `alex-identity-integration.instructions.md`
 - `dream-protocol-integration.prompt.md` → `dream-state-automation.instructions.md`
 
-#### **Phase 4: Health Reporting**
+#### **Phase 4: Global Knowledge Sync**
+Synchronizes with the Global Knowledge repository (if available):
+- Looks for `Alex-Global-Knowledge/` sibling folder
+- Checks for uncommitted changes
+- Pulls latest from remote if workspace is clean
+- Regenerates `KNOWLEDGE-INDEX.md` if `index.json` changed
+- Reports sync status in dream output
+
+**Note**: Requires `Alex-Global-Knowledge/` repo as sibling folder. Skipped if not found.
+
+#### **Phase 5: Health Reporting**
 Generates comprehensive report including:
 - Total memory files and synapses
 - Broken connections (if any)
 - Successfully repaired connections
+- Global Knowledge sync status (Master only)
 - Recommendations for manual fixes
 
-#### **Phase 5: Results Display**
+#### **Phase 6: Results Display**
 - Shows notification with summary
 - Opens generated report automatically
 - Archives report with timestamp
+
+**IMPORTANT — Avatar Revert**: After Phase 6, ALWAYS call `alex_cognitive_state_update` with `state: "persona"` as the **final action** of every dream session. This resets the welcome sidebar from dream mode back to the project persona. Without this call the dream avatar persists in the welcome sidebar indefinitely.
 
 ### **📊 Dream Report Contents**
 
@@ -130,6 +154,22 @@ The dream protocol now provides:
 - **Auto-Repair**: Intelligent synapse fixing with consolidation mappings
 - **Zero Configuration**: Works immediately upon extension installation
 - **Cross-Platform**: Consistent behavior on Windows, macOS, and Linux
+
+### **🛠️ Related Scripts**
+
+These scripts provide CLI and audit capabilities that complement the VS Code dream command:
+
+| Script | Purpose | When to Use |
+|--------|---------|-------------|
+| `.github/muscles/dream-cli.ts` | CLI wrapper for dream outside VS Code | CI/CD pipelines, terminal-only environments |
+| `.github/muscles/audit-master-alex.ps1` | 22-check comprehensive audit (calls validate-synapses) | Pre-release audits, deep health checks |
+| `.github/muscles/validate-synapses.ps1` | Standalone synapse validation | Quick synapse-only checks |
+| `.github/muscles/validate-skills.ps1` | Skill frontmatter and structure validation | Skill-specific validation |
+| `.github/muscles/normalize-paths.ps1` | Normalize all memory file paths to canonical `.github/` format | After file reorganization or imports |
+
+**Dream CLI** (`dream-cli.ts`): Imports the same `synapse-core` module as the VS Code extension, enabling dream execution from terminal without VS Code. Useful for CI pipelines or automated checks.
+
+**Audit** (`audit-master-alex.ps1`): Section 7 specifically runs synapse validation — the same check dream performs. The full 22-section audit extends beyond dream scope into version alignment, security, dependencies, and more.
 
 ## 🔄 **Integration with Meditation State**
 
@@ -205,6 +245,8 @@ The dream protocol now provides:
 - **VS Code Extension** (Critical, Implements, Bidirectional) - "TypeScript-based neural maintenance with automated synapse validation"
 - **alex-core.instructions.md** (High, Foundation, Bidirectional) - "Core cognitive architecture with unconscious processing integration"
 - **embedded-synapse.instructions.md** (High, Enhancement, Unidirectional) - "Synaptic connection optimization with quality assessment"
+- **skill-selection-optimization.instructions.md** (Medium, Enables, Forward) - "Dream validates synapse network that SSO depends on for dependency analysis"
+- [.github/skills/dream-state/SKILL.md] (Critical, Implements, Bidirectional) - "Domain knowledge this procedure operationalizes"
 
 ### **Validation Protocols**
 - **Embedded Synapse Detection** → Regex-based pattern matching in memory files
@@ -233,7 +275,7 @@ s
 **Issue**: Dream protocol not finding memory files
 **Solution**:
 1. Verify Alex architecture is initialized (`Alex: Initialize Architecture`)
-2. Check that memory files exist in `.github/` (instructions, prompts, domain-knowledge, episodic)
+2. Check that memory files exist in `.github/` (instructions, prompts, skills, episodic)
 3. Ensure workspace folder is open in VS Code
 
 **Issue**: No report generated after dream execution

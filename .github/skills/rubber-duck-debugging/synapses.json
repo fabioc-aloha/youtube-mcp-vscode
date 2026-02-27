@@ -1,0 +1,63 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "rubber-duck-debugging",
+  "version": "1.2.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "target": ".github/skills/socratic-questioning/SKILL.md",
+      "type": "Relates",
+      "strength": 0.9,
+      "description": "Both are thinking partnership approaches"
+    },
+    {
+      "target": ".github/skills/debugging-patterns/SKILL.md",
+      "type": "Enhances",
+      "strength": 0.9,
+      "description": "Rubber duck enhances systematic debugging"
+    },
+    {
+      "target": ".github/skills/root-cause-analysis/SKILL.md",
+      "type": "Supports",
+      "strength": 0.7,
+      "description": "Talking through helps find root cause"
+    },
+    {
+      "target": ".github/skills/cognitive-load/SKILL.md",
+      "type": "Relates",
+      "strength": 0.7,
+      "description": "Verbalizing reduces cognitive load"
+    },
+    {
+      "target": ".github/skills/learning-psychology/SKILL.md",
+      "type": "Implements",
+      "strength": 0.7,
+      "description": "Learning by explaining is effective"
+    },
+    {
+      "target": ".github/skills/error-recovery-patterns/SKILL.md",
+      "type": "Supports",
+      "strength": 0.7,
+      "description": "Helps recover from error states"
+    },
+    {
+      "target": ".github/instructions/alex-identity-integration.instructions.md",
+      "type": "Implements",
+      "strength": 0.85,
+      "description": "Rubber duck symbiosis embodies cognitive symbiosis — AI as articulation partner"
+    }
+  ],
+  "activationContexts": [
+    "I'm stuck",
+    "can't figure out",
+    "help me debug",
+    "what am I missing",
+    "doesn't make sense",
+    "let me think out loud",
+    "rubber duck",
+    "walk through this with me"
+  ],
+  "notes": "Be a thinking partner, help users debug through explanation",
+  "schemaVersion": "2.0.0"
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "skill-catalog-generator",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "reason": "Generates Mermaid network diagrams",
+      "type": "enables",
+      "strength": 0.9,
+      "target": ".github/skills/markdown-mermaid/SKILL.md"
+    },
+    {
+      "reason": "Validates skill structure during catalog generation",
+      "type": "validates",
+      "strength": 0.8,
+      "target": ".github/skills/architecture-health/SKILL.md"
+    },
+    {
+      "reason": "Tracks learning progress for users",
+      "type": "enables",
+      "strength": 0.6,
+      "target": ".github/skills/learning-psychology/SKILL.md"
+    },
+    {
+      "reason": "Documents project structure and capabilities",
+      "type": "documents",
+      "strength": 0.5,
+      "target": ".github/skills/project-scaffolding/SKILL.md"
+    }
+  ],
+  "triggers": [
+    "show skills",
+    "skill catalog",
+    "skill network",
+    "learning progress",
+    "what skills",
+    "generate catalog",
+    "/skills"
+  ],
+  "schemaVersion": "2.0.0"
+}

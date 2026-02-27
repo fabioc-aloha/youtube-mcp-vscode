@@ -1,0 +1,97 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "ai-agent-design",
+  "version": "1.2.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "target": ".github/skills/prompt-engineering/SKILL.md",
+      "strength": 0.9,
+      "type": "REQUIRES",
+      "when": "Agent prompts require sophisticated prompt engineering",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/rag-architecture/SKILL.md",
+      "strength": 0.9,
+      "type": "COMPLEMENTS",
+      "when": "Agents often use RAG for knowledge retrieval",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/mcp-development/SKILL.md",
+      "strength": 0.9,
+      "type": "COMPLEMENTS",
+      "when": "MCP provides standardized tool interface for agents",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/llm-model-selection/SKILL.md",
+      "strength": 0.7,
+      "type": "INFORMS",
+      "when": "Agent design requires model selection for different components",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/api-design/SKILL.md",
+      "strength": 0.7,
+      "type": "COMPLEMENTS",
+      "when": "Tool APIs must be well-designed for agent consumption",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/anti-hallucination/SKILL.md",
+      "strength": 0.9,
+      "type": "REQUIRES",
+      "when": "Agents must detect and handle hallucinated tool calls",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/error-recovery-patterns/SKILL.md",
+      "strength": 0.9,
+      "type": "REQUIRES",
+      "when": "Agents need robust error handling and recovery",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/testing-strategies/SKILL.md",
+      "strength": 0.7,
+      "type": "COMPLEMENTS",
+      "when": "Agent testing requires specialized evaluation approaches",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/foundry-agent-platform/SKILL.md",
+      "strength": 0.9,
+      "bidirectional": true,
+      "type": "IMPLEMENTS",
+      "when": "Foundry Agent Service is the cloud runtime for agent design patterns",
+      "yields": "See target skill"
+    }
+  ],
+  "activationContexts": [
+    "agent",
+    "autonomous",
+    "multi-agent",
+    "tool use",
+    "function calling",
+    "ReAct",
+    "plan and execute",
+    "LangChain",
+    "LangGraph",
+    "AutoGen",
+    "CrewAI",
+    "orchestration",
+    "supervisor"
+  ],
+  "metadata": {
+    "category": "ai-ml",
+    "complexity": "advanced",
+    "prerequisites": [
+      "prompt-engineering",
+      "api-design"
+    ]
+  },
+  "schemaVersion": "2.0.0"
+}

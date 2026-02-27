@@ -1,0 +1,30 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "enterprise-integration",
+  "version": "1.1.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "heir:vscode",
+  "connections": [
+    {
+      "target": ".github/skills/vscode-extension-patterns/SKILL.md",
+      "type": "extends",
+      "strength": 0.85,
+      "reason": "Enterprise patterns build on core VS Code extension patterns"
+    },
+    {
+      "target": ".github/skills/api-design/SKILL.md",
+      "type": "uses",
+      "strength": 0.7,
+      "reason": "Graph API client follows API design patterns"
+    },
+    {
+      "target": ".github/skills/security-review/SKILL.md",
+      "type": "requires",
+      "strength": 0.8,
+      "reason": "Enterprise auth requires security review"
+    }
+  ],
+  "schemaVersion": "2.1.0",
+  "lastValidated": "2026-02-10",
+  "temporary": false
+}

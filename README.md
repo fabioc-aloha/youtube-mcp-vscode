@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
-    <img src="https://img.shields.io/badge/Version-0.1.1-blue?style=for-the-badge&logo=visual-studio-code" alt="Version">
+    <img src="https://img.shields.io/badge/Version-0.2.1-blue?style=for-the-badge&logo=visual-studio-code" alt="Version">
   </a>
   <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
     <img src="https://img.shields.io/badge/Marketplace-VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code" alt="VS Code Marketplace">
@@ -88,18 +88,34 @@ Create a `.env` file in your workspace root:
 YOUTUBE_API_KEY=your-api-key-here
 ```
 
+**Option 3: Secure Command** (Recommended)
+
+Run `YouTube MCP: Set API Key` command. Your key is:
+- Validated before storage
+- Encrypted using VS Code SecretStorage
+- Never exposed in settings or files
+
 ## 🎯 Commands
 
-| Command | Description |
-|---------|-------------|
-| `YouTube MCP: Search YouTube` | Search for videos by keyword |
-| `YouTube MCP: Analyze Video` | Get comprehensive video analysis |
-| `YouTube MCP: Get Transcript` | Extract timestamped transcript |
-| `YouTube MCP: Generate Flashcards` | Create flashcards from video |
-| `YouTube MCP: Show Quota Status` | Check API quota usage |
-| `YouTube MCP: Open Settings` | Configure extension settings |
+| Command | Shortcut | Description |
+|---------|----------|-------------|
+| `YouTube MCP: Search YouTube` | `Ctrl+Shift+Y S` | Search for videos by keyword |
+| `YouTube MCP: Analyze Video` | `Ctrl+Shift+Y A` | Get comprehensive video analysis |
+| `YouTube MCP: Get Transcript` | `Ctrl+Shift+Y T` | Extract timestamped transcript |
+| `YouTube MCP: Generate Flashcards` | `Ctrl+Shift+Y F` | Create flashcards from video |
+| `YouTube MCP: Set API Key` | - | Securely set your API key |
+| `YouTube MCP: Show Quota Status` | - | Check API quota usage |
+| `YouTube MCP: Open Settings` | - | Configure extension settings |
 
 Access all commands via `Ctrl+Shift+P` / `Cmd+Shift+P`.
+
+## 🔒 Security Features
+
+- **Encrypted Storage** - API keys stored in VS Code's SecretStorage
+- **Key Validation** - API keys validated before storage
+- **Rate Limiting** - Automatic request throttling (10 req/sec)
+- **Exponential Backoff** - Smart retries for transient failures
+- **Quota Persistence** - Usage tracking persists across sessions
 
 ## 📊 Video Analysis Output
 
@@ -181,7 +197,7 @@ Look for the **YouTube** icon in the Activity Bar:
 
 ## 📝 Requirements
 
-- VS Code 1.108.1 or higher
+- VS Code 1.109.0 or higher
 - YouTube Data API key ([Get one free](https://console.cloud.google.com/apis/credentials))
 
 ## 🤝 Contributing

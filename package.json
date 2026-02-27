@@ -2,7 +2,7 @@
   "name": "youtube-mcp-tools",
   "displayName": "YouTube MCP Tools",
   "description": "Search YouTube, analyze videos, extract transcripts, and generate flashcards - all within VS Code. Zero external dependencies.",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "publisher": "fabioc-aloha",
   "author": {
     "name": "Fabio Correa",
@@ -15,7 +15,7 @@
   },
   "pricing": "Free",
   "engines": {
-    "vscode": "^1.108.1"
+    "vscode": "^1.109.0"
   },
   "categories": [
     "Other",
@@ -90,6 +90,34 @@
         "title": "Refresh History",
         "category": "YouTube MCP",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "youtubeMcp.setApiKey",
+        "title": "Set API Key",
+        "category": "YouTube MCP",
+        "icon": "$(key)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "youtubeMcp.search",
+        "key": "ctrl+shift+y s",
+        "mac": "cmd+shift+y s"
+      },
+      {
+        "command": "youtubeMcp.analyzeVideo",
+        "key": "ctrl+shift+y a",
+        "mac": "cmd+shift+y a"
+      },
+      {
+        "command": "youtubeMcp.getTranscript",
+        "key": "ctrl+shift+y t",
+        "mac": "cmd+shift+y t"
+      },
+      {
+        "command": "youtubeMcp.generateFlashcards",
+        "key": "ctrl+shift+y f",
+        "mac": "cmd+shift+y f"
       }
     ],
     "configuration": {
@@ -103,7 +131,12 @@
         },
         "youtubeMcp.preferredDuration": {
           "type": "string",
-          "enum": ["any", "short", "medium", "long"],
+          "enum": [
+            "any",
+            "short",
+            "medium",
+            "long"
+          ],
           "default": "any",
           "description": "Preferred video duration for search results"
         },

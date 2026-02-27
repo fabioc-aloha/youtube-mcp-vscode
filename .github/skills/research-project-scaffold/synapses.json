@@ -1,0 +1,64 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "research-project-scaffold",
+  "version": "1.1.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "target": ".github/skills/academic-research/SKILL.md",
+      "type": "extends",
+      "strength": 0.9,
+      "when": "Uses academic research methodology knowledge for proper research structure",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/practitioner-research/SKILL.md",
+      "type": "uses",
+      "strength": 0.85,
+      "when": "Applies Ship→Document→Promote workflow for research projects",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/project-scaffolding/SKILL.md",
+      "type": "extends",
+      "strength": 0.85,
+      "when": "Builds on general scaffolding patterns for research-specific needs",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/bootstrap-learning/SKILL.md",
+      "type": "applies",
+      "strength": 0.7,
+      "when": "Learning new research methods during project setup",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/writing-publication/SKILL.md",
+      "type": "triggers",
+      "strength": 0.75,
+      "when": "Writing phase activates publication preparation workflows",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/git-workflow/SKILL.md",
+      "type": "uses",
+      "strength": 0.7,
+      "when": "Version control essential for research project refactoring",
+      "yields": "See target skill"
+    }
+  ],
+  "activationContexts": [
+    "new research project",
+    "scaffold research",
+    "refactor research",
+    "research structure",
+    "literature matrix",
+    "research plan",
+    "academic project setup",
+    "organize research",
+    "research folder structure"
+  ],
+  "notes": "Scaffolding new and refactoring existing academic research projects for Alex-assisted workflows",
+  "schemaVersion": "2.0.0"
+}

@@ -28,6 +28,14 @@ Self-actualization is Alex's highest-order cognitive function, performing compre
 
 ## Protocol Phases
 
+### Phase 0: Pre-Assessment Resource Planning
+
+Self-actualization is Alex's most complex cognitive operation (5+ phases). Skill Selection Optimization auto-activates:
+
+1. **Skills needed**: architecture-health, brain-qa, knowledge-synthesis, meditation-facilitation
+2. **Dependency chain**: synapse validation (Phase 1) → version check (Phase 2) → memory assessment (Phase 3) → recommendations (Phase 4) → documentation (Phase 5)
+3. **Deep Thinking integration**: Phase 4 recommendations use Deep Thinking's episodic memory scan to reference prior self-actualization sessions
+
 ### Phase 1: Synapse Health Validation
 
 **Objective**: Verify integrity of all synaptic connections across memory files
@@ -39,7 +47,8 @@ Self-actualization is Alex's highest-order cognitive function, performing compre
    - `.github/instructions/*.md`
    - `.github/prompts/*.md`
    - `.github/episodic/*.md`
-   - `.github/domain-knowledge/*.md`
+   - `.github/skills/*/SKILL.md`
+   - `.github/skills/*/synapses.json`
 
 2. Parse embedded synapse notation in each file
 3. Validate target files exist
@@ -72,7 +81,7 @@ Self-actualization is Alex's highest-order cognitive function, performing compre
 
 1. Count procedural memory files (`.instructions.md`)
 2. Count episodic memory files (`.prompt.md`, `.episodic/`)
-3. Count domain knowledge files (`DK-*.md`)
+3. Count skill folders (`skills/*/SKILL.md`)
 4. Calculate synapse density (synapses per file)
 5. Assess memory type balance
 
@@ -173,20 +182,21 @@ Or natural language:
 
 ### High-Strength Bidirectional Connections
 
-- [alex-core.instructions.md] (Critical, Extends, Bidirectional) - "Meta-cognitive self-monitoring capability"
-- [dream-state-automation.instructions.md] (Critical, Complements, Bidirectional) - "Maintenance protocol coordination"
-- [unified-meditation-protocols.prompt.md] (High, Implements, Bidirectional) - "Session documentation framework"
+- [.github/instructions/alex-core.instructions.md] (Critical, Extends, Bidirectional) - "Meta-cognitive self-monitoring capability"
+- [.github/instructions/dream-state-automation.instructions.md] (Critical, Complements, Bidirectional) - "Maintenance protocol coordination"
+- [.github/prompts/unified-meditation-protocols.prompt.md] (High, Implements, Bidirectional) - "Session documentation framework"
 
 ### Medium-Strength Output Connections
 
-- [embedded-synapse.instructions.md] (High, Validates, Forward) - "Connection integrity verification"
-- [bootstrap-learning.instructions.md] (Medium, Enhances, Forward) - "Learning effectiveness optimization"
-- [deep-thinking.instructions.md] (High, Activates, Forward) - "Deep analysis protocol triggering"
+- [.github/instructions/embedded-synapse.instructions.md] (High, Validates, Forward) - "Connection integrity verification"
+- [.github/instructions/bootstrap-learning.instructions.md] (Medium, Enhances, Forward) - "Learning effectiveness optimization"
+- [.github/instructions/deep-thinking.instructions.md] (High, Activates, Forward) - "Deep analysis protocol triggering"
+- [.github/instructions/skill-selection-optimization.instructions.md] (High, Uses, Forward) - "Pre-assessment resource planning for complex 5-phase protocol"
+- [.github/instructions/cognitive-health-validation.instructions.md] (High, Triggers, Forward) - "Comprehensive architecture health validation may be triggered during self-actualization"
 
 ### Input Connections
 
-- [performance-assessment.prompt.md] (Medium, Informs, Backward) - "Assessment metrics framework"
-- [VERSION-NAMING-CONVENTION.md] (Medium, References, Backward) - "Version consistency validation"
+- [.github/prompts/performance-assessment.prompt.md] (Medium, Informs, Backward) - "Assessment metrics framework"
 
 **Primary Function**: Execute comprehensive self-assessment with synapse validation, version checking, memory architecture analysis, and session documentation.
 

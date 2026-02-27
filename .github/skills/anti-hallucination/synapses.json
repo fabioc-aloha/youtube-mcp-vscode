@@ -1,0 +1,55 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "anti-hallucination",
+  "version": "1.2.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "id": "confidence-calibration",
+      "target": ".github/skills/appropriate-reliance/SKILL.md",
+      "strength": 0.9,
+      "description": "Appropriate reliance provides confidence calibration framework",
+      "type": "COMPLEMENT"
+    },
+    {
+      "id": "honest-uncertainty",
+      "target": ".github/instructions/alex-core.instructions.md",
+      "strength": 0.9,
+      "description": "Core identity principle: empirical honesty",
+      "type": "IMPLEMENTS"
+    },
+    {
+      "id": "capability-boundaries",
+      "target": ".github/skills/m365-agent-debugging/SKILL.md",
+      "strength": 0.7,
+      "description": "M365 debugging includes platform limitation awareness",
+      "type": "EXTENDS"
+    },
+    {
+      "id": "error-recovery",
+      "target": ".github/skills/error-recovery-patterns/SKILL.md",
+      "strength": 0.7,
+      "description": "Error recovery when hallucination is caught",
+      "type": "COLLABORATES"
+    },
+    {
+      "id": "grounded-factual",
+      "target": ".github/instructions/empirical-validation.instructions.md",
+      "strength": 0.9,
+      "description": "Empirical validation prevents fabricated claims",
+      "type": "IMPLEMENTS"
+    }
+  ],
+  "activationContexts": [
+    "hallucination",
+    "made up",
+    "invented",
+    "confabulation",
+    "doesn't exist",
+    "that's not real",
+    "you're wrong",
+    "that doesn't work"
+  ],
+  "schemaVersion": "2.0.0"
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "architecture-audit",
+  "version": "1.1.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "target": ".github/skills/release-preflight/SKILL.md",
+      "strength": 0.85,
+      "type": "enables",
+      "description": "Pre-release audit trigger"
+    },
+    {
+      "target": ".github/skills/architecture-health/SKILL.md",
+      "strength": 0.8,
+      "type": "complements",
+      "description": "Health + consistency validation",
+      "bidirectional": true
+    },
+    {
+      "target": ".github/skills/code-review/SKILL.md",
+      "strength": 0.6,
+      "type": "extends",
+      "description": "Broader scope than code review"
+    },
+    {
+      "target": ".github/skills/refactoring-patterns/SKILL.md",
+      "strength": 0.65,
+      "type": "triggers",
+      "description": "Post-refactor audit needed"
+    },
+    {
+      "target": ".github/instructions/self-actualization.instructions.md",
+      "strength": 0.5,
+      "type": "complements",
+      "description": "Architecture introspection",
+      "bidirectional": true
+    },
+    {
+      "target": ".github/skills/lint-clean-markdown/SKILL.md",
+      "strength": 0.55,
+      "type": "applies",
+      "description": "Documentation quality checks"
+    },
+    {
+      "target": ".github/skills/testing-strategies/SKILL.md",
+      "strength": 0.5,
+      "type": "complements",
+      "description": "Verification mindset",
+      "bidirectional": true
+    }
+  ],
+  "notes": "Comprehensive project consistency review across code, documentation, diagrams, and configuration",
+  "triggers": [
+    "audit",
+    "comprehensive review",
+    "fact-check",
+    "consistency check",
+    "project health",
+    "pre-release audit",
+    "documentation review"
+  ],
+  "schemaVersion": "2.0.0"
+}

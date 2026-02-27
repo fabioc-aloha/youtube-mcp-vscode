@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { YouTubeService, SearchResultItem, VideoAnalysisResult, FlashcardItem, QuotaInfo } from './services/youtubeService';
+import { YouTubeService, SearchResultItem, FlashcardItem } from './services/youtubeService';
 
 export interface VideoSearchResult {
     id: string;
@@ -72,6 +72,39 @@ export class YouTubeMcpClient {
         this.outputChannel = outputChannel;
         this.youtubeService = new YouTubeService(outputChannel);
         this.outputChannel.appendLine('YouTube MCP Client initialized (self-sufficient mode)');
+    }
+
+    /**
+     * Initialize storage for quota persistence and secure API key storage
+     */
+    initializeStorage(context: vscode.ExtensionContext): void {
+        this.youtubeService.initializeStorage(context);
+    }
+
+    /**
+     * Set API key securely
+     */
+    async setApiKey(apiKey: string): Promise<void> {
+        await this.youtubeService.setApiKey(apiKey);
+    }
+
+    /**
+     * Validate API key
+     */
+    async validateApiKey(apiKey: string): Promise<{ valid: boolean; error?: string }> {
+        return await this.youtubeService.validateApiKey(apiKey);
+    }
+
+    /**
+     * Check if API key is configured
+     */
+    async hasApiKey(): Promise<boolean> {
+        try {
+            await this.youtubeService.getApiKey();
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     /**

@@ -1,0 +1,66 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "infrastructure-as-code",
+  "version": "1.2.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "target": ".github/skills/security-review/SKILL.md",
+      "strength": 0.9,
+      "type": "REQUIRES",
+      "when": "IaC needs security scanning (tfsec, checkov)",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/git-workflow/SKILL.md",
+      "strength": 0.9,
+      "type": "REQUIRES",
+      "when": "IaC follows GitOps patterns with PRs and reviews",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/testing-strategies/SKILL.md",
+      "strength": 0.7,
+      "type": "COMPLEMENTS",
+      "when": "IaC needs unit and integration testing",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/api-design/SKILL.md",
+      "strength": 0.3,
+      "type": "COMPLEMENTS",
+      "when": "IaC provisions infrastructure for APIs",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/mcp-development/SKILL.md",
+      "strength": 0.3,
+      "type": "COMPLEMENTS",
+      "when": "MCP servers may need cloud infrastructure",
+      "yields": "See target skill"
+    }
+  ],
+  "activationContexts": [
+    "infrastructure as code",
+    "IaC",
+    "Terraform",
+    "Bicep",
+    "Pulumi",
+    "CloudFormation",
+    "ARM template",
+    "CDK",
+    "tfvars",
+    "terraform.tfstate",
+    "GitOps",
+    "provision infrastructure"
+  ],
+  "metadata": {
+    "category": "devops",
+    "complexity": "intermediate",
+    "prerequisites": [
+      "git-workflow"
+    ]
+  },
+  "schemaVersion": "2.0.0"
+}

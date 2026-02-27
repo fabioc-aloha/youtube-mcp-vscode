@@ -1,3 +1,8 @@
+---
+description: "Release and publish workflows for versioning, changelogs, and marketplace deployment"
+applyTo: "**/*{CHANGELOG,package,version}*,**/*.vsix"
+---
+
 # Release Management Procedural Memory
 
 **Classification**: Procedural Memory | Process Adherence  
@@ -10,12 +15,33 @@
 
 - [CHANGELOG.md] → (High, Documentation, Required) - "Version history must be updated"
 - [package.json] → (Critical, Metadata, Source-of-Truth) - "Version number authority"
+- [.github/muscles/build-extension-package.ps1] → (High, Enables, Forward) - "Heir sync with fresh template generation"
+- [.github/muscles/sync-architecture.js] → (Critical, Enables, Forward) - "Master-to-heir sync runs during vsce package - validates skill inheritance"
+- [scripts/release-preflight.ps1] → (High, Validates, Forward) - "Preflight gate before publish"
+- [.github/instructions/automated-quality-gates.instructions.md] → (Critical, Automates, Bidirectional) - "Build-pipeline quality gates replace manual checklist items (v5.9.10 RCA)"
+- [.github/instructions/roadmap-maintenance.instructions.md] → (High, Coordinates, Bidirectional) - "Roadmap status updates when version ships"
+- [.github/instructions/self-actualization.instructions.md] → (Medium, Integrates, Bidirectional) - "Post-release meditation validates architecture integrity"
+- [.github/instructions/vscode-marketplace-publishing.instructions.md] → (Critical, Coordinates, Bidirectional) - "Marketplace publishing subprocess this parent workflow orchestrates"
+- [.github/instructions/adversarial-oversight.instructions.md] → (Critical, Gates, Required) - "Validator agent review required before release"
+- [.github/instructions/azure-enterprise-deployment.instructions.md] → (Medium, Patterns, Bidirectional) - "Similar pre-release validation checklists for deployment readiness"
+- [.github/instructions/cognitive-health-validation.instructions.md] → (Critical, Gates, Bidirectional) - "Pre-release validation requires clean brain-qa run (0 critical issues)"
+- [platforms/m365-copilot/package.json] → (High, Metadata, Parallel) - "M365 version must align with VS Code extension version"
+- [platforms/m365-copilot/appPackage/manifest.json] → (High, Metadata, Parallel) - "M365 manifest version tracks extension releases"
 
 ---
 
 ## MANDATORY Pre-Release Assessment
 
 **⚠️ CRITICAL**: Before ANY release action, Alex MUST automatically perform these assessments:
+
+### Step 0: Brain QA (Cognitive Architecture Health)
+
+```text
+Action: Run `brain-qa` skill or synapse validation
+Purpose: Ensure no broken synapses, all skills indexed, Master-Heir sync
+Output: 6-phase validation report
+Blocker: Do NOT proceed if synapses are broken
+```
 
 ### Step 1: Detect Uncommitted Changes
 
@@ -73,7 +99,7 @@ Proposed version: X.Y.Z
 **Changelog Classification Rules:**
 - New `.instructions.md` file → "Added" + "New procedural memory for X"
 - New `.prompt.md` file → "Added" + "New episodic workflow for X"
-- New `DK-*.md` file → "Added" + "New domain knowledge for X"
+- New skill folder → "Added" + "New skill for X"
 - Modified existing file → "Changed" + describe the modification
 - Deleted file → "Removed" + note what was removed
 - Fix in code → "Fixed" + describe what was corrected
@@ -85,6 +111,37 @@ Proposed version: X.Y.Z
 2. Recommended version bump with justification
 3. Draft changelog entry for review
 4. Ask: "Should I update the version and changelog, or would you like to adjust anything?"
+
+### Step 4.5: Adversarial Validation Gate
+
+**🔴 MANDATORY for Marketplace releases**
+
+Before proceeding with version bump and publish:
+
+```text
+Action: Handoff to Validator agent for release review
+Scope: All changes since last release + release artifacts
+Deliverable: Validation report with ✅ approve / 🔴 block decision
+
+Blocker: If Validator blocks (🔴 Critical or 🟠 High issues), resolve before proceeding.
+```
+
+**Validator Review Checklist:**
+- [ ] CHANGELOG accurately reflects all changes
+- [ ] Version bump matches change scope (patch/minor/major)
+- [ ] No uncommitted changes or merge conflicts
+- [ ] Documentation updated for user-facing changes
+- [ ] No security regressions or exposed secrets
+- [ ] Heir sync verified (if multi-platform release)
+- [ ] Build artifacts clean (no errors, lint warnings acceptable)
+
+**Expedited Validation** (emergency hotfix only):
+- Limited to critical security OR production-down fixes
+- Minimum viable scope (< 50 lines)
+- Post-merge full validation scheduled
+- Override documented in commit/CHANGELOG
+
+See [adversarial-oversight.instructions.md] for complete Validator integration protocol.
 
 ---
 
@@ -113,6 +170,84 @@ These MUST be verified before releasing:
 | TypeScript compiles | - | `npm run compile` |
 | Changelog updated | CHANGELOG.md | Visual review |
 | No lint errors | *.md | `get_errors` tool |
+| Temporary skills handled | .github/skills/*/synapses.json | See below |
+
+---
+
+## Definition of Done Verification
+
+**⚠️ MANDATORY**: Before marking ANY version as "✅ Shipped", verify ALL 8 criteria:
+
+| # | Criterion | Verification Method | Blocker If Failed |
+|---|-----------|---------------------|-------------------|
+| 1 | **Builds clean** | `npm run compile` exits 0 with zero errors | 🔴 YES |
+| 2 | **No dead code** | Every import resolves, every export is consumed, no orphaned modules | 🟡 Review |
+| 3 | **Counts match reality** | Slash commands, tools, skills, trifectas in docs match actual code | 🟡 Review |
+| 4 | **F5 smoke test passes** | Extension activates in sandbox, welcome view renders, 3 random commands work | 🟠 Recommended |
+| 5 | **Version aligned** | package.json, CHANGELOG, copilot-instructions.md all show the same version | 🔴 YES |
+| 6 | **Heir sync clean** | `sync-architecture.js` runs with 0 errors, heir activates independently | 🔴 YES |
+| 7 | **No non-functional features** | If it's in the UI or command palette, it works. If it doesn't work, it's removed | 🟠 Recommended |
+| 8 | **CHANGELOG documents the delta** | Every user-visible change has a line item | 🔴 YES |
+
+**Principle**: Ship what works. Remove what doesn't. Document what changed.
+
+### DoD Verification Script (Optional)
+
+```powershell
+# Quick DoD checklist
+function Test-DefinitionOfDone {
+  Write-Host "📋 Definition of Done Verification" -ForegroundColor Cyan
+  
+  # 1. Builds clean
+  Write-Host "`n1. Build Status..." -ForegroundColor Yellow
+  npm run compile 2>&1 | Tee-Object -Variable buildOutput
+  if ($LASTEXITCODE -eq 0) { Write-Host "   ✅ Builds clean" -ForegroundColor Green }
+  else { Write-Host "   ❌ Build errors detected" -ForegroundColor Red; return $false }
+  
+  # 5. Version aligned
+  Write-Host "`n5. Version Alignment..." -ForegroundColor Yellow
+  $pkgVersion = (Get-Content package.json | ConvertFrom-Json).version
+  $changelogVersion = (Select-String -Path CHANGELOG.md -Pattern '\[(\d+\.\d+\.\d+)\]' | Select-Object -First 1).Matches.Groups[1].Value
+  $brainVersion = (Select-String -Path .github/copilot-instructions.md -Pattern '# Alex v(\d+\.\d+\.\d+)' | Select-Object -First 1).Matches.Groups[1].Value
+  
+  if ($pkgVersion -eq $changelogVersion -and $pkgVersion -eq $brainVersion) {
+    Write-Host "   ✅ Version aligned: $pkgVersion" -ForegroundColor Green
+  } else {
+    Write-Host "   ❌ Version mismatch: package=$pkgVersion, changelog=$changelogVersion, brain=$brainVersion" -ForegroundColor Red
+    return $false
+  }
+  
+  # 8. CHANGELOG updated
+  Write-Host "`n8. CHANGELOG Updated..." -ForegroundColor Yellow
+  $latestEntry = Select-String -Path CHANGELOG.md -Pattern '\[(\d+\.\d+\.\d+)\].*(\d{4}-\d{2}-\d{2})' | Select-Object -First 1
+  if ($latestEntry) { Write-Host "   ✅ Latest entry: $latestEntry" -ForegroundColor Green }
+  else { Write-Host "   ❌ No recent CHANGELOG entry" -ForegroundColor Red; return $false }
+  
+  Write-Host "`n⚠️  Manual verification required for criteria 2, 3, 4, 6, 7" -ForegroundColor Yellow
+  return $true
+}
+```
+
+**When to Run**: Before updating roadmap status from "📋 Planned" → "✅ Shipped"
+
+### Temporary Skills Check
+
+**⚠️ Before stable releases**, verify temporary skills are excluded:
+
+```powershell
+# Find temporary skills
+Get-ChildItem .github/skills/*/synapses.json | ForEach-Object {
+  $json = Get-Content $_ | ConvertFrom-Json
+  if ($json.temporary -eq $true) { 
+    Write-Warning "TEMPORARY SKILL: $($_.Directory.Name) - exclude from stable release"
+  }
+}
+```
+
+| Release Type | Action |
+| ------------ | ------ |
+| Beta (`X.Y.Z-beta.N`) | Include temporary skills |
+| Stable (`X.Y.Z`) | **EXCLUDE** temporary skills |
 
 ---
 
@@ -126,7 +261,89 @@ These MUST be verified before releasing:
 3. Work through EACH section systematically
 4. All checkboxes must be verified (not assumed)
 5. Run build/compile commands for project type
+6. Verify .vscodeignore includes user-facing assets (see Packaging Pitfalls)
 ```
+
+### Packaging Pitfalls (Learned 2026-02-01)
+
+**The `.vscode/` Dual-Purpose Problem:**
+
+The `.vscode/` folder contains both:
+- **Development assets** (launch.json, tasks.json, mcp.json) — should NOT ship
+- **User experience assets** (settings.json, CSS files) — SHOULD ship
+
+**Bad:** `.vscode/**` — Excludes everything, including user assets
+
+**Good:** Explicitly list dev files to exclude:
+```ignore
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/mcp.json
+# Keep .vscode/settings.json and .vscode/markdown-light.css
+```
+
+**Verification:** After packaging changes, always run:
+```powershell
+npx vsce ls | Select-String "\.vscode"
+```
+
+### CHANGELOG and Version Badge Pre-Flight (Learned 2026-02-16)
+
+**Problem**: In multi-platform projects (e.g., root + platforms/vscode-extension), CHANGELOG and README badge versions can drift during rapid development, causing marketplace deployment with incorrect or incomplete documentation.
+
+**v5.8.2 Evidence**: Extension CHANGELOG dated 5.8.1 while root CHANGELOG advanced to 5.8.2; README badge remained at 5.7.1 during 5.8.2 release preparation.
+
+**Quality Gates** (MANDATORY before marketplace publish):
+
+1. **CHANGELOG Synchronization**
+   - **Check**: Root CHANGELOG entry matches platform CHANGELOG entry word-for-word
+   - **Files**: `CHANGELOG.md` (root) → `platforms/vscode-extension/CHANGELOG.md`
+   - **Automation**: `publish.ps1` validates version consistency  
+   - **Manual fix**: Copy latest version entry from root to platform, preserve chronological order
+
+2. **Version Badge Consistency**
+   - **Check**: README version badge matches `package.json` version
+   - **Files**: `README.md` badge URL, `platforms/vscode-extension/README.md` badge URL
+   - **Pattern**: `https://img.shields.io/badge/version-X.Y.Z-0078d4`
+   - **Manual fix**: Update badge URL to match current version
+
+**Verification Commands**:
+```powershell
+# Check CHANGELOG sync
+$rootVersion = Select-String -Path CHANGELOG.md -Pattern '\[(\d+\.\d+\.\d+)\]' | Select-Object -First 1
+$extVersion = Select-String -Path platforms/vscode-extension/CHANGELOG.md -Pattern '\[(\d+\.\d+\.\d+)\]' | Select-Object -First 1
+if ($rootVersion -ne $extVersion) { Write-Warning "CHANGELOG mismatch!" }
+
+# Check README badge
+$pkgVersion = (Get-Content platforms/vscode-extension/package.json | ConvertFrom-Json).version
+$badgeVersion = (Select-String -Path platforms/vscode-extension/README.md -Pattern 'version-(\d+\.\d+\.\d+)').Matches.Groups[1].Value
+if ($badgeVersion -ne $pkgVersion) { Write-Warning "README badge outdated: $badgeVersion (should be $pkgVersion)" }
+```
+
+**Impact**: Prevents publishing with incomplete release notes or misleading version indicators that confuse users.
+
+### Forward-Pull Pattern (Learned 2026-02-07)
+
+**When planning a future release, check if any items can ship immediately as a patch.**
+
+**Criteria for forward-pull candidates:**
+- Pure metadata changes (package.json contribution points only)
+- Zero code changes — no TypeScript modifications
+- Additive — doesn't change existing behavior, only enhances
+- Zero risk — worst case is a no-op, never a regression
+
+**v5.0.1 precedent:** Pulled 4 of 31 items from v5.1.0 plan:
+- A1: Declare undeclared tools in `package.json` (already registered in code)
+- A2: Add `tags` to all tools (new property, ignored if unsupported)
+- A6: Add `sampleRequest` to slash commands (placeholder text only)
+- A7: Add disambiguation examples (more routing examples)
+
+**Process:**
+1. Review roadmap for metadata-only items
+2. Implement in current version
+3. Run full preflight + build pipeline
+4. Publish as patch
+5. Mark items completed in both roadmap AND source documents
 
 ### Phase 2: Version Bump
 
@@ -153,9 +370,26 @@ code --install-extension alex-cognitive-architecture-<version>.vsix
 
 ### Phase 5: Publish
 
+**⚠️ VSCE requires an Azure DevOps PAT, NOT a GitHub PAT!**
+
 ```powershell
-vsce publish       # Publish to marketplace
+# RECOMMENDED: Use PAT directly (single command, no login needed)
+npx vsce publish --no-dependencies --pat <AZURE_DEVOPS_PAT>
 ```
+
+**Important:**
+- Do NOT use `vsce login` — PATs are single-use and login prompts interactively
+- Always use `--pat` flag directly with the publish command
+- Use `--no-dependencies` to skip npm dependency installation (faster)
+
+**Creating Azure DevOps PAT:**
+1. Go to [dev.azure.com](https://dev.azure.com)
+2. Click profile → Personal access tokens
+3. Create token with:
+   - Organization: `All accessible organizations`
+   - Scopes: **Marketplace** → **Manage**
+
+**Common Error:** `401 Unauthorized` = Wrong PAT type (GitHub vs Azure DevOps) or expired PAT
 
 ### Phase 6: Post-Release
 
@@ -455,6 +689,141 @@ Before approving a PR:
 - [ ] Documentation updated if needed
 - [ ] Version bump appropriate for changes
 - [ ] CHANGELOG entry present
+
+---
+
+## Multi-Platform Release Coordination
+
+**Applies to**: Projects with multiple deployment targets (VS Code extension + M365 Copilot agent, etc.)
+
+### Version Synchronization Protocol
+
+When shipping a release across multiple platforms, version numbers MUST be aligned:
+
+| Platform | Version File | Location |
+|----------|--------------|----------|
+| VS Code Extension | `package.json` | `platforms/vscode-extension/package.json` |
+| M365 Copilot Agent | `package.json` | `platforms/m365-copilot/package.json` |
+| M365 App Manifest | `manifest.json` | `platforms/m365-copilot/appPackage/manifest.json` |
+| Root Project | CHANGELOG.md | `CHANGELOG.md` (root) |
+| Extension | CHANGELOG.md | `platforms/vscode-extension/CHANGELOG.md` |
+
+**Synchronization Order:**
+1. Update VS Code extension version first (source of truth)
+2. Update M365 versions to match
+3. Update root CHANGELOG with release notes
+4. Extension CHANGELOG auto-syncs during `vsce package` (architecture sync)
+
+### Multi-Platform Publishing Workflow
+
+**Step 1: VS Code Extension (Primary Platform)**
+```powershell
+cd platforms/vscode-extension
+npm run compile           # Verify build clean
+npx @vscode/vsce package  # Creates .vsix + runs architecture sync
+npx @vscode/vsce publish  # Publishes to marketplace
+```
+
+**Checkpoint**: Architecture sync runs during `vsce package`, updating heir `.github/` from master.
+
+**Step 2: M365 Copilot Agent (Secondary Platform)**
+```powershell
+cd platforms/m365-copilot
+npm run package          # Creates appPackage.local.zip
+npm run validate         # Optional - validates manifest (requires auth)
+```
+
+**Checkpoint**: Package ready for Teams Developer Portal upload or direct Teams sideload.
+
+**Step 3: Git Tagging** (After both platforms packaged)
+```powershell
+cd ../..                 # Return to root
+git tag vX.Y.Z -a -m "vX.Y.Z - Release Title"
+git push origin vX.Y.Z
+```
+
+### Heir Architecture Sync Verification
+
+During VS Code packaging, the `sync-architecture.js` script runs automatically:
+
+**Expected Output:**
+```
+✅ Copied: 110 skills
+⏭️  Skipped (master-only): 4
+⏭️  Skipped (heir:m365): 2
+✅ Skill sync verified!
+```
+
+**What to check:**
+- Skill count matches expectations (master - master-only = heir)
+- No contamination detected (heir has no master-only content)
+- Synapse cleaning removed broken references
+
+**If sync fails:** Do NOT proceed with publish. Fix sync issues first.
+
+### Version Alignment Checklist
+
+Before creating git tag, verify alignment:
+
+```powershell
+# VS Code extension
+$vsCodeVersion = (Get-Content platforms/vscode-extension/package.json | ConvertFrom-Json).version
+
+# M365 agent
+$m365PkgVersion = (Get-Content platforms/m365-copilot/package.json | ConvertFrom-Json).version
+$m365ManifestVersion = (Get-Content platforms/m365-copilot/appPackage/manifest.json | ConvertFrom-Json).version
+
+# CHANGELOGs
+$rootChangelogVersion = (Select-String -Path CHANGELOG.md -Pattern '\[(\d+\.\d+\.\d+)\]' | Select-Object -First 1).Matches.Groups[1].Value
+$extensionChangelogVersion = (Select-String -Path platforms/vscode-extension/CHANGELOG.md -Pattern '\[(\d+\.\d+\.\d+)\]' | Select-Object -First 1).Matches.Groups[1].Value
+
+Write-Host "VS Code: $vsCodeVersion"
+Write-Host "M365 Package: $m365PkgVersion"
+Write-Host "M365 Manifest: $m365ManifestVersion"
+Write-Host "Root CHANGELOG: $rootChangelogVersion"
+Write-Host "Extension CHANGELOG: $extensionChangelogVersion"
+
+if ($vsCodeVersion -eq $m365PkgVersion -and $vsCodeVersion -eq $m365ManifestVersion -and $vsCodeVersion -eq $rootChangelogVersion) {
+    Write-Host "✅ All versions aligned: $vsCodeVersion" -ForegroundColor Green
+} else {
+    Write-Host "❌ Version mismatch detected!" -ForegroundColor Red
+}
+```
+
+### Platform-Specific Deployment Notes
+
+**VS Code Marketplace:**
+- Published via `vsce publish` (requires PAT token)
+- Propagates in 2-5 minutes
+- Visible at: `https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.alex-cognitive-architecture`
+
+**M365 Copilot Agent:**
+- Manual upload to Teams Developer Portal: https://dev.teams.microsoft.com/apps
+- OR direct Teams sideload: Teams → Apps → Upload custom app
+- Package file: `appPackage/build/appPackage.local.zip`
+
+**GitHub Release:**
+- Create after both platforms published
+- Attach both artifacts:
+  - `alex-cognitive-architecture-X.Y.Z.vsix` (VS Code)
+  - `appPackage.local.zip` (M365)
+- Use CHANGELOG excerpt for release notes
+
+### Multi-Platform Release Anti-Patterns
+
+❌ **Do NOT**:
+- Publish VS Code before updating M365 versions
+- Skip architecture sync verification (heir must match master)
+- Create git tag before both platforms packaged
+- Forget to update root CHANGELOG (only extension CHANGELOG)
+- Publish M365 with different version than VS Code
+
+✅ **Always**:
+- Update ALL version files before publishing any platform
+- Verify architecture sync completed successfully
+- Package both platforms **before** creating git tag
+- Test extension CHANGELOG synced to heir during packaging
+- Maintain single source of truth (VS Code version → M365)
 
 ---
 
