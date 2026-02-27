@@ -1,3 +1,8 @@
+---
+description: "Technical debt identification, tracking, and payoff protocols"
+applyTo: "**/*TODO*,**/*FIXME*,**/*debt*"
+---
+
 # Technical Debt Tracking Procedural Memory
 
 **Classification**: Procedural Memory | Code Quality  
@@ -8,8 +13,8 @@
 
 ## Synapses
 
-- [release-management.instructions.md] → (Medium, Coordinates, Forward) - "Debt review before major releases"
-- [deep-thinking.instructions.md] → (Medium, Supports, Forward) - "Debt analysis requires systematic thinking"
+- [.github/instructions/release-management.instructions.md] → (Medium, Coordinates, Forward) - "Debt review before major releases"
+- [.github/instructions/deep-thinking.instructions.md] → (Medium, Supports, Forward) - "Debt analysis requires systematic thinking"
 - [CHANGELOG.md] → (Low, Documents, Forward) - "Debt payoff should be documented"
 
 ---
@@ -35,6 +40,24 @@
 | **Doc Debt** | `// DEBT:doc` | Outdated docs, missing comments |
 | **Dependency Debt** | `// DEBT:dep` | Outdated packages, deprecated APIs |
 | **Infrastructure Debt** | `// DEBT:infra` | Build issues, deployment friction |
+| **Cognitive Debt** | `// DEBT:cognitive` | Broken synapses, orphan skills, drift |
+
+### Cognitive Debt (Alex-Specific)
+
+> *"Cognitive debt is the gap between the architecture I aspire to and the architecture I actually have."*
+
+Cognitive debt applies to Alex's cognitive architecture — the accumulated decay in synapses, skills, and cross-platform sync.
+
+| Cognitive Debt Type | Example | Payoff Mechanism |
+|---------------------|---------|------------------|
+| Broken synapses | Pointing to `architecture` instead of `architecture-audit` | `brain-qa` Phase 1 |
+| Aspirational references | Connecting to skills never created | Remove or create the skill |
+| Heir divergence | Master-Heir synapses out of sync | `brain-qa` Phase 4-6 |
+| Unindexed skills | Skills exist but not in skill-activation | `brain-qa` Phase 2 |
+| Semantic overlap | Multiple triggers for same concept | `brain-qa` Phase 3 |
+
+**Detection**: Run `brain-qa` skill or `Alex: Dream` command
+**Prevention**: Brain QA is now Step 0 in release-preflight checklist
 
 ---
 
@@ -44,7 +67,7 @@
 
 ```typescript
 // DEBT:code:high - Duplicated validation logic, should extract to shared util
-// Added: 2026-01-23 | Owner: @fabioc | Issue: #123
+// Added: 2026-01-23 | Owner: @yourname | Issue: #123
 function validateInput(input: string) {
   // ...duplicated code...
 }
@@ -90,7 +113,7 @@ grep -rn "DEBT:" --include="*.ts" --include="*.js" --include="*.md" .
 
 | ID | Type | Severity | Description | File | Line | Added | Owner | Est. |
 |----|------|----------|-------------|------|------|-------|-------|------|
-| D001 | code | high | Duplicated validation | validator.ts | 45 | 2026-01-23 | @fabioc | 2h |
+| D001 | code | high | Duplicated validation | validator.ts | 45 | 2026-01-23 | @dev | 2h |
 | D002 | design | medium | SRP violation | handler.ts | 12 | 2026-01-15 | - | 4h |
 
 ### Step 3: Prioritize

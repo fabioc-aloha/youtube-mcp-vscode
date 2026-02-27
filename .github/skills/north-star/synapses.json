@@ -1,0 +1,96 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "north-star",
+  "version": "1.1.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "target": ".github/skills/research-first-development/SKILL.md",
+      "strength": 0.9,
+      "type": "SHAPES",
+      "when": "North Star defines what's worth researching before building",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/code-review/SKILL.md",
+      "strength": 0.8,
+      "type": "GUIDES",
+      "when": "Code reviews should verify North Star alignment",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/self-actualization/SKILL.md",
+      "strength": 0.85,
+      "type": "INFORMS",
+      "when": "Self-assessment includes North Star adherence review",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/architecture-health/SKILL.md",
+      "strength": 0.75,
+      "type": "COMPLEMENTS",
+      "when": "Architecture health includes vision alignment metrics",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/release-process/SKILL.md",
+      "strength": 0.7,
+      "type": "GUIDES",
+      "when": "Release decisions filtered through North Star commitment",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/scope-management/SKILL.md",
+      "strength": 0.85,
+      "type": "ENABLES",
+      "when": "North Star provides the filter for scope decisions",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/testing-strategies/SKILL.md",
+      "strength": 0.7,
+      "type": "SHAPES",
+      "when": "NASA-quality North Star demands comprehensive testing",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/documentation-quality-assurance/SKILL.md",
+      "strength": 0.65,
+      "type": "COMPLEMENTS",
+      "when": "North Star should be documented and referenced",
+      "yields": "See target skill"
+    }
+  ],
+  "activationContexts": [
+    "north star",
+    "project vision",
+    "mission statement",
+    "what are we building",
+    "project purpose",
+    "ambitious goal",
+    "quality standards",
+    "nasa quality",
+    "guiding vision",
+    "project alignment"
+  ],
+  "notes": "Ambitious project vision definition and alignment",
+  "yields": [
+    ".github/skills/research-first-development/SKILL.md",
+    ".github/skills/architecture-health/SKILL.md",
+    ".github/skills/scope-management/SKILL.md"
+  ],
+  "when": {
+    "projectInit": "Always define North Star during project initialization",
+    "visionDiscussion": "Reference when discussing project purpose or direction",
+    "scopeDecision": "Use North Star as filter for feature prioritization",
+    "qualityDebate": "Invoke NASA-quality template when quality standards discussed"
+  },
+  "metadata": {
+    "created": "2026-02-26",
+    "author": "Alex Finch",
+    "category": "project-management",
+    "maturity": "stable"
+  },
+  "schemaVersion": "2.0.0"
+}

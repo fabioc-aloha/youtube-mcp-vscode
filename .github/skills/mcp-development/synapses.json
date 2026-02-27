@@ -1,0 +1,119 @@
+{
+  "$schema": "../SYNAPSE-SCHEMA.json",
+  "skillId": "mcp-development",
+  "version": "1.2.0",
+  "lastUpdated": "2026-02-27",
+  "inheritance": "inheritable",
+  "connections": [
+    {
+      "target": ".github/skills/ai-agent-design/SKILL.md",
+      "strength": 0.9,
+      "type": "ENABLES",
+      "when": "MCP provides standardized tool interface for AI agents",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/api-design/SKILL.md",
+      "strength": 0.9,
+      "type": "REQUIRES",
+      "when": "MCP tools are essentially APIs for AI consumption",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/vscode-extension-patterns/SKILL.md",
+      "strength": 0.9,
+      "type": "COMPLEMENTS",
+      "when": "VS Code integrates MCP servers for Copilot",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/security-review/SKILL.md",
+      "strength": 0.7,
+      "type": "REQUIRES",
+      "when": "MCP servers need security hardening",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/testing-strategies/SKILL.md",
+      "strength": 0.7,
+      "type": "COMPLEMENTS",
+      "when": "MCP servers need unit and integration testing",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/error-recovery-patterns/SKILL.md",
+      "strength": 0.7,
+      "type": "COMPLEMENTS",
+      "when": "MCP tools need graceful error handling",
+      "yields": "See target skill"
+    },
+    {
+      "target": ".github/skills/prompt-engineering/SKILL.md",
+      "strength": 0.3,
+      "type": "INFORMS",
+      "when": "Tool descriptions are prompts for AI understanding",
+      "yields": "See target skill"
+    }
+  ],
+  "activationContexts": [
+    "MCP",
+    "Model Context Protocol",
+    "MCP server",
+    "MCP client",
+    "tool server",
+    "resource server",
+    "Claude Desktop",
+    "mcp.json",
+    "@modelcontextprotocol",
+    "stdio transport"
+  ],
+  "activationBoost": [
+    "MCP",
+    "Model Context Protocol",
+    "MCP server",
+    "MCP client",
+    "tool server",
+    "resource server",
+    "Claude Desktop",
+    "mcp.json",
+    "@modelcontextprotocol",
+    "stdio transport",
+    "create MCP",
+    "build MCP",
+    "implement MCP",
+    "develop MCP",
+    "MCP tool",
+    "MCP resource",
+    "MCP prompt",
+    "MCP sampling",
+    "AI tool interface",
+    "tool protocol",
+    "agent tools",
+    "copilot tools",
+    "VS Code MCP",
+    "MCP integration",
+    "Azure MCP",
+    "MCP Azure",
+    "MCP best practices",
+    "MCP architecture",
+    "MCP patterns",
+    "MCP stdio",
+    "MCP HTTP",
+    "MCP SSE",
+    "server-sent events",
+    "tool exposure",
+    "expose tools",
+    "AI-callable tools",
+    "JSON-RPC",
+    "tool schema",
+    "tool definition"
+  ],
+  "metadata": {
+    "category": "ai-infrastructure",
+    "complexity": "intermediate",
+    "prerequisites": [
+      "api-design"
+    ]
+  },
+  "schemaVersion": "2.0.0"
+}

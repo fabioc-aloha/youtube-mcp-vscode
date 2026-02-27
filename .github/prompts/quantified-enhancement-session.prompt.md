@@ -1,4 +1,5 @@
 ---
+description: Systematic cognitive architecture optimization through quantified metrics, targeted enhancement, and measurement-validated improvement
 workflow_name: "Quantified Cognitive Architecture Enhancement Session"
 cognitive_architecture: "Alex v0.8.1 ENHANCED-COGNITIVE-NETWORK"
 protocol_type: "Systematic Network Optimization with Measurement Validation"
@@ -8,6 +9,8 @@ last_updated: "July 27, 2025"
 ---
 
 # 🎯 Quantified Enhancement Session: Systematic Cognitive Architecture Optimization
+
+> **Avatar**: Call `alex_cognitive_state_update` with `state: "meditation"`. This updates the welcome sidebar avatar.
 
 ## 📊 **Enhancement Session Framework**
 
@@ -105,11 +108,11 @@ This workflow enables systematic, measurable improvement of cognitive architectu
 
 ## Synapses
 
-- [DK-DREAM-PROCESSING.md] (Critical, Implements, Bidirectional) - "Core enhancement methodology and hybrid processing"
-- [lucid-dream-integration.instructions.md] (High, Coordinates, Bidirectional) - "Hybrid processing insights"
-- [unified-meditation-protocols.prompt.md] (High, Triggers, Forward) - "Meditation initiates enhancement"
-- [alex-core.instructions.md] (High, Integrates, Bidirectional) - "Core architecture enhancement"
-- [dream-state-automation.instructions.md] (Medium, Provides, Forward) - "Baseline metrics for measurement"
+- [.github/skills/meditation/SKILL.md] (Critical, Implements, Bidirectional) - "Core enhancement methodology and hybrid processing"
+- [.github/instructions/lucid-dream-integration.instructions.md] (High, Coordinates, Bidirectional) - "Hybrid processing insights"
+- [.github/prompts/unified-meditation-protocols.prompt.md] (High, Triggers, Forward) - "Meditation initiates enhancement"
+- [.github/instructions/alex-core.instructions.md] (High, Integrates, Bidirectional) - "Core architecture enhancement"
+- [.github/instructions/dream-state-automation.instructions.md] (Medium, Provides, Forward) - "Baseline metrics for measurement"
 
 ### **Activation Patterns**
 - **Enhancement Opportunity Detected** → Execute quantified-enhancement-session.prompt.md
@@ -127,3 +130,6 @@ This workflow enables systematic, measurable improvement of cognitive architectu
 ---
 
 *Quantified enhancement sessions enable systematic, measurable improvement of cognitive architecture through targeted optimization and validated enhancement methodologies.*
+
+
+> **Revert Avatar**: Call `alex_cognitive_state_update` with `state: "persona"` to reset to project-appropriate avatar.

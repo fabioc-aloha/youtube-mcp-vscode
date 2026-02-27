@@ -1,0 +1,17 @@
+{
+  "hotFiles": [],
+  "stalledFiles": [
+    "env",
+    "CHANGELOG.md",
+    "README.md",
+    "eslint.config.mjs",
+    "media/banner.png",
+    "media/banner.svg",
+    "package-lock.json",
+    "package.json",
+    "src/extension.ts",
+    "src/mcpClient.ts"
+  ],
+  "todoHotspots": [],
+  "lastUpdated": 1772209861984
+}

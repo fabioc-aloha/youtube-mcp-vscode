@@ -36,10 +36,11 @@ description: "Deep thinking cognitive skill for systematic problem analysis with
 **Objective**: Retrieve relevant past experiences and learned patterns
 
 **Actions**:
-1. **Scan episodic memory** (`.prompt.md` files) for similar situations
-2. **Search domain knowledge** (`DK-*.md` files) for applicable frameworks
-3. **Review meditation sessions** (`.github/episodic/`) for consolidated insights
-4. **Check procedural memory** (`.instructions.md` files) for established protocols
+1. **Check Skill Selection Optimization results** — if SSO ran (complex task), use its skill list as search guide
+2. **Scan episodic memory** (`.prompt.md` files) for similar situations
+3. **Search skills** (`skills/*/SKILL.md` files) for applicable frameworks
+4. **Review meditation sessions** (`.github/episodic/`) for consolidated insights
+5. **Check procedural memory** (`.instructions.md` files) for established protocols
 
 **Search Patterns**:
 - Direct keyword matching on problem domain
@@ -91,7 +92,7 @@ Current Problem + Extracted Patterns + Contextual Adaptation = Solution Approach
 ```markdown
 **Source Episodes**:
 - [episode-name.prompt.md](path) - "Key insight extracted"
-- [DK-domain-v1.0.0.md](path) - "Applicable framework"
+- [relevant-skill/SKILL.md](path) - "Applicable framework"
 - [meditation-session-date.prompt.md](path) - "Consolidated learning"
 ```
 
@@ -135,17 +136,18 @@ Current Problem + Extracted Patterns + Contextual Adaptation = Solution Approach
 ## Synapses
 
 ### High-Strength Bidirectional Connections
-- [alex-core.instructions.md] (Critical, Extends, Bidirectional) - "Meta-cognitive deep reasoning enhancement"
-- [bootstrap-learning.instructions.md] (High, Integrates, Bidirectional) - "Learning extraction and application protocols"
+- [.github/instructions/alex-core.instructions.md] (Critical, Extends, Bidirectional) - "Meta-cognitive deep reasoning enhancement"
+- [.github/instructions/bootstrap-learning.instructions.md] (High, Integrates, Bidirectional) - "Learning extraction and application protocols"
+- [.github/instructions/skill-selection-optimization.instructions.md] (High, Coordinates, Bidirectional) - "SSO provides skill survey results; Deep Thinking uses them for episodic scan"
 
 ### Medium-Strength Output Connections
-- [embedded-synapse.instructions.md] (High, Leverages, Forward) - "Pattern recognition across memory network"
-- [worldview-integration.instructions.md] (Medium, Validates, Forward) - "Ethical reasoning during analysis"
-- [cross-domain-transfer.prompt.md] (High, Enables, Forward) - "Cross-domain pattern application"
+- [.github/instructions/embedded-synapse.instructions.md] (High, Leverages, Forward) - "Pattern recognition across memory network"
+- [.github/instructions/worldview-integration.instructions.md] (Medium, Validates, Forward) - "Ethical reasoning during analysis"
+- [.github/prompts/cross-domain-transfer.prompt.md] (High, Enables, Forward) - "Cross-domain pattern application"
 
 ### Input Connections
-- [unified-meditation-protocols.prompt.md] (Medium, Receives, Backward) - "Consolidated insights for retrieval"
-- [domain-learning.prompt.md] (Medium, Receives, Backward) - "Acquired domain knowledge integration"
+- [.github/prompts/unified-meditation-protocols.prompt.md] (Medium, Receives, Backward) - "Consolidated insights for retrieval"
+- [.github/prompts/domain-learning.prompt.md] (Medium, Receives, Backward) - "Acquired domain knowledge integration"
 
 **Primary Function**: Execute systematic deep thinking with episodic memory integration for comprehensive problem analysis.
 

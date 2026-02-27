@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { YouTubeMcpClient } from './mcpClient';
+import { YouTubeMcpClient, VideoAnalysis } from './mcpClient';
 import { SearchResultsProvider } from './views/searchResults';
 import { RecentVideosProvider } from './views/recentVideos';
 import { FlashcardsProvider } from './views/flashcards';
@@ -12,12 +12,13 @@ let recentVideosProvider: RecentVideosProvider;
 let flashcardsProvider: FlashcardsProvider;
 let outputChannel: vscode.OutputChannel;
 
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
     outputChannel = vscode.window.createOutputChannel('YouTube MCP Tools');
     outputChannel.appendLine('YouTube MCP Tools extension activating...');
 
     // Initialize MCP client
     mcpClient = new YouTubeMcpClient(outputChannel);
+    mcpClient.initializeStorage(context);
     
     // Initialize status bar
     statusBar = new StatusBarManager();
@@ -43,20 +44,23 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('youtubeMcp.generateFlashcards', generateFlashcardsCommand),
         vscode.commands.registerCommand('youtubeMcp.showQuotaStatus', showQuotaStatusCommand),
         vscode.commands.registerCommand('youtubeMcp.openSettings', openSettingsCommand),
-        vscode.commands.registerCommand('youtubeMcp.refreshHistory', refreshHistoryCommand)
+        vscode.commands.registerCommand('youtubeMcp.refreshHistory', refreshHistoryCommand),
+        vscode.commands.registerCommand('youtubeMcp.setApiKey', setApiKeyCommand)
     );
 
     // Check API key on startup
-    const config = vscode.workspace.getConfiguration('youtubeMcp');
-    const apiKey = config.get<string>('apiKey');
-    if (!apiKey) {
+    const hasApiKey = await mcpClient.hasApiKey();
+    if (!hasApiKey) {
         statusBar.setStatus('warning', 'API Key not configured');
         const action = await vscode.window.showWarningMessage(
             'YouTube API key not configured. Some features will be unavailable.',
-            'Configure Now'
+            'Set API Key',
+            'Learn More'
         );
-        if (action === 'Configure Now') {
-            vscode.commands.executeCommand('youtubeMcp.openSettings');
+        if (action === 'Set API Key') {
+            vscode.commands.executeCommand('youtubeMcp.setApiKey');
+        } else if (action === 'Learn More') {
+            vscode.env.openExternal(vscode.Uri.parse('https://console.cloud.google.com/apis/credentials'));
         }
     } else {
         statusBar.setStatus('ready', 'Ready');
@@ -65,7 +69,7 @@ export async function activate(context: vscode.ExtensionContext) {
     outputChannel.appendLine('YouTube MCP Tools extension activated!');
 }
 
-async function searchCommand() {
+async function searchCommand(): Promise<void> {
     const query = await vscode.window.showInputBox({
         prompt: 'Search YouTube',
         placeHolder: 'Enter search query...'
@@ -93,7 +97,7 @@ async function searchCommand() {
     }
 }
 
-async function analyzeVideoCommand(videoId?: string) {
+async function analyzeVideoCommand(videoId?: string): Promise<void> {
     if (!videoId) {
         videoId = await vscode.window.showInputBox({
             prompt: 'Enter YouTube Video ID or URL',
@@ -135,7 +139,7 @@ async function analyzeVideoCommand(videoId?: string) {
     }
 }
 
-async function getTranscriptCommand(videoId?: string) {
+async function getTranscriptCommand(videoId?: string): Promise<void> {
     if (!videoId) {
         videoId = await vscode.window.showInputBox({
             prompt: 'Enter YouTube Video ID or URL',
@@ -165,7 +169,7 @@ async function getTranscriptCommand(videoId?: string) {
     }
 }
 
-async function generateFlashcardsCommand(videoId?: string) {
+async function generateFlashcardsCommand(videoId?: string): Promise<void> {
     if (!videoId) {
         videoId = await vscode.window.showInputBox({
             prompt: 'Enter YouTube Video ID or URL',
@@ -192,22 +196,70 @@ async function generateFlashcardsCommand(videoId?: string) {
     }
 }
 
-async function showQuotaStatusCommand() {
+async function showQuotaStatusCommand(): Promise<void> {
     try {
         const quota = await mcpClient.getQuotaStatus();
         const message = `YouTube API Quota\n\nUsed: ${quota.used} / ${quota.limit}\nRemaining: ${quota.remaining}\nResets: ${quota.resetsAt}`;
         vscode.window.showInformationMessage(message, { modal: true });
-    } catch (error) {
+    } catch {
         vscode.window.showErrorMessage('Failed to get quota status');
     }
 }
 
-function openSettingsCommand() {
+function openSettingsCommand(): void {
     vscode.commands.executeCommand('workbench.action.openSettings', 'youtubeMcp');
 }
 
-function refreshHistoryCommand() {
+function refreshHistoryCommand(): void {
     recentVideosProvider.refresh();
+}
+
+async function setApiKeyCommand(): Promise<void> {
+    const apiKey = await vscode.window.showInputBox({
+        prompt: 'Enter your YouTube Data API v3 key',
+        placeHolder: 'AIza...',
+        password: true, // Hide the input
+        ignoreFocusOut: true,
+        validateInput: (value) => {
+            if (!value || value.trim().length === 0) {
+                return 'API key cannot be empty';
+            }
+            if (!value.startsWith('AIza') && value.length < 30) {
+                return 'This doesn\'t look like a valid YouTube API key';
+            }
+            return null;
+        }
+    });
+
+    if (!apiKey) { return; }
+
+    statusBar.setStatus('loading', 'Validating API key...');
+
+    try {
+        // Validate the API key
+        const validation = await mcpClient.validateApiKey(apiKey.trim());
+
+        if (!validation.valid) {
+            statusBar.setStatus('error', 'Invalid API key');
+            vscode.window.showErrorMessage(`API key validation failed: ${validation.error}`);
+            return;
+        }
+
+        // Store securely
+        await mcpClient.setApiKey(apiKey.trim());
+        statusBar.setStatus('ready', 'API key saved');
+        
+        if (validation.error) {
+            // Valid but with warning (e.g., quota exceeded)
+            vscode.window.showWarningMessage(`API key saved. Note: ${validation.error}`);
+        } else {
+            vscode.window.showInformationMessage('YouTube API key saved securely!');
+        }
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to save API key';
+        statusBar.setStatus('error', message);
+        vscode.window.showErrorMessage(message);
+    }
 }
 
 function extractVideoId(input: string): string {
@@ -225,9 +277,9 @@ function extractVideoId(input: string): string {
     return input;
 }
 
-function formatAnalysis(analysis: any): string {
-    const formatNumber = (n: number | undefined) => n ? n.toLocaleString() : 'N/A';
-    const formatDuration = (d: string | undefined) => {
+function formatAnalysis(analysis: VideoAnalysis): string {
+    const formatNumber = (n: number | undefined): string => n ? n.toLocaleString() : 'N/A';
+    const formatDuration = (d: string | undefined): string => {
         if (!d) { return 'N/A'; }
         // Parse ISO 8601 duration (PT1H2M3S)
         const match = d.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
@@ -262,11 +314,12 @@ ${(analysis.summary?.topics || []).map((t: string) => `\`${t}\``).join(' • ') 
 `;
 
     // Add concepts if available
-    if (analysis.concepts?.concepts?.length > 0) {
+    const concepts = analysis.concepts;
+    if (concepts?.concepts && concepts.concepts.length > 0) {
         md += `\n## Key Concepts\n`;
-        md += `**Difficulty:** ${analysis.concepts.difficulty || 'Unknown'}\n\n`;
+        md += `**Difficulty:** ${concepts.difficulty || 'Unknown'}\n\n`;
         
-        for (const concept of analysis.concepts.concepts.slice(0, 10)) {
+        for (const concept of concepts.concepts.slice(0, 10)) {
             md += `### ${concept.name}\n`;
             if (concept.definition) {
                 md += `${concept.definition}\n`;
@@ -274,8 +327,8 @@ ${(analysis.summary?.topics || []).map((t: string) => `\`${t}\``).join(' • ') 
             md += `*Type: ${concept.type} | Mentions: ${concept.mentions}*\n\n`;
         }
         
-        if (analysis.concepts.prerequisites?.length > 0) {
-            md += `**Prerequisites:** ${analysis.concepts.prerequisites.join(', ')}\n`;
+        if (concepts.prerequisites && concepts.prerequisites.length > 0) {
+            md += `**Prerequisites:** ${concepts.prerequisites.join(', ')}\n`;
         }
     }
 
@@ -293,6 +346,6 @@ ${(analysis.summary?.topics || []).map((t: string) => `\`${t}\``).join(' • ') 
     return md;
 }
 
-export function deactivate() {
+export function deactivate(): void {
     outputChannel?.dispose();
 }

@@ -1,3 +1,8 @@
+---
+description: "Code review quality gate protocols and feedback guidelines"
+applyTo: "**/*.{ts,js,tsx,jsx,py,ps1,cs,java,go,rs,rb}"
+---
+
 # Code Review Guidelines Procedural Memory
 
 **Classification**: Procedural Memory | Quality Assurance  
@@ -8,9 +13,10 @@
 
 ## Synapses
 
-- [release-management.instructions.md] → (High, Gates, Forward) - "Reviews gate releases"
-- [technical-debt-tracking.instructions.md] → (Medium, Detects, Forward) - "Reviews catch new debt"
-- [architecture-decision-records.instructions.md] → (Medium, Triggers, Forward) - "Significant changes may need ADR"
+- [.github/instructions/release-management.instructions.md] → (High, Gates, Forward) - "Reviews gate releases"
+- [.github/instructions/technical-debt-tracking.instructions.md] → (Medium, Detects, Forward) - "Reviews catch new debt"
+- [.github/instructions/architecture-decision-records.instructions.md] → (Medium, Triggers, Forward) - "Significant changes may need ADR"
+- [.github/instructions/adversarial-oversight.instructions.md] → (Critical, Implements, Bidirectional) - "Defines Validator agent integration for critical reviews"
 
 ---
 
@@ -252,6 +258,27 @@ Escalate to senior reviewer if:
 - PII handling
 - Payment processing
 - External API credentials
+
+### Reviewing Mission-Critical Code (NASA Standards)
+
+For safety-critical, mission-critical, or high-reliability projects, apply NASA/JPL Power of 10 rules during review:
+
+| Rule | Check For | Blocking? |
+|------|-----------|----------|
+| **R1** Bounded Recursion | Recursive functions without `maxDepth` | 🔴 Yes |
+| **R2** Fixed Loop Bounds | `while` loops without `MAX_ITERATIONS` counter | 🔴 Yes |
+| **R3** Bounded Collections | Arrays/maps without size limits | 🔴 Yes |
+| **R4** Function Size | Functions > 60 lines | 🟠 High |
+| **R5** Assertions | Critical paths without `assert()` calls | 🟠 High |
+| **R6** Minimal Scope | Variables declared far from use | 🟡 Medium |
+| **R7** Return Handling | Unchecked return values | 🟡 Medium |
+| **R8** Nesting Depth | > 4 levels of nesting | 🟠 High |
+| **R9** Defensive Access | `obj.prop.prop` without optional chaining | 🟡 Medium |
+| **R10** Strict Compilation | Compiler warnings present | 🟡 Medium |
+
+**Reference**: `.github/instructions/nasa-code-standards.instructions.md`
+
+**Detection**: User mentions "mission-critical", "safety-critical", "NASA standards", or "high reliability"
 
 ---
 

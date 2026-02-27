@@ -18,10 +18,20 @@ export default [{
             selector: "import",
             format: ["camelCase", "PascalCase"],
         }],
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/explicit-function-return-type": ["warn", {
+            allowExpressions: true,
+            allowTypedFunctionExpressions: true,
+        }],
+        "@typescript-eslint/no-unused-vars": ["warn", { 
+            argsIgnorePattern: "^_",
+            varsIgnorePattern: "^_"
+        }],
 
         curly: "warn",
         eqeqeq: "warn",
         "no-throw-literal": "warn",
         semi: "warn",
+        "no-console": "warn",
     },
 }];

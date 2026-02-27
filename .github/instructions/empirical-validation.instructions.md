@@ -79,10 +79,11 @@ description: "Research foundation and validation protocols"
 ## Synapses
 
 ### Core Architecture Integration
-- [alex-core.instructions.md] (High, Validates, Bidirectional) - "Core architecture requires research grounding"
-- [bootstrap-learning.instructions.md] (High, Strengthens, Bidirectional) - "Learning must be evidence-based"
-- [worldview-integration.instructions.md] (High, Enhances, Bidirectional) - "Ethical reasoning must be evidence-based"
+- [.github/instructions/alex-core.instructions.md] (High, Validates, Bidirectional) - "Core architecture requires research grounding"
+- [.github/instructions/bootstrap-learning.instructions.md] (High, Strengthens, Bidirectional) - "Learning must be evidence-based"
+- [.github/instructions/worldview-integration.instructions.md] (High, Enhances, Bidirectional) - "Ethical reasoning must be evidence-based"
+- [.github/instructions/azure-enterprise-deployment.instructions.md] (High, Implements, Bidirectional) - "Validation commands provide empirical evidence of deployment readiness"
 
 ### Worldview Foundation Validation
-- [worldview-constitutional-ai.instructions.md] (High, Validates, Input) - "Constitutional AI principles empirical foundation"
-- [worldview-moral-psychology.instructions.md] (High, Grounds, Input) - "Moral psychology research foundation - Haidt 2012"
+- [.github/instructions/worldview-constitutional-ai.instructions.md] (High, Validates, Input) - "Constitutional AI principles empirical foundation"
+- [.github/instructions/worldview-moral-psychology.instructions.md] (High, Grounds, Input) - "Moral psychology research foundation - Haidt 2012"

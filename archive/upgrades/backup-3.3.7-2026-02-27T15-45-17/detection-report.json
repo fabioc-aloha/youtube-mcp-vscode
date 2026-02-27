@@ -1,0 +1,10 @@
+{
+  "version": "transitional",
+  "dkLocations": [
+    ".github/domain-knowledge"
+  ],
+  "hasSkills": false,
+  "manifestLocation": ".github/config/alex-manifest.json",
+  "installedVersion": "3.3.7",
+  "backupCreatedAt": "2026-02-27T15:45:17.991Z"
+}

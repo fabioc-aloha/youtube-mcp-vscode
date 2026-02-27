@@ -20,3 +20,4 @@ vsc-extension-quickstart.md
 # Alex cognitive architecture files (dev only)
 .github/**
 config/**
+archive/**
