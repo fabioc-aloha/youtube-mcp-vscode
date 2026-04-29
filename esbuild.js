@@ -24,29 +24,38 @@ const esbuildProblemMatcherPlugin = {
 };
 
 async function main() {
-	const ctx = await esbuild.context({
-		entryPoints: [
-			'src/extension.ts'
-		],
+	const sharedOptions = {
 		bundle: true,
 		format: 'cjs',
 		minify: production,
 		sourcemap: !production,
 		sourcesContent: false,
 		platform: 'node',
+		logLevel: 'silent',
+		plugins: [esbuildProblemMatcherPlugin],
+	};
+
+	const extensionCtx = await esbuild.context({
+		...sharedOptions,
+		entryPoints: ['src/extension.ts'],
 		outfile: 'dist/extension.js',
 		external: ['vscode'],
-		logLevel: 'silent',
-		plugins: [
-			/* add to the end of plugins array */
-			esbuildProblemMatcherPlugin,
-		],
 	});
+
+	const mcpServerCtx = await esbuild.context({
+		...sharedOptions,
+		entryPoints: ['src/mcp-server/index.ts'],
+		outfile: 'dist/mcp-server.js',
+		// MCP server runs as a standalone Node process, no vscode runtime.
+		// Banner adds the shebang so it can be invoked directly via `bin`.
+		banner: { js: '#!/usr/bin/env node' },
+	});
+
 	if (watch) {
-		await ctx.watch();
+		await Promise.all([extensionCtx.watch(), mcpServerCtx.watch()]);
 	} else {
-		await ctx.rebuild();
-		await ctx.dispose();
+		await Promise.all([extensionCtx.rebuild(), mcpServerCtx.rebuild()]);
+		await Promise.all([extensionCtx.dispose(), mcpServerCtx.dispose()]);
 	}
 }
 

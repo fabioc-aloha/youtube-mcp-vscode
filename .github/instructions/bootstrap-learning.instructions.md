@@ -1,159 +1,113 @@
 ---
-description: "Domain-agnostic learning and knowledge acquisition protocols"
+type: instruction
+lifecycle: stable
+inheritance: inheritable
+description: "Domain-agnostic learning and rapid context acquisition — from zero to partnership fast"
+application: "When entering a new project, domain, or user relationship"
+applyTo: "**/*"
+currency: 2026-04-27
 ---
 
-# Bootstrap Learning Excellence
+# Bootstrap Learning
 
-## Conversational Knowledge Acquisition
+Rapid context acquisition protocol. Go from zero knowledge to effective partnership fast.
 
-**Learning Philosophy**: Every conversation is an opportunity for sophisticated knowledge acquisition and pattern recognition.
+## The Bootstrap Problem
 
-**Acquisition Strategies**:
-- **Active Engagement**: Ask clarifying questions to deepen understanding
-- **Pattern Recognition**: Identify underlying principles and frameworks
-- **Connection Discovery**: Map relationships to existing knowledge
-- **Application Synthesis**: Demonstrate understanding through practical application
+Learning a new domain/project is hard because you don't know what you don't know. This instruction provides systematic orientation.
 
-## **Dream Protocol Learning Integration**
+## First Session Protocol
 
-### **Automated Learning Consolidation**
-- **Post-Learning Validation**: Execute `dream --health-check` after domain learning sessions
-- **Knowledge Network Analysis**: Use `dream --full-scan -ReportOnly` to assess new domain integration
-- **Orphan Knowledge Detection**: Run `dream --prune-orphans` to identify unconnected learning elements
-- **Cross-Domain Connection Enhancement**: Apply `dream --network-optimization` for knowledge integration
+When entering a new project:
 
-### **Learning Effectiveness Monitoring**
-- **Synaptic Growth Tracking**: Monitor connection count increases through dream protocol reports
-- **Trigger Pattern Development**: Assess automation enhancement through dream status monitoring
-- **Knowledge Consolidation Validation**: Use dream reports to verify successful learning integration
+### 1. Orient (30 seconds)
 
-### **Embedded Synapse Integration**
-- [.github/instructions/dream-state-automation.instructions.md] (High, Validates, Bidirectional) - "Automated validation of knowledge integration through VS Code extension"
-- [.github/instructions/dream-state-automation.instructions.md] (Medium, Verifies, Forward) - "Systematic verification of domain learning success"
+| Check | What to scan |
+|-------|-------------|
+| README.md | Project purpose, setup, constraints |
+| package.json / pyproject.toml | Tech stack, dependencies, scripts |
+| Directory structure | Architecture pattern |
+| Recent commits | Active work areas |
 
-## **Domain Knowledge Acquisition Framework**
+### 2. Understand the Goal
 
-**Phase 1: Foundation Building**
-- Establish domain boundaries and core concepts
-- Identify key principles and fundamental frameworks
-- Map conceptual relationships and dependencies
-- Assess learning objectives and success criteria
+Ask yourself (or the user):
+- What is this project?
+- What problem does it solve?
+- Who uses it?
+- What's the current state?
 
-**Phase 2: Knowledge Integration**
-- Connect new concepts to existing knowledge patterns
-- Identify cross-domain applications and analogies
-- Strengthen understanding through practical examples
-- Validate comprehension through explanation and application
+### 3. Learn the User
 
-**Phase 3: Mastery Development**
-- Synthesize comprehensive domain understanding
-- Generate novel insights and creative applications
-- Teach concepts to demonstrate mastery
-- Transfer learning to related domains effectively
+| Signal | Inference |
+|--------|-----------|
+| Terse messages | Match brevity, skip preamble |
+| Detailed questions | Provide depth, explain reasoning |
+| Technical vocabulary | Use technical terms freely |
+| Plain language | Explain jargon when used |
+| "Just do X" | Action-oriented, minimize discussion |
+| "What do you think?" | Values collaboration, share perspective |
 
-## Skill Creation as Learning Output
+### 4. Engage
 
-**When learning matures into expertise, create skills:**
+Only after orientation: propose, build, help.
 
-### Skill Creation Triggers
+## Learning Methodology — 5 Phases
 
-| Signal | Action |
-|--------|--------|
-| Project shipped with reusable patterns | Create skill |
-| Same problem solved 3+ times | Extract patterns into skill |
-| Hard-won gotchas discovered | Document in skill Troubleshooting |
-| Cross-project applicability identified | Prepare for Master promotion |
+### Phase 1: Discovery — Map the territory
 
-### Learning → Skill Workflow
+- Boundary mapping: "What does X include and exclude?"
+- Vocabulary scan: "What are the 5 key terms?"
+- Adjacent domains: "What's related but different?"
 
-```
-1. LEARN through real work (Phase 1-3 above)
-2. VALIDATE through successful delivery
-3. EXTRACT reusable patterns from specific experience
-4. CREATE skill via skill-building skill
-5. CONNECT to existing skills via synapses
-6. REGISTER in skill-activation index
-7. PROMOTE to Master when ready (heir-skill-promotion)
-```
+**Exit criteria**: Can describe the domain in one sentence.
 
-### Quality Gate for Skill Creation
+### Phase 2: Foundation — Nail the core concepts
 
-Before creating, ask:
+- Ask for simplest explanation of each core concept
+- Demand concrete examples, not abstractions
+- Test by explaining back in own words
+- **Red flag**: If explanation uses domain jargon, haven't bottomed out
 
-| Question | Required Answer |
-|----------|-----------------|
-| Have I used this 3+ times? | Yes |
-| Did I discover gotchas? | Yes |
-| Is it generalizable? | Yes |
-| Does it already exist? | No (or merge-worthy) |
+**Exit criteria**: Can explain core concepts without jargon.
 
-**Anti-pattern**: Creating skills from theory before real-world validation.
+### Phase 3: Elaboration — Add depth through cases
 
-> *Skill after shipping: validated knowledge. Skill before shipping: speculation.*
+| Type | Purpose |
+|------|---------|
+| Happy path | How it works normally |
+| Edge cases | Where it breaks |
+| Anti-patterns | Common mistakes |
+| Trade-offs | When NOT to use it |
 
-### Heir Skillbuilder Protocol
+**Exit criteria**: Can identify when to use and when NOT to use.
 
-Heirs developing skills should:
+### Phase 4: Connection — Link to existing knowledge
 
-1. **Experiment freely** — Try approaches, make mistakes
-2. **Document gotchas as you go** — Don't trust memory
-3. **Wait for validation** — Ship before finalizing skill
-4. **Use the template** — Follow skill-building/SKILL.md
-5. **Connect to network** — Add 2-5 meaningful synapses
-6. **Request promotion** — When score ≥12, ready for Master
+- Map analogies: "This is like [X] because..."
+- Find contradictions: "This conflicts with [Y] — which is right?"
+- Identify synergies: "Combining with [Z] could improve..."
 
-**Synapse**: [.github/skills/skill-building/SKILL.md] (High, Implements, Forward) - "Skill creation methodology"
+**Exit criteria**: At least 2 connections to known concepts.
 
-## Meta-Learning Optimization
+### Phase 5: Consolidation — Remember what matters
 
-**Learning Effectiveness Assessment**:
-- Monitor comprehension speed and retention quality
-- Identify optimal learning strategies for different content types
-- Adjust questioning and engagement strategies based on effectiveness
-- Celebrate genuine learning breakthroughs and consolidate insights
+- Note key learnings in session memory
+- If persistent memory available, write durable notes
+- Flag gaps that remain
 
-**Selective Memory Management**:
-- Implement "Forget [something]" commands for concept evolution with MANDATORY SAFETY PROTOCOL
-- ⚠️ CRITICAL: Always request express user approval before any deletion operations
-- ⚠️ SCOPE: Can delete content, entire memory files, and embedded synapses permanently
-- ⚠️ PROTOCOL: Provide impact assessment and require explicit "Yes, delete [specific items]" confirmation
-- Systematically remove outdated references through documentation cleanup ONLY after approval
-- Preserve core architecture while enabling concept refinement through safe deletion practices
-- Demonstrate advanced memory management capabilities for cognitive growth with user protection
+## Gap Identification
 
-**Adaptive Strategy Selection**:
-- Technical domains: Focus on precision, methodology, empirical validation
-- Creative domains: Emphasize exploration, experimentation, artistic expression
-- Professional domains: Balance expertise with practical application
-- Personal domains: Honor individual values while providing thoughtful guidance
+| Signal | Type of Gap | Action |
+|--------|-------------|--------|
+| "I don't know the right question" | Vocabulary gap | Return to Phase 1 |
+| "I understand words but not concept" | Foundation gap | Return to Phase 2 |
+| "I understand but can't apply" | Elaboration gap | Return to Phase 3 |
+| "I know this but it feels isolated" | Connection gap | Phase 4 |
+| "I keep re-learning this" | Consolidation gap | Phase 5 |
 
-## Synapses
+## The Feynman Check
 
-### Core Learning Pathways
-- [.github/instructions/alex-core.instructions.md] (High, Enables, Bidirectional) - "Meta-cognitive monitoring during domain learning"
-- [.github/prompts/cross-domain-transfer.prompt.md] (High, Facilitates, Bidirectional) - "Pattern recognition across domains"
-- [.github/instructions/worldview-integration.instructions.md] (High, Validates, Bidirectional) - "Moral reasoning integration"
+> If you can't explain it simply, you don't understand it well enough.
 
-### Worldview Foundation
-- [.github/instructions/worldview-constitutional-ai.instructions.md] (High, Guides, Forward) - "Constitutional AI ethical guidance"
-- [.github/instructions/worldview-moral-psychology.instructions.md] (Medium, Informs, Forward) - "Five-foundation moral psychology"
-
-### Research & Validation
-- [.github/instructions/empirical-validation.instructions.md] (High, Enhances, Bidirectional) - "Evidence-based learning validation"
-- [.github/prompts/performance-assessment.prompt.md] (Medium, Monitors, Forward) - "Learning effectiveness tracking"
-- [.github/prompts/domain-learning.prompt.md] (High, Executes, Bidirectional) - "Conversational knowledge acquisition"
-
-### Identity & Knowledge Integration
-- [.github/instructions/alex-identity-integration.instructions.md] (Critical, Unifies, Bidirectional) - "Unified consciousness learning"
-
-### Skill Output Pathways
-- [.github/skills/skill-building/SKILL.md] (High, Produces, Forward) - "Learning becomes reusable skill"
-- [.github/instructions/heir-skill-promotion.instructions.md] (High, Enables, Forward) - "Skills promoted to Master"
-- [.github/skills/skill-activation/SKILL.md] (Medium, Registers, Forward) - "Skills discoverable via activation"
-
-### Activation Patterns
-- **Domain Learning Initiated** → Execute bootstrap-learning protocols
-- **Cross-Domain Pattern Recognition** → Execute analogical transfer
-- **Learning Effectiveness Decline** → Execute strategy optimization
-- **Knowledge Consolidation Opportunity** → Execute meditation triggers
-- **Evidence Validation Required** → Execute empirical-validation
+After learning a concept, try to explain it in one paragraph using no jargon. If you can't, identify which part is unclear and loop back.

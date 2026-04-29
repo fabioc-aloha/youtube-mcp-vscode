@@ -1,5 +1,20 @@
+/**
+ * YouTube API Client (extension-side)
+ *
+ * Renamed from `YouTubeMcpClient` in v0.3.0 — the original name suggested it
+ * spoke MCP, but it never did. The actual MCP server lives in
+ * `src/mcp-server/index.ts`. This class is the in-process adapter the
+ * extension UI uses to talk to `YouTubeService`.
+ *
+ * The file is still named `mcpClient.ts` to avoid churning every import in
+ * one go; rename in v0.4.0.
+ */
 import * as vscode from 'vscode';
-import { YouTubeService, SearchResultItem, FlashcardItem } from './services/youtubeService';
+import { YouTubeService } from './services/youtubeService';
+import type {
+    SearchResultItem,
+    FlashcardItem,
+} from './services/youtubeService';
 
 export interface VideoSearchResult {
     id: string;
@@ -10,6 +25,11 @@ export interface VideoSearchResult {
     thumbnailUrl?: string;
 }
 
+/**
+ * Shape returned to the extension UI. Mirrors `YouTubeCore.VideoAnalysisResult`
+ * but kept here as a stable façade — UI code should depend on this shape, not
+ * on the core directly.
+ */
 export interface VideoAnalysis {
     title: string;
     channelTitle: string;
@@ -33,12 +53,17 @@ export interface VideoAnalysis {
         difficulty: string;
         prerequisites: string[];
     };
+    /**
+     * Measurable quality signals (v0.3.0+). The previous opaque
+     * `overall`/`clarity`/`depth`/`structure`/`engagement` 0–100 scores were
+     * removed because the formula was undocumented and overclaimed precision.
+     */
     quality?: {
-        overall: number;
-        clarity: number;
-        depth: number;
-        structure: number;
-        engagement: number;
+        hasCaptions: boolean;
+        wordCount: number;
+        avgSentenceLength: number;
+        engagementRatio: number;
+        transcriptSegmentCount: number;
     };
 }
 
@@ -58,46 +83,28 @@ export interface QuotaStatus {
     resetsAt: string;
 }
 
-/**
- * YouTube MCP Client
- * 
- * Self-sufficient client that uses the youtube-mcp-tools library directly.
- * No external MCP server required - all functionality runs within the extension.
- */
-export class YouTubeMcpClient {
+export class YouTubeApiClient {
     private outputChannel: vscode.OutputChannel;
     private youtubeService: YouTubeService;
 
     constructor(outputChannel: vscode.OutputChannel) {
         this.outputChannel = outputChannel;
         this.youtubeService = new YouTubeService(outputChannel);
-        this.outputChannel.appendLine('YouTube MCP Client initialized (self-sufficient mode)');
+        this.outputChannel.appendLine('YouTube API client initialized');
     }
 
-    /**
-     * Initialize storage for quota persistence and secure API key storage
-     */
     initializeStorage(context: vscode.ExtensionContext): void {
         this.youtubeService.initializeStorage(context);
     }
 
-    /**
-     * Set API key securely
-     */
     async setApiKey(apiKey: string): Promise<void> {
         await this.youtubeService.setApiKey(apiKey);
     }
 
-    /**
-     * Validate API key
-     */
     async validateApiKey(apiKey: string): Promise<{ valid: boolean; error?: string }> {
-        return await this.youtubeService.validateApiKey(apiKey);
+        return this.youtubeService.validateApiKey(apiKey);
     }
 
-    /**
-     * Check if API key is configured
-     */
     async hasApiKey(): Promise<boolean> {
         try {
             await this.youtubeService.getApiKey();
@@ -107,126 +114,74 @@ export class YouTubeMcpClient {
         }
     }
 
-    /**
-     * Search for YouTube videos
-     */
-    async search(query: string, maxResults: number = 10): Promise<VideoSearchResult[]> {
-        this.outputChannel.appendLine(`Searching for: "${query}"`);
-        
-        try {
-            const results = await this.youtubeService.search(query, maxResults);
-            return results.map((r: SearchResultItem) => ({
-                id: r.id,
-                title: r.title,
-                channelTitle: r.channelTitle,
-                description: r.description,
-                publishedAt: r.publishedAt,
-                thumbnailUrl: r.thumbnailUrl
-            }));
-        } catch (error) {
-            this.outputChannel.appendLine(`Search error: ${error}`);
-            throw error;
-        }
+    async search(query: string, maxResults = 10): Promise<VideoSearchResult[]> {
+        const results = await this.youtubeService.search(query, maxResults);
+        return results.map((r: SearchResultItem) => ({
+            id: r.id,
+            title: r.title,
+            channelTitle: r.channelTitle,
+            description: r.description,
+            publishedAt: r.publishedAt,
+            thumbnailUrl: r.thumbnailUrl,
+        }));
     }
 
-    /**
-     * Analyze a YouTube video
-     */
     async analyzeVideo(videoId: string): Promise<VideoAnalysis> {
-        this.outputChannel.appendLine(`Analyzing video: ${videoId}`);
-        
-        try {
-            const analysis = await this.youtubeService.analyzeVideo(videoId);
-            return {
-                title: analysis.title,
-                channelTitle: analysis.channelTitle,
-                description: analysis.description,
-                duration: analysis.duration,
-                viewCount: analysis.viewCount,
-                likeCount: analysis.likeCount,
-                summary: {
-                    brief: analysis.summary.brief,
-                    detailed: analysis.summary.detailed,
-                    keyPoints: analysis.summary.keyPoints,
-                    topics: analysis.summary.topics
-                },
-                concepts: {
-                    concepts: analysis.concepts.concepts.map(c => ({
-                        name: c.name,
-                        type: c.type,
-                        definition: c.definition,
-                        mentions: c.mentions
-                    })),
-                    difficulty: analysis.concepts.difficulty,
-                    prerequisites: analysis.concepts.prerequisites
-                },
-                quality: {
-                    overall: analysis.quality.overall,
-                    clarity: analysis.quality.clarity,
-                    depth: analysis.quality.depth,
-                    structure: analysis.quality.structure,
-                    engagement: analysis.quality.engagement
-                }
-            };
-        } catch (error) {
-            this.outputChannel.appendLine(`Analysis error: ${error}`);
-            throw error;
-        }
-    }
-
-    /**
-     * Get video transcript
-     */
-    async getTranscript(videoId: string): Promise<string> {
-        this.outputChannel.appendLine(`Getting transcript for: ${videoId}`);
-        
-        try {
-            return await this.youtubeService.getFormattedTranscript(videoId);
-        } catch (error) {
-            this.outputChannel.appendLine(`Transcript error: ${error}`);
-            throw error;
-        }
-    }
-
-    /**
-     * Generate flashcards from video content
-     */
-    async generateFlashcards(videoId: string): Promise<Flashcard[]> {
-        this.outputChannel.appendLine(`Generating flashcards for: ${videoId}`);
-        
-        try {
-            const flashcards = await this.youtubeService.generateFlashcards(videoId);
-            return flashcards.map((f: FlashcardItem) => ({
-                id: f.id,
-                front: f.front,
-                back: f.back,
-                difficulty: f.difficulty,
-                type: f.type,
-                tags: f.tags
-            }));
-        } catch (error) {
-            this.outputChannel.appendLine(`Flashcard error: ${error}`);
-            throw error;
-        }
-    }
-
-    /**
-     * Get API quota status
-     */
-    async getQuotaStatus(): Promise<QuotaStatus> {
-        const quota = this.youtubeService.getQuotaStatus();
+        const analysis = await this.youtubeService.analyzeVideo(videoId);
         return {
-            used: quota.used,
-            limit: quota.limit,
-            remaining: quota.remaining,
-            resetsAt: quota.resetsAt
+            title: analysis.title,
+            channelTitle: analysis.channelTitle,
+            description: analysis.description,
+            duration: analysis.duration,
+            viewCount: analysis.viewCount,
+            likeCount: analysis.likeCount,
+            summary: {
+                brief: analysis.summary.brief,
+                detailed: analysis.summary.detailed,
+                keyPoints: analysis.summary.keyPoints,
+                topics: analysis.summary.topics,
+            },
+            concepts: {
+                concepts: analysis.concepts.concepts.map(c => ({
+                    name: c.name,
+                    type: c.type,
+                    definition: c.definition,
+                    mentions: c.mentions,
+                })),
+                difficulty: analysis.concepts.difficulty,
+                prerequisites: analysis.concepts.prerequisites,
+            },
+            quality: { ...analysis.quality },
         };
     }
 
-    /**
-     * Reset the quota counter
-     */
+    async getTranscript(videoId: string): Promise<string> {
+        return this.youtubeService.getFormattedTranscript(videoId);
+    }
+
+    async generateFlashcards(videoId: string): Promise<Flashcard[]> {
+        const flashcards = await this.youtubeService.generateFlashcards(videoId);
+        return flashcards.map((f: FlashcardItem) => ({
+            id: f.id,
+            front: f.front,
+            back: f.back,
+            difficulty: f.difficulty,
+            type: f.type,
+            tags: f.tags,
+        }));
+    }
+
+    async getQuotaStatus(): Promise<QuotaStatus> {
+        return this.youtubeService.getQuotaStatus();
+    }
+
     resetQuota(): void {
         this.youtubeService.resetQuotaCounter();
     }
 }
+
+/**
+ * @deprecated Use `YouTubeApiClient`. Alias kept through v0.3.x; remove in v0.4.0.
+ */
+export const YouTubeMcpClient = YouTubeApiClient;
+export type YouTubeMcpClient = YouTubeApiClient;

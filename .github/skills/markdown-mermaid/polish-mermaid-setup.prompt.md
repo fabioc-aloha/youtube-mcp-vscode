@@ -1,3 +1,9 @@
+---
+type: resource
+lifecycle: stable
+inheritance: inheritable
+---
+
 # Polish Mermaid Setup
 
 Interactive configuration helper for Mermaid diagram rendering in VS Code.
@@ -60,7 +66,7 @@ For additional styling control, copy the CSS from this skill:
 
 ```powershell
 # Copy markdown-light.css to workspace
-$skillPath = ".github/config/markdown-light.css"
+$skillPath = ".github/skills/markdown-mermaid/markdown-light.css"
 $targetPath = ".vscode/markdown-light.css"
 
 if (Test-Path $skillPath) {

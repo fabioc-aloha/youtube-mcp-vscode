@@ -23,38 +23,71 @@
 
 ---
 
-## ✨ Features
+## ✨ What it does
 
-| Feature | Description |
-|---------|-------------|
-| 🔍 **YouTube Search** | Search videos directly from VS Code with instant results |
-| 📊 **Video Analysis** | AI-powered insights: summaries, key concepts, quality scores |
-| 📝 **Transcript Extraction** | Get timestamped transcripts for any video with captions |
-| 🎴 **Flashcard Generation** | Create study flashcards from video content automatically |
-| 📈 **Quota Monitoring** | Track your YouTube API usage in real-time |
+| Tool | API key needed? | Use case |
+|---|---|---|
+| 📝 **Get transcript** | ❌ No | "Give me the transcript of this video" — returns Markdown with clickable timestamps so an AI can cite specific moments and you can jump there |
+| 🔎 **Search inside transcript** | ❌ No | "Where in this 2-hour podcast did they mention X?" — returns matching moments + deep-link URLs, far cheaper than dumping the whole transcript into the AI |
+| 📈 **Quota status** | ❌ No | See how much YouTube Data API quota this server has used |
+| 🔍 **Search YouTube** | ✅ Yes | Search for videos by query (100 quota units = ~100 searches/day on free tier) |
+| 📊 **Get video details** | ✅ Yes | Title, channel, duration, view/like counts, tags, caption availability |
+| 🧠 **Analyze video** | ✅ Yes | Summary, key points, topics, extracted concepts, observable quality signals |
+| 🎴 **Generate flashcards** | ✅ Yes | Front/back study cards from key concepts |
 
-## 🚀 Self-Sufficient Architecture
+> **The transcript tools work without a Google API key.** That covers the
+> single most common use case ("summarize this video for me") with zero
+> setup. Add an API key later if you want search and analysis too.
 
-This extension requires **zero external servers or dependencies**. Everything runs directly within VS Code:
+## ⚡ Quick start (MCP server, no API key)
 
-```text
-┌─────────────────────────────────────────────────────────┐
-│                   VS Code Extension                     │
-├─────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
-│  │   Search    │  │ Transcripts │  │    Analysis     │  │
-│  │   Engine    │  │  Service    │  │     Engine      │  │
-│  └──────┬──────┘  └──────┬──────┘  └────────┬────────┘  │
-│         │                │                  │           │
-│         └────────────────┼──────────────────┘           │
-│                          ▼                              │
-│              ┌───────────────────────┐                  │
-│              │  YouTube Data API v3  │                  │
-│              └───────────────────────┘                  │
-└─────────────────────────────────────────────────────────┘
+The fastest way to try it from any MCP client (Claude Desktop, VS Code Agent
+Mode, Cursor, custom agents):
+
+**1. Add to your MCP client config**
+
+`.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "youtube": {
+      "command": "node",
+      "args": ["${workspaceFolder}/node_modules/youtube-mcp-tools/dist/mcp-server.js"]
+    }
+  }
+}
 ```
 
-## 📦 Installation
+Claude Desktop (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "youtube": {
+      "command": "node",
+      "args": ["/absolute/path/to/dist/mcp-server.js"]
+    }
+  }
+}
+```
+
+**2. Ask your AI**
+
+> "Get the transcript of `https://youtu.be/jNQXAC9IVRw` and tell me what it's about."
+
+> "In `https://youtu.be/dQw4w9WgXcQ`, where do they say 'never gonna'?"
+
+The AI calls `youtube_get_transcript` or `youtube_search_transcript`, gets
+back Markdown with `[03:42](https://youtu.be/X?t=222)` clickable timestamps,
+and cites them in its answer.
+
+**3. (Optional) Add an API key for richer tools**
+
+Set `YOUTUBE_API_KEY` in your MCP client's `env` block to unlock search,
+video details, full analysis, and flashcards.
+
+## 📦 Installation (VS Code extension)
 
 1. Open VS Code
 2. Press `Ctrl+P` / `Cmd+P`
@@ -146,15 +179,64 @@ In-depth analysis of the video...
 Definition and context...
 *Type: term | Mentions: 15*
 
-## Quality Assessment
-| Metric | Score |
+## Quality Signals
+| Signal | Value |
 |--------|-------|
-| Overall | **85**/100 |
-| Clarity | 90/100 |
-| Depth | 80/100 |
-| Structure | 85/100 |
-| Engagement | 82/100 |
+| Has captions | yes |
+| Word count | 4,318 |
+| Avg sentence length | 18 words |
+| Engagement (likes/views) | 3.70% |
+| Transcript segments | 412 |
 ```
+
+> Quality is reported as **measurable signals**, not opaque 0–100 scores.
+> Interpret them per your use case — long-form lectures want different
+> signals than short tutorials.
+
+## 🤖 Use From Any MCP Client
+
+Beyond the VS Code UI, this package ships a standalone **Model Context
+Protocol** server (`youtube-mcp-server`). Any MCP-aware client can call its
+tools — `youtube_search`, `youtube_get_video_details`,
+`youtube_get_transcript`, `youtube_analyze_video`,
+`youtube_generate_flashcards`, `youtube_quota_status`.
+
+### VS Code Agent Mode (`.vscode/mcp.json`)
+
+```json
+{
+  "servers": {
+    "youtube": {
+      "command": "node",
+      "args": ["${workspaceFolder}/node_modules/youtube-mcp-tools/dist/mcp-server.js"],
+      "env": { "YOUTUBE_API_KEY": "${env:YOUTUBE_API_KEY}" }
+    }
+  }
+}
+```
+
+### Claude Desktop (`claude_desktop_config.json`)
+
+```json
+{
+  "mcpServers": {
+    "youtube": {
+      "command": "node",
+      "args": ["/absolute/path/to/dist/mcp-server.js"],
+      "env": { "YOUTUBE_API_KEY": "AIza..." }
+    }
+  }
+}
+```
+
+### Standalone
+
+```bash
+YOUTUBE_API_KEY=AIza... node dist/mcp-server.js
+```
+
+The server speaks JSON-RPC over stdio. Logs go to stderr only — stdout is
+reserved for the protocol channel.
 
 ## 🎴 Flashcard Generation
 

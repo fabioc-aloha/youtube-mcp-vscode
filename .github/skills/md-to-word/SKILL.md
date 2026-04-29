@@ -1,35 +1,89 @@
 ---
+type: skill
+lifecycle: stable
 name: "md-to-word"
-description: "Convert Markdown with Mermaid diagrams to professional Word documents"
-version: "2.0.0"
+description: "Convert Markdown with Mermaid diagrams and SVG illustrations to professional Word documents"
+tier: standard
+applyTo: '**/*docx*,**/*word*,**/*md-to-word*,**/*export*'
+muscle: .github/muscles/md-to-word.cjs
+inheritance: inheritable
+currency: 2026-04-22
 ---
 
 # Markdown to Word Conversion
 
-> One command to professional Word documents with perfect diagram sizing
+> One command to professional Word documents — diagrams, tables, and formatting done right on first attempt.
 
-Convert any Markdown document, including complex Mermaid diagrams, into polished Word (.docx) files ready for stakeholders, executives, and external audiences.
+
+Convert any Markdown document into polished Word (.docx) files ready for stakeholders, executives, and external audiences. Supports all standard Markdown formatting, Mermaid diagrams (auto-converted to PNG), and SVG illustrations (auto-embedded).
+
+## Why Use This?
+
+| Without This Skill | With This Skill |
+|-------------------|-----------------|
+| Mermaid diagrams missing or broken | Auto-rendered to high-res PNG, optimally sized |
+| SVG images not displaying | Auto-converted to PNG with proper dimensions |
+| Tables plain and unprofessional | Microsoft-branded headers, borders, zebra striping |
+| Tables split mid-row across pages | Smart pagination keeps rows intact |
+| Images overflow page boundaries | 90% page coverage constraint ensures fit |
+| Bullet lists merge into paragraphs | Preprocessor fixes spacing automatically |
+| Code blocks lose formatting | Consolas font, gray background, proper borders |
+| Links plain text | Blue underlined hyperlinks |
+| Headings inconsistent | Branded colors, proper hierarchy |
 
 ## Document Publishing Workflow
 
-The complete workflow from Markdown to final PDF:
+```
+Markdown (.md)  →  md-to-word.cjs  →  Word (.docx)  →  Final PDF
+     ↓                   ↓                ↓               ↓
+  Source            Automation      Manual polish     Distribution
+  (your docs)      (this skill)    (page breaks,     (File > Save As)
+                                    headers/footers)
+```
 
-1. **Convert to Word**: run `md-to-word.py` to generate a .docx with styled tables, centered diagrams, and formatted headings
-2. **Manual formatting**: open in Word and make final adjustments (page breaks, margins, headers/footers, custom styling)
-3. **Save as PDF**: use Word's File > Save As > PDF to produce the final PDF with full fidelity
+1. **Convert to Word**: Run `md-to-word.cjs` — produces a complete, styled document
+2. **Optional polish**: Add page breaks, headers/footers, custom branding
+3. **Export PDF**: Word's File > Save As > PDF gives best fidelity
 
-This skill handles step 1. Steps 2 and 3 are manual because Word provides superior PDF rendering, font embedding, and layout control compared to automated Markdown-to-PDF pipelines.
+## Supported Markdown Formatting
 
-## Why This Skill?
+| Feature | Support | Notes |
+|---------|---------|-------|
+| **Headings** (H1-H6) | ✅ Full | Branded colors, proper spacing |
+| **Bold/Italic/Strikethrough** | ✅ Full | `**bold**`, `*italic*`, `~~strike~~` |
+| **Bullet lists** | ✅ Full | Nested supported |
+| **Numbered lists** | ✅ Full | Auto-numbered |
+| **Task lists** | ✅ Full | `- [ ]` / `- [x]` converted |
+| **Tables** | ✅ Full | Professional styling |
+| **Code blocks** | ✅ Full | Syntax highlighting preserved |
+| **Inline code** | ✅ Full | Monospace with background |
+| **Links** | ✅ Full | Blue underlined |
+| **Images** (PNG/JPG) | ✅ Full | Centered, auto-sized |
+| **SVG images** | ✅ Auto-convert | Rendered to PNG |
+| **Mermaid diagrams** | ✅ Auto-convert | Rendered to PNG |
+| **Blockquotes** | ✅ Full | Gray left border |
+| **Horizontal rules** | ✅ Full | Light gray line |
+| **Footnotes** | ✅ Pandoc | Via pandoc extension |
+| **YAML frontmatter** | ✅ Strip | `--strip-frontmatter` option |
 
-| Challenge | Solution |
-|-----------|----------|
-| Mermaid diagrams don't render in Word | Auto-converted to PNG with optimal sizing |
-| Tables lack professional styling | Blue headers, borders, alternating rows |
-| Tables break awkwardly across pages | Smart pagination (cantSplit + keepWithNext) |
-| Images overflow page boundaries | 90% coverage constraint (H+V) preserves fit |
-| Bullet lists merge into paragraphs | Markdown preprocessing fixes spacing |
-| SVG banners not supported | Auto-converted to PNG |
+## Mermaid Diagram Support
+
+All Mermaid diagram types are supported:
+
+| Diagram Type | Detection | Sizing Strategy |
+|--------------|-----------|-----------------|
+| **Flowchart LR** | `flowchart lr` | Width priority (6.5") |
+| **Flowchart TB** | `flowchart tb` | Height priority (3.6") |
+| **Sequence** | `sequenceDiagram` | Width priority |
+| **Gantt** | `gantt` | Width priority (wide) |
+| **Class** | `classDiagram` | Auto |
+| **ER** | `erDiagram` | Auto |
+| **State** | `stateDiagram` | Auto |
+| **Pie** | `pie` | Smaller width |
+| **Mindmap** | `mindmap` | Width priority |
+| **Timeline** | `timeline` | Width priority |
+
+Diagrams are rendered at 8x scale (2400px width) for crisp printing, then sized to fit within page bounds.
 
 ---
 
@@ -37,15 +91,15 @@ This skill handles step 1. Steps 2 and 3 are manual because Word provides superi
 
 ### One-Command Conversion
 
-```powershell
+```bash
 # From your project root
-python .github/muscles/md-to-word.py docs/spec.md
+node .github/muscles/md-to-word.cjs docs/spec.md
 
 # With custom output name
-python .github/muscles/md-to-word.py README.md output.docx
+node .github/muscles/md-to-word.cjs README.md output.docx
 
 # Keep intermediate files for debugging
-python .github/muscles/md-to-word.py docs/plan.md --keep-temp
+node .github/muscles/md-to-word.cjs docs/plan.md --keep-temp
 ```
 
 ### What It Does
@@ -65,20 +119,26 @@ python .github/muscles/md-to-word.py docs/plan.md --keep-temp
 
 ### Prerequisites
 
-| Tool | Install Command | Purpose |
-|------|-----------------|---------|
-| **Python 3.10+** | (system) | Script runtime |
-| **pandoc** | `winget install pandoc` | Markdown to Word |
-| **mermaid-cli** | `npm install -g @mermaid-js/mermaid-cli` | Mermaid to PNG |
-| **python-docx** | `pip install python-docx` | Table formatting |
-| **svgexport** | `npm install -g svgexport` | SVG to PNG (optional) |
+| Tool | Install (macOS) | Install (Windows) | Purpose |
+|------|-----------------|-------------------|---------|
+| **Node.js 18+** | `brew install node` | `winget install OpenJS.NodeJS.LTS` | Script runtime |
+| **pandoc** | `brew install pandoc` | `winget install JohnMacFarlane.Pandoc` | Markdown to Word |
+| **mermaid-cli** | `npm install -g @mermaid-js/mermaid-cli` | same | Mermaid to PNG |
+| **jszip** | (bundled with extension) | same | OOXML post-processing |
+| **svgexport** | `npm install -g svgexport` | same | SVG to PNG (optional) |
 
 ### Quick Install (All Dependencies)
 
-```powershell
-winget install pandoc
+**macOS**
+```bash
+brew install pandoc
 npm install -g @mermaid-js/mermaid-cli svgexport
-pip install python-docx
+```
+
+**Windows**
+```powershell
+winget install JohnMacFarlane.Pandoc
+npm install -g @mermaid-js/mermaid-cli svgexport
 ```
 
 ---
@@ -87,65 +147,172 @@ pip install python-docx
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--images-dir` | `images` | Directory for generated PNG files |
-| `--no-format-tables` | false | Skip table styling (faster) |
-| `--keep-temp` | false | Keep temporary markdown file |
+| `--toc` | off | Generate Table of Contents |
+| `--cover` | off | Generate cover page from H1 + date |
+| `--style PRESET` | professional | Style preset (see below) |
+| `--page-size SIZE` | letter | Page size: letter, a4, 6x9 |
+| `--reference-doc PATH` | — | Custom Word template (.dotx) |
+| `--images-dir DIR` | images | Directory for generated PNG files |
+| `--embed-images` | off | Embed local images as base64 |
+| `--strip-frontmatter` | off | Remove YAML frontmatter |
+| `--no-format-tables` | off | Skip table styling (faster) |
+| `--keep-temp` | off | Keep temporary files for debugging |
+| `--watch` | off | Auto-rebuild on source change |
+| `--recursive` | off | Process all .md files in directory |
+| `--dry-run` | off | Validate only, no output |
+| `--debug` | off | Save preprocessed markdown |
+
+## Style Presets
+
+| Preset | Body Font | Heading Style | Use Case |
+|--------|-----------|---------------|----------|
+| **professional** | Segoe UI 10.5pt | Microsoft blue (#0078D4) | Business documents, specs, reports |
+| **academic** | Times New Roman 12pt | Black, double-spaced | Dissertations, papers, theses |
+| **course** | Calibri 11pt | Virginia Tech burgundy | Course materials, syllabi |
+| **creative** | Georgia 11pt | Slate blue | Blog posts, narratives |
+
+```bash
+# Academic paper with TOC
+node md-to-word.cjs thesis.md --style academic --toc
+
+# Professional report with cover
+node md-to-word.cjs quarterly-report.md --style professional --cover --toc
+```
+
+## SVG Image Handling
+
+SVG files are automatically detected and converted to PNG for Word compatibility:
+
+```markdown
+<!-- This SVG reference in your Markdown... -->
+![Architecture](assets/architecture.svg)
+
+<!-- ...becomes this embedded PNG in Word -->
+![Architecture](images/architecture.png){width=5.8in}
+```
+
+**Requirements**: `svgexport` (`npm install -g svgexport`)
+
+**Best practices for SVG sources**:
+- Use viewBox for scalable graphics
+- Embed fonts or use web-safe font stack
+- Keep file size under 500KB for fast conversion
+- Avoid external references (they won't resolve)
 
 ---
 
 ## Image Sizing Algorithm
 
-The script automatically fits images to 90% of page bounds:
+The script automatically fits images to page bounds. The constraints are codified
+in `md-to-word.cjs`:
 
 ```
-Page: 8.5" x 11" (Letter)
+Page: 8.5" × 11" (Letter)
 Margins: 1" each side
-Usable: 6.5" x 9.0"
-Max image: 5.85" x 8.1" (90%)
+Usable area: 6.5" × 9.0"
+MAX_IMAGE_WIDTH_RATIO  = 0.90   →  max width  ≈ 5.85"
+MAX_IMAGE_HEIGHT_RATIO = 0.60   →  max height ≈ 5.40"
 ```
 
-### How It Works
+These ratios apply width-priority for landscape/wide diagrams (LR flowcharts,
+gantts, sequence diagrams) and height-priority for portrait/tall diagrams (TB/TD
+flowcharts with multiple subgraphs). The algorithm picks the more restrictive
+constraint so the image fits in both dimensions.
 
-1. **Read PNG dimensions** from file header (no Pillow needed)
+### Algorithm Steps
+
+1. **Read PNG dimensions** from file header (pure Node.js, no dependencies)
 2. **Calculate scale factors** for width and height constraints
 3. **Apply most restrictive** — ensures fit in both dimensions
-4. **Specify one dimension** — pandoc preserves aspect ratio
+4. **Specify constraining dimension** — pandoc preserves aspect ratio
 
-| Diagram Type | Typical Constraint |
-|--------------|-------------------|
-| Gantt (wide) | `{width=5.8in}` |
-| Flowchart TB (tall) | `{height=8.1in}` |
-| Architecture layers | `{width=5.8in}` |
-| Escalation maps | `{height=8.1in}` |
+---
+
+## Mermaid Palette and Fidelity
+
+When a Mermaid block has no `classDef`, no `%%{init}%%` directive, and no
+explicit theme variables, the converter injects a **default pastel palette**
+(GitHub-style soft colors with dark text) before rendering. This gives WYSIWYG
+fidelity to authors who don't styled-by-design every diagram.
+
+### Why per-diagram-type injection matters
+
+| Diagram type | Honors `classDef`? | Color path |
+|---|---|---|
+| `flowchart` / `graph` | Yes | `classDef` (preferred) or injected init |
+| `classDiagram` | Partial | `classDef` or injected init |
+| `sequenceDiagram` | **No** | `themeVariables` only (e.g. `actorBkg`, `noteBkgColor`) |
+| `stateDiagram-v2` | **No** | `themeVariables` only (`primaryColor`, `mainBkg`, `labelBoxBkgColor`) |
+| `erDiagram` | No | `themeVariables` only |
+
+Without diagram-type-aware injection, sequence and state diagrams would render
+as flat neutral nodes regardless of any `classDef` the author wrote.
+
+### Behavior
+
+- `flowchart` / `graph` / `classDiagram` with `classDef` → **respected, no
+  injection** (author wins)
+- `flowchart` / `graph` without `classDef` → **palette injected** + lint nudge
+- `sequenceDiagram` / `stateDiagram-v2` without `%%{init}%%` or explicit
+  `actorBkg` / `primaryColor` → **palette injected** (only path to colors)
+- Any block with `%%{init}%%` already present → **respected, no injection**
+
+### Opting out
+
+Pass `--no-default-palette` to disable injection. Diagrams without `classDef` or
+explicit theme will then render with mermaid's default neutral theme, and a
+warning is emitted per affected diagram.
+
+### Lint warnings
+
+During preprocessing the converter emits `💡` nudges for unstyled flowcharts
+("inject default pastel palette") and `⚠️` warnings when `--no-default-palette`
+is set on diagrams that would have rendered flat.
 
 ---
 
 ## Table Formatting
 
-All tables receive professional styling:
+All tables receive professional OOXML styling:
 
 | Element | Style |
 |---------|-------|
-| **Header row** | Microsoft blue (#0078D4), white text, bold |
-| **Even rows** | Light gray (#F0F0F0) |
-| **Odd rows** | White (#FFFFFF) |
+| **Header row** | Microsoft blue (#0078D4), white text, bold 10pt |
+| **Even data rows** | Light gray (#F0F0F0) |
+| **Odd data rows** | White (#FFFFFF) |
 | **Borders** | Gray outer (#666666), light inner (#AAAAAA) |
-| **Font** | 10pt headers, 9pt data |
-| **Pagination** | Rows don't split; headers stay with data |
+| **Cell padding** | 2pt top/bottom, 4pt left/right |
+| **Pagination** | cantSplit + keepWithNext (no orphan headers) |
+| **Repeat headers** | Header row repeats on each page for long tables |
 
 ---
 
-## Supported Diagram Types
+## Professional Features
 
-| Type | Detection | Sizing Strategy |
-|------|-----------|-----------------|
-| Gantt | `gantt` keyword | Width priority |
-| Flowchart LR | `flowchart lr` | Width priority |
-| Flowchart TB | `flowchart tb` | Height priority |
-| Sequence | `sequenceDiagram` | Width priority |
-| Class | `classDiagram` | Auto |
-| ER | `erDiagram` | Auto |
-| Pie | `pie` | Smaller width |
+### Page Numbers
+Centered page numbers in the footer, gray text (9pt).
+
+### Heading Hierarchy
+- H1: Brand color, underline, 360/120 twip spacing
+- H2: Secondary color, 280/80 twip spacing
+- H3: Tertiary color, 240/80 twip spacing
+- All headings: keepNext + keepLines (no orphans)
+
+### Code Blocks
+- Font: Consolas 9pt
+- Background: Light gray (#F5F5F5)
+- Border: Left accent bar (#CCCCCC)
+- Keep together: Won't split across pages
+
+### Hyperlinks
+- Color: Microsoft blue (#0563C1)
+- Style: Single underline
+- Applied to both inline links and reference links
+
+### Captions
+Paragraphs starting with "Table N" or "Figure N":
+- Centered, italic, 9pt gray
+- keepNext binding to following content
 
 ---
 
@@ -154,36 +321,116 @@ All tables receive professional styling:
 | Issue | Cause | Fix |
 |-------|-------|-----|
 | "mmdc not found" | mermaid-cli not installed | `npm install -g @mermaid-js/mermaid-cli` |
-| "pandoc not found" | pandoc not in PATH | `winget install pandoc`, restart terminal |
-| Tables not styled | python-docx missing | `pip install python-docx` |
-| Diagrams too large | Old script version | Update to v2.0.0 with 90% H+V |
-| Bullet lists merged | Markdown spacing | Script auto-fixes (v2.0.0+) |
+| "pandoc not found" | pandoc not in PATH | `winget install JohnMacFarlane.Pandoc` (restart terminal) |
+| "svgexport not found" | svgexport not installed | `npm install -g svgexport` |
+| Tables not styled | jszip not available | Set `NODE_PATH` to extension node_modules |
+| Diagrams too small | Outdated script | Update to v5.3.0+ |
+| Images overflow | Complex diagram | Use `--debug` and check PNG dimensions |
+| SVG not converting | Missing svgexport | Install or use PNG source |
+| Document corrupt | Incomplete write | Check disk space, re-run |
 
 ### Debug Mode
 
+```bash
+node md-to-word.cjs doc.md --debug --keep-temp
+# Check _debug_combined.md for preprocessed content
+# Check images/ folder for generated PNGs
+```
+
+---
+
+## macOS Fallback (No Pandoc)
+
+macOS ships `textutil` which can convert HTML to DOCX natively:
+
+```bash
+# Convert markdown to HTML first, then HTML to DOCX
+npx marked document.md -o document.html
+textutil -convert docx document.html -output document.docx
+```
+
+| Feature | Pandoc (primary) | textutil (fallback) |
+|---------|-----------------|-------------------|
+| Table styling | Full (via jszip post-processing) | Basic |
+| Mermaid diagrams | Supported (pre-rendered PNG) | Must be pre-rendered |
+| Heading styles | Mapped to Word styles | Basic HTML mapping |
+| Cross-references | Supported | Not supported |
+| Install | `brew install pandoc` | Built-in (macOS only) |
+
+**Limitations**: `textutil` needs HTML input (not raw Markdown), produces simpler formatting, and doesn't support the table styling or image sizing that `md-to-word.cjs` provides. Use only when Pandoc is unavailable and a quick conversion is needed.
+
+---
+
+## Batch Processing
+
+### Convert a Folder
+
 ```powershell
-python .github/muscles/md-to-word.py doc.md --keep-temp
-# Check _temp_word.md for transformed content
+# Windows PowerShell
+Get-ChildItem docs/*.md | ForEach-Object {
+    node .github/muscles/md-to-word.cjs $_.FullName --style professional
+}
+```
+
+```bash
+# macOS/Linux
+for f in docs/*.md; do
+    node .github/muscles/md-to-word.cjs "$f" --style professional
+done
+```
+
+### Recursive Directory
+
+```bash
+# All .md files in docs/ and subdirectories
+node .github/muscles/md-to-word.cjs docs --recursive --style professional
+```
+
+### Watch Mode
+
+```bash
+# Auto-rebuild when source changes
+node .github/muscles/md-to-word.cjs spec.md --watch
+```
+
+---
+
+## Integration Examples
+
+### GitHub Actions CI/CD
+
+```yaml
+# Generate Word docs as build artifacts
+- name: Generate Word Documents
+  run: |
+    npm install -g @mermaid-js/mermaid-cli svgexport
+    node .github/muscles/md-to-word.cjs docs/spec.md --toc --cover
+
+- name: Upload artifacts
+  uses: actions/upload-artifact@v4
+  with:
+    name: word-documents
+    path: docs/*.docx
+```
+
+### npm Script
+
+```json
+{
+  "scripts": {
+    "docs:word": "node .github/muscles/md-to-word.cjs docs/README.md --style professional --toc"
+  }
+}
 ```
 
 ---
 
 ## For Heir Projects
 
-### Setup
-
-1. Copy `.github/muscles/md-to-word.py` to your project
-2. Install prerequisites (see Installation)
-3. Run on any markdown file
-
-### Example Integration
-
-```powershell
-# Convert entire docs folder
-Get-ChildItem docs/*.md | ForEach-Object {
-    python .github/muscles/md-to-word.py $_.FullName
-}
-```
+1. Copy `.github/muscles/md-to-word.cjs` to your project
+2. Copy shared modules from `.github/muscles/shared/` (markdown-preprocessor, mermaid-pipeline)
+3. Install prerequisites: `npm install -g @mermaid-js/mermaid-cli svgexport`
+4. Run: `node .github/muscles/md-to-word.cjs your-doc.md`
 
 ---
 
@@ -191,16 +438,46 @@ Get-ChildItem docs/*.md | ForEach-Object {
 
 | Version | Changes |
 |---------|---------|
+| **5.4.0** | Diagram-type-aware Mermaid palette injection (sequence/state get themeVariables, flowcharts respect classDef), `--no-default-palette` opt-out, lint warnings for unstyled diagrams, sizing constants documented |
+| **5.3.0** | Style presets (professional, academic, course, creative), --cover, --toc |
+| **5.0.0** | SVG auto-conversion via svgexport, watch mode, recursive processing |
+| **4.0.0** | OOXML post-processing: page numbers, hyperlinks, code block styling |
+| **3.0.0** | Markdown preprocessing, heading colors, caption formatting |
 | **2.1.0** | Table pagination (cantSplit, keepWithNext) prevents orphan headers |
-| **2.0.0** | 90% H+V coverage, actual PNG dimension reading, markdown preprocessing |
-| **1.1.0** | Centered images, heading colors, paragraph spacing |
+| **2.0.0** | 90% H+V coverage, actual PNG dimension reading |
 | **1.0.0** | Initial: pandoc + mermaid + table formatting |
+
+---
+
+## Conversion Acceptance Decision Table
+
+| Condition | Verdict | Action |
+|-----------|---------|--------|
+| All headings use correct Word styles (Heading 1-6) | Accept | Verify TOC generates from styles |
+| Headings are bold plain text instead of styled | Reject | Check pandoc heading-style mapping |
+| Tables render with borders and header row formatting | Accept | Spot-check alignment |
+| Tables overflow page width or lose column alignment | Reject | Adjust column widths or split wide tables |
+| Images embedded at correct resolution | Accept | Verify no placeholder boxes |
+| Images missing or show `[image]` placeholder | Reject | Check image paths resolve; pandoc `--resource-path` |
+| Mermaid diagrams converted to PNG and embedded | Accept | Verify labels readable at print size |
+| Mermaid diagrams missing entirely | Reject | Pre-render with mermaid-cli before pandoc |
+| Code blocks use monospace font with syntax coloring | Accept | Verify long lines don't overflow |
+| Code blocks use body font or lose indentation | Warning | Check pandoc `--highlight-style` setting |
+| Page breaks at expected section boundaries | Accept | Required for multi-section documents |
+| Headers/footers match brand template | Accept | Verify reference.docx applied correctly |
+| File opens without macro warnings | Accept | Required — no macros in output |
+| File size >10MB for text-only document | Warning | Check for uncompressed embedded images |
 
 ---
 
 ## Related Skills
 
-- **markdown-mermaid** — Mermaid syntax and ATACCU compliance
-- **brand-asset-management** — SVG banner guidelines
-- **pptx-generation** — Similar workflow for PowerPoint
-- **svg-graphics** — Vector graphics for documentation
+| Skill | Relationship |
+|-------|--------------|
+| **markdown-mermaid** | Mermaid syntax and ATACCU compliance |
+| **svg-graphics** | Vector graphics creation |
+| **brand-asset-management** | Visual identity for headers/footers |
+| **pptx-generation** | Similar workflow for PowerPoint output |
+| **md-to-html** | HTML output with same preprocessing |
+| **md-scaffold** | Templates for clean Markdown structure |
+| **book-publishing** | Pandoc PDF for print publishing |

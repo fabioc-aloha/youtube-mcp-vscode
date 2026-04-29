@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Type check
+        run: npm run check-types
+      - name: Production build (extension + MCP server)
+        run: node esbuild.js --production
+      - name: Verify MCP server starts without an API key
+        # The server must NOT fail-fast when YOUTUBE_API_KEY is missing —
+        # transcript tools work without it. We just confirm it boots and
+        # logs the expected ready line to stderr within 3 seconds.
+        run: |
+          set +e
+          timeout 3s node dist/mcp-server.js > /dev/null 2> stderr.log
+          rc=$?
+          # 124 = timed out (expected — server is waiting for stdio input).
+          # 143 = SIGTERM (also acceptable on some runners).
+          if [ "$rc" -ne 124 ] && [ "$rc" -ne 143 ]; then
+            echo "Server exited with $rc; expected 124 (timeout)" >&2
+            cat stderr.log >&2
+            exit 1
+          fi
+          if ! grep -q 'ready on stdio' stderr.log; then
+            echo "Did not see 'ready on stdio' in stderr" >&2
+            cat stderr.log >&2
+            exit 1
+          fi
+          echo "OK: server booted and logged ready"
+      - name: Package VSIX
+        run: npx --yes @vscode/vsce package --no-dependencies --no-git-tag-version
+      - name: Upload VSIX
+        uses: actions/upload-artifact@v4
+        with:
+          name: youtube-mcp-tools-vsix
+          path: '*.vsix'
+          if-no-files-found: error

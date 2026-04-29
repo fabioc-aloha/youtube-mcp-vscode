@@ -1,107 +1,136 @@
-# Skill Building Procedure
+---
+type: instruction
+lifecycle: stable
+inheritance: inheritable
+description: "Create reusable skills from emerged patterns — the growth mechanism"
+application: "When domain knowledge or process patterns are worth persisting"
+applyTo: "**/*skill*,**/*build*,**/*create*"
+currency: 2026-04-27
+---
 
-Step-by-step process for creating, assessing, and completing skills.
+# Skill Building
 
-## Prerequisites
+Transform experience into reusable knowledge artifacts.
 
-- Real-world experience with the domain (not theory)
-- Pattern used 3+ times or gotcha encountered
-- Checked skill catalog — skill doesn't already exist
+## When to Build a Skill
 
-## Phase 1: Create the SKILL.md
+| Signal | Action |
+|--------|--------|
+| Same pattern applied 3+ times | Propose skill |
+| Hard-won gotcha that burned time | Capture it |
+| "I wish I'd known this earlier" | Write it down |
+| Domain has non-obvious rules | Document them |
 
-1. **Create folder**: `.github/skills/{skill-name}/`
-2. **Write frontmatter**: `name`, `description`, `applyTo` glob patterns
-3. **Write content**: Domain knowledge with tables, thresholds, examples, anti-patterns
-4. **Add synapses.json**: 2-5 meaningful connections to related skills
+## Skill Anatomy
 
-### Depth Check (Mandatory)
+```
+.github/skills/<skill-name>/
+└── SKILL.md
+```
 
-Before proceeding, assess the SKILL.md against the depth rubric:
+### Required Frontmatter
 
-| Check | Pass Criteria |
-|-------|--------------|
-| Opening line | NOT "Expert in..." or "Capabilities:" — should state a specific insight |
-| Tables | Contain real data (thresholds, trade-offs), not just category labels |
-| Sections | Domain-specific knowledge modules, not "When to Use" / "Input/Output" |
-| Examples | Concrete and specific, not abstract descriptions |
-| Litmus test | Would an LLM produce equally useful content without this skill? Must be **no** |
+```yaml
+---
+type: skill
+lifecycle: stable|experimental
+inheritance: inheritable
+name: "<skill-name>"
+description: "<one-line purpose>"
+tier: standard|advanced
+applyTo: '<glob pattern>'
+currency: YYYY-MM-DD
+---
+```
 
-If any check fails, rewrite the section before continuing.
+### Synapses: How applyTo Works
 
-## Phase 2: Register the Skill
+The `applyTo` field creates a **synapse** — an automatic connection that fires based on context.
 
-5. **Add to skill-activation index**: `.github/skills/skill-activation/SKILL.md` — add action keywords
-6. **Update synapses.json** in connected skills (bidirectional links)
+| applyTo Pattern | When It Fires |
+|-----------------|---------------|
+| `**` | Always loaded (global behavior) |
+| `**/*test*` | When editing any file with "test" in path |
+| `**/*.ts` | When editing TypeScript files |
+| `**/src/**` | When editing anything under src/ |
+| `**/*api*,**/*endpoint*` | When editing API or endpoint files (comma = OR) |
 
-## Phase 3: Assess Trifecta Need
+**The mechanism**: When you edit a file, VS Code checks all instruction/skill `applyTo` patterns. Matching artifacts auto-inject into context. This is how behaviors "fire" without explicit invocation.
 
-7. **Ask**: Does this skill describe a multi-step workflow with decision points?
-   - **Yes** → Create `.instructions.md` (Phase 4)
-   - **No** → Skip to Phase 5
+**Design principle**: Narrow patterns = less token overhead. `**` loads always; `**/*specific*` loads only when relevant.
 
-8. **Ask**: Would users benefit from a guided interactive conversation?
-   - **Yes** → Create `.prompt.md` (Phase 4)
-   - **No** → Skip to Phase 5
+### Required Sections
 
-### Decision Matrix
+1. **Purpose** — Why this skill exists (1-2 sentences)
+2. **When to Use** — Triggers that should invoke this skill
+3. **Core Knowledge** — The actual domain expertise (tables, examples, rules)
+4. **Common Mistakes** — What to avoid
+5. **Decision Framework** — How to choose between options
 
-| Skill Type | Needs .instructions.md? | Needs .prompt.md? |
-|-----------|:-:|:-:|
-| Reference knowledge (tables, patterns) | No | No |
-| Multi-step process (build, deploy, review) | **Yes** | Maybe |
-| Interactive workflow (learning, meditation) | Maybe | **Yes** |
-| Automated by extension code | No | No |
-| Internal metacognitive (auto-trigger) | No | No |
+## Quality Bar
 
-## Phase 4: Build Trifecta Components
+A good skill:
+- [ ] Contains knowledge an LLM wouldn't know generically
+- [ ] Has concrete examples, not just category labels
+- [ ] Includes tables with real data (thresholds, trade-offs)
+- [ ] Avoids the "capabilities list" anti-pattern ("Expert in X, Can do Y")
+- [ ] Passes the Feynman check — explainable simply
 
-### If creating .instructions.md:
+## Anti-Patterns
 
-9. **Create file**: `.github/instructions/{skill-name}.instructions.md`
-10. **Write numbered steps** with decision points and checkpoints
-11. **Reference the SKILL.md** for domain knowledge ("see {skill} skill for details")
-12. **Add applyTo** if the instruction should auto-load for specific file patterns
+| Don't | Do |
+|-------|-----|
+| "Expert in Azure deployment" | "ARM vs Bicep: use Bicep for new projects because..." |
+| "Can handle complex queries" | "N+1 query pattern: detect by X, fix by Y" |
+| "Follows best practices" | "Specific practice: why, when, exceptions" |
 
-### If creating .prompt.md:
+## Lightweight Alternative: Instruction
 
-13. **Create file**: `.github/prompts/{name}.prompt.md`
-14. **Write guided conversation flow** with user interaction points
-15. **Register as slash command** if user-invocable
-16. **Add to prompt-activation index** in `.github/skills/prompt-activation/SKILL.md`
+If the knowledge is simpler (always-on behavior, not deep domain):
 
-## Phase 5: Assess Muscle Need
+```
+.github/instructions/<name>.instructions.md
+```
 
-17. **Ask**: Are there terminal commands that would be run repeatedly for this skill?
-    - **Yes** → Create script in `.github/muscles/` (Phase 6)
-    - **No** → Done
+Use instruction when: behavior should fire automatically based on context.
+Use skill when: deep knowledge needs explicit invocation or lookup.
 
-### Muscle Decision Signals
+## Workflow Alternative: Prompt
 
-| Signal | Create Muscle | Example |
-|--------|:-:|---------|
-| Same commands run repeatedly | **Yes** | Validation scripts |
-| File transformation pattern | **Yes** | Sync/transform scripts |
-| Requires human judgment | **No** | Code review |
-| One-time operation | **No** | Not worth automating |
+For repeatable multi-step workflows:
 
-## Phase 6: Build Muscle (if needed)
+```
+.github/prompts/<workflow-name>.prompt.md
+```
 
-18. **Create script**: `.github/muscles/{verb}-{noun}.ps1` or `.js`
-19. **Reference from .instructions.md**: "Step N: Run `muscles/{script}`"
-20. **Test in sandbox**: Never test in Master Alex workspace
+### Prompt Frontmatter
 
-## Phase 7: Finalize
+```yaml
+---
+mode: agent
+description: "<what this workflow does>"
+tools: [read_file, run_in_terminal, ...]  # optional: restrict tools
+---
+```
 
-21. **Update catalogs**: SKILLS-CATALOG.md, TRIFECTA-CATALOG.md (if trifecta built)
-22. **Run sync-architecture**: Ensure heir gets the new files
-23. **Rebuild and install**: Compile, package, install VSIX
+### When to Use Prompts
 
-## Quick Reference: What You Need
+| Use Prompt When | Use Skill When |
+|-----------------|----------------|
+| Multi-step workflow | Domain knowledge |
+| Repeatable procedure | Decision framework |
+| "Run this process" | "Know this domain" |
+| User invokes explicitly | Context triggers automatically |
 
-| Scenario | Create |
-|----------|--------|
-| New domain expertise | SKILL.md only |
-| New repeatable process | SKILL.md + .instructions.md |
-| New interactive workflow | SKILL.md + .instructions.md + .prompt.md |
-| New automated check | SKILL.md + .instructions.md + muscle script |
+**Examples**:
+- `release.prompt.md` — version bump, changelog, publish sequence
+- `code-review.prompt.md` — structured review checklist
+- `debug-session.prompt.md` — systematic debugging workflow
+
+Prompts are invoked via `/prompt-name` or selected from the prompt picker. They're procedures, not knowledge.
+
+## After Creating
+
+1. Test the skill — does it actually help?
+2. Refine based on usage
+3. During meditation, review if skills are earning their tokens

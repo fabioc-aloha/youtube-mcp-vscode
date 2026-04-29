@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
-import { YouTubeMcpClient, VideoAnalysis } from './mcpClient';
+import { YouTubeApiClient, VideoAnalysis } from './mcpClient';
 import { SearchResultsProvider } from './views/searchResults';
 import { RecentVideosProvider } from './views/recentVideos';
 import { FlashcardsProvider } from './views/flashcards';
 import { StatusBarManager } from './statusBar';
 
-let mcpClient: YouTubeMcpClient;
+let apiClient: YouTubeApiClient;
 let statusBar: StatusBarManager;
 let searchResultsProvider: SearchResultsProvider;
 let recentVideosProvider: RecentVideosProvider;
@@ -16,10 +16,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     outputChannel = vscode.window.createOutputChannel('YouTube MCP Tools');
     outputChannel.appendLine('YouTube MCP Tools extension activating...');
 
-    // Initialize MCP client
-    mcpClient = new YouTubeMcpClient(outputChannel);
-    mcpClient.initializeStorage(context);
-    
+    // Initialize the in-process YouTube API client.
+    // (The standalone MCP server lives in src/mcp-server/index.ts and runs
+    // as a separate process when invoked via .vscode/mcp.json or npx.)
+    apiClient = new YouTubeApiClient(outputChannel);
+    apiClient.initializeStorage(context);
+
     // Initialize status bar
     statusBar = new StatusBarManager();
     context.subscriptions.push(statusBar);
@@ -49,7 +51,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     );
 
     // Check API key on startup
-    const hasApiKey = await mcpClient.hasApiKey();
+    const hasApiKey = await apiClient.hasApiKey();
     if (!hasApiKey) {
         statusBar.setStatus('warning', 'API Key not configured');
         const action = await vscode.window.showWarningMessage(
@@ -74,7 +76,7 @@ async function searchCommand(): Promise<void> {
         prompt: 'Search YouTube',
         placeHolder: 'Enter search query...'
     });
-    
+
     if (!query) { return; }
 
     statusBar.setStatus('loading', 'Searching...');
@@ -83,11 +85,11 @@ async function searchCommand(): Promise<void> {
     try {
         const config = vscode.workspace.getConfiguration('youtubeMcp');
         const maxResults = config.get<number>('maxResults', 10);
-        
-        const results = await mcpClient.search(query, maxResults);
+
+        const results = await apiClient.search(query, maxResults);
         searchResultsProvider.setResults(results);
         statusBar.setStatus('ready', `Found ${results.length} results`);
-        
+
         // Focus the search results view
         vscode.commands.executeCommand('youtubeMcp.searchResults.focus');
     } catch (error) {
@@ -104,7 +106,7 @@ async function analyzeVideoCommand(videoId?: string): Promise<void> {
             placeHolder: 'dQw4w9WgXcQ or https://youtube.com/watch?v=...'
         });
     }
-    
+
     if (!videoId) { return; }
 
     // Extract video ID from URL if needed
@@ -114,8 +116,8 @@ async function analyzeVideoCommand(videoId?: string): Promise<void> {
     outputChannel.appendLine(`Analyzing video: ${videoId}`);
 
     try {
-        const analysis = await mcpClient.analyzeVideo(videoId);
-        
+        const analysis = await apiClient.analyzeVideo(videoId);
+
         // Add to recent videos
         recentVideosProvider.addVideo({
             id: videoId,
@@ -130,7 +132,7 @@ async function analyzeVideoCommand(videoId?: string): Promise<void> {
             language: 'markdown'
         });
         await vscode.window.showTextDocument(doc);
-        
+
         statusBar.setStatus('ready', 'Analysis complete');
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Analysis failed';
@@ -146,21 +148,21 @@ async function getTranscriptCommand(videoId?: string): Promise<void> {
             placeHolder: 'dQw4w9WgXcQ'
         });
     }
-    
+
     if (!videoId) { return; }
     videoId = extractVideoId(videoId);
 
     statusBar.setStatus('loading', 'Fetching transcript...');
 
     try {
-        const transcript = await mcpClient.getTranscript(videoId);
-        
+        const transcript = await apiClient.getTranscript(videoId);
+
         const doc = await vscode.workspace.openTextDocument({
             content: transcript,
             language: 'plaintext'
         });
         await vscode.window.showTextDocument(doc);
-        
+
         statusBar.setStatus('ready', 'Transcript loaded');
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to get transcript';
@@ -176,16 +178,16 @@ async function generateFlashcardsCommand(videoId?: string): Promise<void> {
             placeHolder: 'dQw4w9WgXcQ'
         });
     }
-    
+
     if (!videoId) { return; }
     videoId = extractVideoId(videoId);
 
     statusBar.setStatus('loading', 'Generating flashcards...');
 
     try {
-        const flashcards = await mcpClient.generateFlashcards(videoId);
+        const flashcards = await apiClient.generateFlashcards(videoId);
         flashcardsProvider.setFlashcards(flashcards);
-        
+
         // Focus the flashcards view
         vscode.commands.executeCommand('youtubeMcp.flashcards.focus');
         statusBar.setStatus('ready', `Generated ${flashcards.length} flashcards`);
@@ -198,7 +200,7 @@ async function generateFlashcardsCommand(videoId?: string): Promise<void> {
 
 async function showQuotaStatusCommand(): Promise<void> {
     try {
-        const quota = await mcpClient.getQuotaStatus();
+        const quota = await apiClient.getQuotaStatus();
         const message = `YouTube API Quota\n\nUsed: ${quota.used} / ${quota.limit}\nRemaining: ${quota.remaining}\nResets: ${quota.resetsAt}`;
         vscode.window.showInformationMessage(message, { modal: true });
     } catch {
@@ -237,7 +239,7 @@ async function setApiKeyCommand(): Promise<void> {
 
     try {
         // Validate the API key
-        const validation = await mcpClient.validateApiKey(apiKey.trim());
+        const validation = await apiClient.validateApiKey(apiKey.trim());
 
         if (!validation.valid) {
             statusBar.setStatus('error', 'Invalid API key');
@@ -246,9 +248,9 @@ async function setApiKeyCommand(): Promise<void> {
         }
 
         // Store securely
-        await mcpClient.setApiKey(apiKey.trim());
+        await apiClient.setApiKey(apiKey.trim());
         statusBar.setStatus('ready', 'API key saved');
-        
+
         if (validation.error) {
             // Valid but with warning (e.g., quota exceeded)
             vscode.window.showWarningMessage(`API key saved. Note: ${validation.error}`);
@@ -268,12 +270,12 @@ function extractVideoId(input: string): string {
         /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
         /^([a-zA-Z0-9_-]{11})$/
     ];
-    
+
     for (const pattern of urlPatterns) {
         const match = input.match(pattern);
         if (match) { return match[1]; }
     }
-    
+
     return input;
 }
 
@@ -318,7 +320,7 @@ ${(analysis.summary?.topics || []).map((t: string) => `\`${t}\``).join(' • ') 
     if (concepts?.concepts && concepts.concepts.length > 0) {
         md += `\n## Key Concepts\n`;
         md += `**Difficulty:** ${concepts.difficulty || 'Unknown'}\n\n`;
-        
+
         for (const concept of concepts.concepts.slice(0, 10)) {
             md += `### ${concept.name}\n`;
             if (concept.definition) {
@@ -326,23 +328,27 @@ ${(analysis.summary?.topics || []).map((t: string) => `\`${t}\``).join(' • ') 
             }
             md += `*Type: ${concept.type} | Mentions: ${concept.mentions}*\n\n`;
         }
-        
+
         if (concepts.prerequisites && concepts.prerequisites.length > 0) {
             md += `**Prerequisites:** ${concepts.prerequisites.join(', ')}\n`;
         }
     }
 
-    // Add quality scores
-    md += `\n## Quality Assessment\n`;
-    md += `| Metric | Score |\n|--------|-------|\n`;
-    md += `| Overall | **${analysis.quality?.overall || 'N/A'}**/100 |\n`;
-    md += `| Clarity | ${analysis.quality?.clarity || 'N/A'}/100 |\n`;
-    md += `| Depth | ${analysis.quality?.depth || 'N/A'}/100 |\n`;
-    md += `| Structure | ${analysis.quality?.structure || 'N/A'}/100 |\n`;
-    md += `| Engagement | ${analysis.quality?.engagement || 'N/A'}/100 |\n`;
+    // Add quality signals (v0.3.0+ — observable signals, not opaque scores)
+    const q = analysis.quality;
+    if (q) {
+        md += `\n## Quality Signals\n`;
+        md += `| Signal | Value |\n|--------|-------|\n`;
+        md += `| Has captions | ${q.hasCaptions ? 'yes' : 'no'} |\n`;
+        md += `| Word count | ${q.wordCount.toLocaleString()} |\n`;
+        md += `| Avg sentence length | ${q.avgSentenceLength} words |\n`;
+        md += `| Engagement (likes/views) | ${(q.engagementRatio * 100).toFixed(2)}% |\n`;
+        md += `| Transcript segments | ${q.transcriptSegmentCount} |\n`;
+        md += `\n*These are observable signals, not opinion scores. Interpret per your use case.*\n`;
+    }
 
-    md += `\n---\n*Generated by YouTube MCP Tools (self-sufficient mode)*\n`;
-    
+    md += `\n---\n*Generated by YouTube MCP Tools v0.3.0*\n`;
+
     return md;
 }
 

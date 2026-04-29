@@ -1,6 +1,12 @@
 ---
+type: skill
+lifecycle: stable
 name: "markdown-mermaid"
 description: "Clear documentation through visual excellence"
+tier: standard
+inheritance: inheritable
+applyTo: '**/*.md,**/*mermaid*,**/*diagram*'
+currency: 2026-04-22
 ---
 
 # Markdown & Mermaid
@@ -8,6 +14,7 @@ description: "Clear documentation through visual excellence"
 > Clear documentation through visual excellence
 
 A skill for markdown authoring, Mermaid diagramming, multi-tool visualization, VS Code integration, and cross-platform rendering consistency.
+
 
 ## When to Use
 
@@ -21,6 +28,42 @@ A skill for markdown authoring, Mermaid diagramming, multi-tool visualization, V
 
 ---
 
+## ⚠️ MANDATORY: Start Every Diagram With This Template
+
+**Do NOT write Mermaid code without this template.** Copy-paste first, then customize:
+
+```text
+%%{init: {'theme': 'base', 'themeVariables': {'lineColor': '#57606a', 'primaryColor': '#ddf4ff', 'primaryBorderColor': '#0969da', 'primaryTextColor': '#1f2328', 'edgeLabelBackground': '#ffffff'}}}%%
+flowchart LR
+    A[Input]:::blue --> B[Process]:::purple --> C[Output]:::green
+
+    classDef blue fill:#ddf4ff,color:#0550ae,stroke:#80ccff
+    classDef green fill:#d3f5db,color:#1a7f37,stroke:#6fdd8b
+    classDef purple fill:#d8b9ff,color:#6639ba,stroke:#bf8aff
+    classDef gold fill:#fff8c5,color:#9a6700,stroke:#d4a72c
+    classDef red fill:#ffebe9,color:#cf222e,stroke:#f5a3a3
+    classDef neutral fill:#eaeef2,color:#24292f,stroke:#d0d7de
+
+    linkStyle default stroke:#57606a,stroke-width:1.5px
+```
+
+**Three required components:**
+
+1. **Init directive** (line 1) — Sets theme, colors, white edge label background
+2. **classDef** — Semantic colors for all node types
+3. **linkStyle default** — Gray arrows at 1.5px width
+
+| Color Class | Use For | Example |
+| ----------- | ------- | ------- |
+| `:::blue` | Input, source, start | `A[Audio]:::blue` |
+| `:::green` | Output, result, data | `C[Transcript]:::green` |
+| `:::purple` | Processing, model | `B[WhisperX]:::purple` |
+| `:::gold` | Decision, condition | `D{Valid?}:::gold` |
+| `:::red` | Error, warning | `E[Failed]:::red` |
+| `:::neutral` | Context, optional | `F[Cache]:::neutral` |
+
+---
+
 ## Mandatory Workflow: ATACCU
 
 **Every Mermaid diagram MUST follow this 6-step protocol.** No exceptions — this prevents forgotten palettes, broken layouts, and inconsistent styling.
@@ -29,8 +72,8 @@ A skill for markdown authoring, Mermaid diagramming, multi-tool visualization, V
 | ---- | ------ | ---------- |
 | **A** | **Analyze** | What data/process am I visualizing? Who is the audience? What diagram type fits? |
 | **T** | **Think** | Which layout pattern? (Medallion/Lineage/Pipeline) How many nodes? Will it be too wide/tall? |
-| **A** | **Apply Skills** | Load GitHub Pastel v2 palette. Select `classDef` colors by semantic meaning. Add `%%{init}%%` directive. Choose `direction` for subgraphs. |
-| **C** | **Create** | Write the Mermaid code. Every node gets a style. Every flowchart gets `linkStyle default`. |
+| **A** | **Apply** | **COPY THE TEMPLATE ABOVE** — init directive + classDef + linkStyle. No exceptions. |
+| **C** | **Create** | Write the Mermaid code. Every node gets `:::className`. Every flowchart gets `linkStyle default`. |
 | **C** | **Check** | Render the diagram. Verify: pastels (not saturated), layout (not lopsided), labels (readable), arrows (gray #57606a). |
 | **U** | **Update** | Write the final diagram into the target `.md` file. Add `**Figure N:** *description*` label. |
 
@@ -43,7 +86,7 @@ Before writing any Mermaid code, answer these:
 □ Layout direction chosen (LR preferred for flow, TD for hierarchy)
 □ Subgraph strategy decided (Medallion vs Lineage vs Pipeline)
 □ Color assignments mapped (what color = what meaning)
-□ Init directive ready: %%{init: {'theme': 'base', 'themeVariables': ...}}%%
+□ Multi-line node labels use <br/> NOT \n
 ```
 
 ### Quality Gate (Steps C-C-U)
@@ -52,9 +95,11 @@ After creating the diagram, verify ALL of these:
 
 ```text
 □ Init directive is FIRST line inside mermaid block
+□ edgeLabelBackground is '#ffffff' (white background for edge labels)
 □ ALL nodes have style/classDef (no unstyled nodes)
 □ Colors are GitHub Pastel v2 (NOT saturated: no #51cf66, #339af0, #fab005)
 □ linkStyle default stroke:#57606a,stroke-width:1.5px (flowcharts)
+□ Node labels use <br/> for line breaks, NOT \n
 □ Diagram rendered and visually inspected
 □ No dimension > 3x the other (use subgroups to balance)
 □ Figure label added below diagram block
@@ -67,6 +112,8 @@ After creating the diagram, verify ALL of these:
 | --------- | -------------------------- |
 | Saturated colors instead of pastels | **Apply Skills** — load palette first |
 | Missing init directive | **Apply Skills** — it's step 3 |
+| `edgeLabelBackground: 'transparent'` used | **Apply Skills** — use `'#ffffff'` (white background) |
+| `\n` in node labels (renders as literal text) | **Create** — use `<br/>` for line breaks |
 | Missing linkStyle | **Create** — every flowchart needs it |
 | Lopsided layout (7-way fan-out) | **Think** — choose layout pattern |
 | Diagram only in chat, not in file | **Update** — write to `.md` file |
@@ -191,119 +238,24 @@ flowchart LR
 
 ## 🏷️ Shields.io Badges
 
-### Badge Anatomy
-
-Badges use [Shields.io](https://shields.io) - a free service for generating status badges.
-
-**URL Structure:**
-
-```text
-https://img.shields.io/badge/{LABEL}-{MESSAGE}-{COLOR}?{OPTIONS}
-```
-
-**Markdown Syntax:**
+Badges use [Shields.io](https://shields.io). URL structure: `https://img.shields.io/badge/{LABEL}-{MESSAGE}-{COLOR}?{OPTIONS}`
 
 ```markdown
-[![Alt Text](https://img.shields.io/badge/Label-Message-color?options)](#)
+[![Alt Text](https://img.shields.io/badge/Label-Message-color?style=for-the-badge&logo=iconname&logoColor=white)](#)
 ```
 
-### Style Options
+| Style | Parameter |
+| ----- | --------- |
+| Flat | `style=flat` |
+| **For-the-Badge** | `style=for-the-badge` |
 
-| Style | Appearance | Parameter |
-| ----- | ---------- | --------- |
-| Flat | Minimal | `style=flat` |
-| Flat-Square | Squared corners | `style=flat-square` |
-| Plastic | Gradient | `style=plastic` |
-| **For-the-Badge** | Large, bold | `style=for-the-badge` |
-| Social | GitHub-like | `style=social` |
+| Encode | As |
+| ------ | -- |
+| Space | `_` or `%20` |
+| Dash | `--` |
+| Underscore | `__` |
 
-### Common Color Names
-
-| Color | Name | Hex |
-| ----- | ---- | --- |
-| 🔵 | `blue` | `#007ec6` |
-| 🟢 | `green` | `#97ca00` |
-| 🟡 | `gold` / `yellow` | `#dfb317` |
-| 🟠 | `orange` | `#fe7d37` |
-| 🔴 | `red` | `#e05d44` |
-| 🟣 | `purple` | `#9f4bc9` |
-| 🔷 | `cyan` | `#25c2a0` |
-| ⚫ | `gray` / `grey` | `#555555` |
-
-**Custom Hex**: Use any hex without `#` → `?color=1f2328`
-
-### Adding Icons (Simple Icons)
-
-Shields.io integrates with [Simple Icons](https://simpleicons.org/) for brand logos:
-
-```markdown
-[![VS Code](https://img.shields.io/badge/VS_Code-Extension-blue?logo=visualstudiocode&logoColor=white)](#)
-```
-
-**Parameters:**
-
-- `logo=iconname` - Icon from Simple Icons (lowercase, no spaces)
-- `logoColor=white` - Icon color (usually white for dark backgrounds)
-
-### Badge Templates
-
-**Version Badge:**
-
-```markdown
-[![Version](https://img.shields.io/badge/Version-1.0.0-gold?style=for-the-badge&logo=trophy&logoColor=white)](#)
-```
-
-**Domain/Category Badge:**
-
-```markdown
-[![Domain](https://img.shields.io/badge/Domain-DIAGRAMMING-blue?style=for-the-badge&logo=graduation-cap&logoColor=white)](#)
-```
-
-**Quality Badge:**
-
-```markdown
-[![Quality](https://img.shields.io/badge/Quality-Enterprise_Grade-green?style=for-the-badge&logo=shield-alt&logoColor=white)](#)
-```
-
-**Status Badge:**
-
-```markdown
-[![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)](#)
-[![Status](https://img.shields.io/badge/Status-Beta-orange?style=for-the-badge)](#)
-[![Status](https://img.shields.io/badge/Status-Deprecated-red?style=for-the-badge)](#)
-```
-
-### Document Header Pattern
-
-Professional documents use a badge row at the top:
-
-```markdown
-# Document Title
-
-[![Version](https://img.shields.io/badge/Version-1.0.0-gold?style=for-the-badge&logo=trophy&logoColor=white)](#) [![Domain](https://img.shields.io/badge/Domain-TOPIC-blue?style=for-the-badge)](#)
-
-> Description tagline
-
----
-```
-
-### Special Characters in Badges
-
-| Character | Encode As |
-| --------- | --------- |
-| Space | `_` (underscore) or `%20` |
-| Dash | `--` (double dash) |
-| Underscore | `__` (double underscore) |
-
-### Dynamic Badges (Advanced)
-
-For live data from repos:
-
-```markdown
-[![GitHub Stars](https://img.shields.io/github/stars/owner/repo?style=for-the-badge)](#)
-[![NPM Version](https://img.shields.io/npm/v/package-name?style=for-the-badge)](#)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/owner/repo/ci.yml?style=for-the-badge)](#)
-```
+Icons from [Simple Icons](https://simpleicons.org/) via `logo=iconname&logoColor=white`. Colors: `blue`, `green`, `gold`, `red`, `purple`, or custom hex without `#`.
 
 ---
 
@@ -439,24 +391,14 @@ web_server.style.fill: "#f3e5f5"
 
 ### ⚡ Quick Start — Pastel v2 Template
 
-Copy this template for every new diagram. It sets the GitHub Pastel v2 palette defaults:
+**Use the MANDATORY template at the top of this skill.** Copy-paste from there — it is the single source of truth.
 
-```text
-%%{init: {'theme': 'base', 'themeVariables': { 'edgeLabelBackground':'#ffffff', 'lineColor': '#57606a' }}}%%
-flowchart LR
-    A[Source]:::blue --> B[Process]:::gold --> C[Output]:::green
+**Four things every diagram needs:**
 
-    classDef blue fill:#ddf4ff,color:#0550ae,stroke:#80ccff
-    classDef green fill:#d3f5db,color:#1a7f37,stroke:#6fdd8b
-    classDef gold fill:#fff8c5,color:#9a6700,stroke:#d4a72c
-
-    linkStyle default stroke:#57606a,stroke-width:1.5px
-```
-
-**Three things every diagram needs:**
-1. `%%{init}%%` directive (first line)
+1. `%%{init}%%` directive with `edgeLabelBackground: '#ffffff'`
 2. `classDef` or `style` for node colors
-3. `linkStyle default` for arrow color
+3. `linkStyle default stroke:#57606a` for arrow color
+4. Edge labels `|text|` with white background (from init)
 
 > 💡 For color theory and design principles, see the **graphic-design** skill. The palette values here come from that skill's color system, optimized for GitHub rendering.
 
@@ -537,18 +479,7 @@ A -->|"label"| B  Alternative label syntax
 linkStyle default stroke:#57606a,stroke-width:1.5px
 ```
 
-**Complete Example**:
-
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#cce5ff', 'primaryTextColor': '#333', 'lineColor': '#666', 'edgeLabelBackground': '#fff'}}}%%
-flowchart LR
-    A[Source] --> |Transform| B[Target]
-    
-    style A fill:#ddf4ff,color:#0550ae,stroke:#80ccff
-    style B fill:#d3f5db,color:#1a7f37,stroke:#6fdd8b
-    
-    linkStyle default stroke:#57606a,stroke-width:1.5px
-```
+**Complete Example**: Use the MANDATORY template at the top, with only the classDefs you need.
 
 **Key Principles**:
 1. **Light fills** (#fff1e5, #ddf4ff) — Easy on the eyes
@@ -556,7 +487,7 @@ flowchart LR
 3. **Soft strokes** matching fill family
 4. **Gray arrows** (#57606a) — Neutral, doesn't compete with nodes
 5. **1.5-2px stroke-width** — Visible but not heavy
-6. **edgeLabelBackground: '#fff'** — GitHub doesn't support transparent
+6. **edgeLabelBackground: '#ffffff'** — White background for readable edge labels
 
 ### Fishbowl Pastel Palette (Alternative)
 
@@ -574,7 +505,15 @@ flowchart LR
 **Init directive (Fishbowl):**
 
 ```text
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#cce5ff', 'primaryTextColor': '#333', 'lineColor': '#666', 'edgeLabelBackground': '#fff'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#cce5ff',
+  'primaryBorderColor': '#4a90d9',
+  'primaryTextColor': '#333',
+  'secondaryColor': '#e6d5f2',
+  'tertiaryColor': '#c2f0d8',
+  'lineColor': '#666',
+  'edgeLabelBackground': '#ffffff'
+}}}%%
 ```
 
 **When to choose Fishbowl over GitHub Pastel v2**: Use Fishbowl when all nodes need equal visual weight (e.g., governance structures, compliance flows). Use GitHub Pastel v2 when nodes carry semantic meaning that should be color-coded by category.
@@ -586,37 +525,43 @@ Add as FIRST line inside mermaid block:
 **Default init directive (GitHub Pastel v2):**
 
 ```text
-%%{init: {'theme': 'base', 'themeVariables': { 'edgeLabelBackground':'#ffffff', 'lineColor': '#57606a' }}}%%
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#ddf4ff',
+  'primaryBorderColor': '#0969da',
+  'primaryTextColor': '#1f2328',
+  'lineColor': '#57606a',
+  'edgeLabelBackground': '#ffffff'
+}}}%%
 ```
 
 **Standard GitHub-compatible theme (legacy):**
 
 ```text
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f6f8fa', 'primaryTextColor': '#1f2328', 'primaryBorderColor': '#d1d9e0', 'lineColor': '#656d76', 'secondaryColor': '#f6f8fa', 'tertiaryColor': '#ffffff', 'background': '#ffffff', 'mainBkg': '#f6f8fa', 'nodeBorder': '#d1d9e0'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#f6f8fa',
+  'primaryBorderColor': '#d1d9e0',
+  'primaryTextColor': '#1f2328',
+  'lineColor': '#656d76',
+  'edgeLabelBackground': '#ffffff'
+}}}%%
 ```
 
 **Quadrant chart theme:**
 
 ```text
-%%{init: {'theme': 'base', 'themeVariables': { 'quadrant1Fill': '#e8f5e9', 'quadrant2Fill': '#e3f2fd', 'quadrant3Fill': '#f3e5f5', 'quadrant4Fill': '#fff3e0', 'quadrant1TextFill': '#1f2328', 'quadrant2TextFill': '#1f2328', 'quadrant3TextFill': '#1f2328', 'quadrant4TextFill': '#1f2328', 'quadrantPointFill': '#1565c0', 'quadrantPointTextFill': '#1f2328'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {
+  'quadrant1Fill': '#d3f5db',
+  'quadrant2Fill': '#fff8c5',
+  'quadrant3Fill': '#ffebe9',
+  'quadrant4Fill': '#ddf4ff',
+  'quadrantPointFill': '#1f2328',
+  'quadrantTitleFill': '#1f2328'
+}}}%%
 ```
 
 ### classDef Reusable Styles
 
 Define style classes once and apply to multiple nodes. Cleaner than per-node `style` directives.
-
-```text
-flowchart LR
-    A[Source]:::input --> B[Process]:::action --> C[Output]:::success
-
-    classDef input fill:#ddf4ff,color:#0550ae,stroke:#80ccff
-    classDef action fill:#fff8c5,color:#9a6700,stroke:#d4a72c
-    classDef success fill:#d3f5db,color:#1a7f37,stroke:#6fdd8b
-    classDef error fill:#ffebe9,color:#cf222e,stroke:#f5a3a3
-    classDef neutral fill:#eaeef2,color:#24292f,stroke:#d0d7de
-    classDef special fill:#d8b9ff,color:#6639ba,stroke:#bf8aff
-    classDef bronze fill:#fff1e5,color:#953800,stroke:#ffb77c
-```
 
 **Pastel v2 classDef Quick Reference** (copy-paste ready):
 
@@ -660,7 +605,6 @@ flowchart LR
 Gantt charts use different theme variables than flowcharts:
 
 ```text
-%%{init: {'theme': 'base', 'themeVariables': {
   'taskBkgColor': '#ddf4ff',
   'activeTaskBkgColor': '#d3f5db',
   'activeTaskBorderColor': '#6fdd8b',
@@ -693,7 +637,6 @@ gantt
 ### Sequence Diagram Theming
 
 ```text
-%%{init: {'theme': 'base', 'themeVariables': {
   'actorBkg': '#ddf4ff',
   'actorBorder': '#80ccff',
   'actorTextColor': '#0550ae',
@@ -736,6 +679,137 @@ gantt
 - Use color-blind friendly palettes
 - Ensure sufficient contrast
 - Don't rely on color alone for meaning
+
+---
+
+## ⚠️ Parser Pitfalls (Real Failures)
+
+These are parse-level failures that prevent rendering entirely. Captured from real production diagrams that broke. Read this section before writing any non-trivial Mermaid block.
+
+### P1. Quote labels containing reserved characters
+
+The Mermaid parser treats `@`, `:`, `(`, `)`, `,`, `#`, `&` as tokens inside unquoted node labels. Wrap the label in double quotes whenever it contains any of those, or you will get errors like `Parse error on line N: Expecting 'AMP', 'COLON', ... got 'LINK_ID'`.
+
+```text
+%% BAD — parser error
+M1[fabric-capacity.bicep<br/>Microsoft.Fabric/capacities@2023-11-01]
+
+%% GOOD
+M1["fabric-capacity.bicep<br/>Microsoft.Fabric/capacities@2023-11-01"]
+```
+
+Trigger characters that require quoting:
+
+| Character | Where it appears |
+| --- | --- |
+| `@` | ARM API versions, npm scopes, email addresses |
+| `:` | Outside of subgraph titles — namespaces, time stamps |
+| `()` | Method signatures, URL parts, `(optional)` annotations |
+| `,` | Multi-clause labels |
+| `#` | Hash, anchor, hex codes |
+| `&` literal | Standalone — see P3 for the operator |
+
+When in doubt, quote. Costs nothing, immunizes against parser updates.
+
+### P2. No HTML entities inside shape brackets
+
+`&lt;`, `&gt;`, `&amp;` inside stadium `([...])`, cylinder `[(...)]`, or hex `{{...}}` shapes break the parser. Drop the entity or quote the label.
+
+```text
+%% BAD
+Start([./deploy.ps1 -SubscriptionId &lt;sub&gt;])
+
+%% GOOD
+Start(["./deploy.ps1 -SubscriptionId <sub>"])
+```
+
+### P3. Don't use the `&` edge-list operator
+
+Mermaid's spec allows `A & B & C --> D`, but it renders inconsistently across versions (works in mermaid.live, fails in some VS Code preview builds). Always expand to individual edges.
+
+```text
+%% BAD — flaky across renderers
+M1 & M2 & M3 & M4 --> Outputs
+
+%% GOOD — explicit
+M1 --> Outputs
+M2 --> Outputs
+M3 --> Outputs
+M4 --> Outputs
+```
+
+### P4. Avoid cylinder shape with multi-line content
+
+Cylinder `[(...)]` combined with `<br/>` line breaks has caused parse flakes. Use a regular rectangle and put the data-shape semantics in the label itself.
+
+```text
+%% BAD
+Outputs[(Bicep outputs:<br/>fabricCapacityId<br/>fabricCapacityName)]
+
+%% GOOD
+Outputs[Bicep outputs<br/>fabricCapacityId<br/>fabricCapacityName]
+```
+
+### P5. `stateDiagram-v2` ignores `classDef`
+
+State diagrams do not accept `classDef`. Style states by overriding the init directive's `primaryColor` for the whole diagram, or accept theme defaults. **Without `theme: 'base'`, unstyled states render solid black** in many renderers — always include the init directive.
+
+```text
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#fef3c7', 'primaryBorderColor': '#fcd34d', 'primaryTextColor': '#1f2937', 'edgeLabelBackground': '#ffffff'}}}%%
+stateDiagram-v2
+    [*] --> Healthy
+    Healthy --> Overage : load spike
+```
+
+### P6. Markdownlint table-pipe spacing (`MD060`)
+
+Tables in markdownlint-strict repos require **a space on either side of every pipe**. Use `| --- |` not `|---|`. The compact form passes some renderers but fails strict lint.
+
+```markdown
+| Resource | API version |
+| --- | --- |
+| Microsoft.Fabric/capacities | 2023-11-01 |
+```
+
+### P7. Pipe inside inline code triggers `MD056`
+
+Markdownlint's column-count check (`MD056`) counts a literal `|` inside an inline code span as a column separator and reports a column-count mismatch. Either drop the `|` from the example, escape it as `\|`, or move the example out of the table.
+
+### P8. No blank lines inside blockquotes (`MD028`)
+
+Blank lines inside a blockquote break it into separate quotes for the linter. Either continue the quote with `>` on every line (including empty lines as `>`), or break out of the quote completely between paragraphs.
+
+```markdown
+%% BAD — MD028
+> First paragraph.
+>
+> Second paragraph.   ← (this works visually but `>` empty line is required)
+
+%% GOOD
+> First paragraph.
+>
+> Second paragraph.
+```
+
+(The empty `>` line above is required — a fully blank line ends the quote.)
+
+### P9. Always specify language on fenced code blocks (`MD040`)
+
+```` ```bicep ```` not ```` ``` ````. Renderers and lints both depend on it. Use `text` for plain output if no language fits.
+
+### Quick reference card
+
+| Pitfall | Symptom | Fix |
+| --- | --- | --- |
+| P1 reserved chars unquoted | `Parse error: Expecting AMP, COLON…` | Quote the label |
+| P2 HTML entities in shapes | Parser fails on `&lt;` | Drop the entity, quote |
+| P3 `&` edge operator | Diagram renders in one viewer, not another | Expand to N edges |
+| P4 cylinder + `<br/>` | Intermittent parser flake | Use rectangle |
+| P5 `classDef` in state diagram | Styles ignored, black nodes | Init directive only |
+| P6 `MD060` | Lint error on tables | Space around every pipe |
+| P7 `MD056` | Column-count mismatch | Remove `\|` from inline code |
+| P8 `MD028` | Blockquote breaks | Use `>` on empty lines |
+| P9 `MD040` | Lint error on fences | Always specify language |
 
 ---
 
@@ -798,11 +872,44 @@ Get-ChildItem -Recurse -Filter "*.md" | Select-String -Pattern '\\u[0-9a-fA-F]{4
 | `\ud83e\udd16` | 🤖 | Robot |
 | `\ud83d\udcda` | 📚 | Books |
 
+### Edge Label Dark Background
+
+**Problem**: Arrow labels (`|text|`) appear with dark boxes in VS Code dark mode or break rendering
+
+**Root cause**: Missing or incorrect `edgeLabelBackground` settings.
+
+**Fix**: Always include `edgeLabelBackground: '#ffffff'` in your init directive:
+
+```text
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#ddf4ff',
+  'lineColor': '#57606a',
+  'edgeLabelBackground': '#ffffff'
+}}}%%
+
+flowchart LR
+    A -->|label text| B
+```
+
+This provides a clean white background for edge labels, ensuring readability on any rendering surface.
+
+> ⚠️ Never use `theme: 'dark'` — use `theme: 'base'` with the pastel palette instead.
+
+### Multi-Line Node Labels (`\n` vs `<br/>`)
+
+**Problem**: `\n` in node labels renders as a literal backslash-n in VS Code and some Mermaid versions:
+
+```text
+❌ A["First line\nSecond line"]   ← may render as "First line\nSecond line"
+✅ A["First line<br/>Second line"] ← always works
+```
+
+**Rule**: Always use `<br/>` for multi-line node labels in flowcharts.
+
 ### Dark Mermaid Backgrounds
 
 **Problem**: Diagrams have dark backgrounds in VS Code preview
 
-**Solution 1**: Use per-diagram `%%{init}%%` theming (see above)
 
 **Solution 2**: Apply included `markdown-light.css` via settings
 
@@ -1057,10 +1164,10 @@ end
 
 ```text
 %% ❌ RISKY - <i> tag may break parsing
-SYN["synapses.json<br/><i>inert — rarely traversed</i>"]
+CFG["config.json<br/><i>inert — rarely traversed</i>"]
 
 %% ✅ SAFE - plain text with em dash
-SYN["synapses.json — inert, rarely traversed"]
+CFG["config.json — inert, rarely traversed"]
 ```
 
 **Rule 3**: Avoid em dashes (—) in subgraph titles (some parsers treat them as operators)
@@ -1343,7 +1450,6 @@ class MemorySystem base
 
 ```text
 %% ❌ FAILS - single series, all bars same color
-%%{init: {'theme': 'base', 'themeVariables': { 'xyChart': {'plotColorPalette': '#1565c0, #2e7d32, #7b1fa2'}}}}%%
 xychart-beta
     x-axis [A, B, C]
     bar [1, 2, 3]  %% All same color!
@@ -1359,7 +1465,6 @@ xychart-beta
 
 1. **Pie chart** — Use `pie` with theming when showing proportions:
    ```text
-   %%{init: {'theme': 'base', 'themeVariables': { 'pie1': '#1565c0', 'pie2': '#2e7d32'}}}%%
    pie showData
        title "Task Distribution"
        "Task A" : 8
@@ -1442,7 +1547,6 @@ Create an inventory table to track diagram state:
 
 Apply fixes in batches by issue type:
 
-1. **Missing init directives** — Add `%%{init}%%` theme block
 2. **Reserved word errors** — Rephrase or quote labels
 3. **Parse errors** — Apply 4 safety rules
 4. **Style inconsistencies** — Apply GitHub Pastel v2 palette
@@ -1464,7 +1568,6 @@ Re-render all diagrams and confirm fixes:
 
 ### Before Committing
 
-- [ ] All diagrams have `%%{init}%%` theme directive
 - [ ] All diagrams have figure labels
 - [ ] All tables have table labels
 - [ ] No unicode escape sequences
