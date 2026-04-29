@@ -50,7 +50,7 @@ function convertLatexMath(content) {
     for (const [pattern, replacement] of LATEX_MATH_MAP) {
       result = result.replace(pattern, replacement);
     }
-    // Superscripts: ^{2} ->  or ^2 -> 
+    // Superscripts: ^{2} ->  or ^2 ->
     result = result.replace(/\^{([^}]+)}/g, (_m, exp) =>
       exp.split('').map(c => SUPERSCRIPT_MAP[c] || c).join('')
     );
@@ -171,11 +171,15 @@ function preprocessMarkdown(content, options = {}) {
       }
     }
 
-    // Convert checkbox markers for pandoc compatibility
+    // Convert checkbox markers for pandoc compatibility.
+    // Pandoc strips leading bullet markers it sees as "list-style" characters
+    // when every item in the list starts with the same one (☐, ☑, ☒).
+    // Prefix with a zero-width space (U+200B) to defeat that heuristic so
+    // the checkbox glyph survives into the docx output.
     if (/^[-*+]\s*\[ \]/.test(stripped)) {
-      line = line.replace(/^([-*+])\s*\[ \]/, '$1 \u2610');
+      line = line.replace(/^([-*+])\s*\[ \]/, '$1 \u200B\u2610');
     } else if (/^[-*+]\s*\[[xX]\]/.test(stripped)) {
-      line = line.replace(/^([-*+])\s*\[[xX]\]/, '$1 \u2611');
+      line = line.replace(/^([-*+])\s*\[[xX]\]/, '$1 \u200B\u2611');
     }
 
     result.push(line);
@@ -188,10 +192,10 @@ function preprocessMarkdown(content, options = {}) {
   for (let i = 0; i < result.length; i++) {
     final.push(result[i]);
     const stripped = result[i].trim();
-    const isList = /^[-*+]\s|^\d+\.\s|^[-*+]\s*[\u2610\u2611]/.test(stripped);
+    const isList = /^[-*+]\s|^\d+\.\s|^[-*+]\s*\u200B?[\u2610\u2611]/.test(stripped);
     if (isList && i + 1 < result.length) {
       const nextStripped = result[i + 1].trim();
-      const nextIsList = /^[-*+]\s|^\d+\.\s|^[-*+]\s*[\u2610\u2611]/.test(nextStripped);
+      const nextIsList = /^[-*+]\s|^\d+\.\s|^[-*+]\s*\u200B?[\u2610\u2611]/.test(nextStripped);
       if (!nextIsList && nextStripped) {
         final.push('');
       }
@@ -299,7 +303,7 @@ function validateLinks(content, sourceDir) {
 
       // Skip external URLs, anchors, and mailto
       if (linkUrl.startsWith('http://') || linkUrl.startsWith('https://') ||
-          linkUrl.startsWith('#') || linkUrl.startsWith('mailto:')) {
+        linkUrl.startsWith('#') || linkUrl.startsWith('mailto:')) {
         continue;
       }
 

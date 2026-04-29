@@ -179,10 +179,12 @@ function convertMermaidToPng(mmdContent, outputPath) {
   const tmpFile = path.join(os.tmpdir(), `alex-mmd-${Date.now()}-${Math.random().toString(36).slice(2)}.mmd`);
   try {
     fs.writeFileSync(tmpFile, mmdContent, 'utf8');
-    // Scale 8 for high-quality diagrams (harvested from AlexBooks build-pdf.js)
-    execSync(`npx mmdc -i "${tmpFile}" -o "${outputPath}" -b white -s 8 -w 2400`, {
+    // High-res render: 4x scale, 4800px viewport (was 8x/2400px).
+    // Wider viewport prevents clipping on wide architecture diagrams;
+    // 4 × 4800 = 19200px effective output — same fidelity, more horizontal room.
+    execSync(`npx mmdc -i "${tmpFile}" -o "${outputPath}" -b white -s 4 -w 4800 -H 2400`, {
       stdio: ['pipe', 'pipe', 'pipe'],
-      timeout: 60000
+      timeout: 120000
     });
     return true;
   } catch (err) {
@@ -1159,6 +1161,7 @@ async function build(args) {
       `-o "${outputPath}"`,
       '--from markdown',
       '--to docx',
+      '--dpi=300',
       `--resource-path="${resourcePath}"`
     ];
     if (args.toc) pandocArgs.push('--toc', '--toc-depth=3');

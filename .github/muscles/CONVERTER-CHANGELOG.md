@@ -2,6 +2,20 @@
 
 All notable changes to the Alex converter infrastructure.
 
+## v5.4.2 (2026-04-29)
+
+### shared/markdown-preprocessor.cjs
+
+- **Task-list checkbox preservation in `.docx`** — prefix `☐` / `☑` glyphs with U+200B (zero-width space) so they survive pandoc's bullet-marker heuristic. Pandoc's `markdown→docx` reader strips a leading unicode glyph when every list item begins with the same character; the ZWSP defeats the heuristic without affecting visible output. Both `isList` detection regexes updated to tolerate the optional ZWSP. Adopted from heir `FabricCapacity` after task-list items vanished from a 19-doc Word export pipeline.
+
+## v5.4.1 (2026-04-29)
+
+### md-to-word.cjs
+
+- **Wider Mermaid viewport** — render now uses `-s 4 -w 4800 -H 2400` (was `-s 8 -w 2400`). Effective output is unchanged (4 × 4800 ≈ 8 × 2400 = 19200px) but the wider canvas prevents right-edge clipping on wide architecture diagrams (LR flowcharts, multi-column subgraphs). Adopted from heir `FabricCapacity` after real-world clipping reports.
+- **Longer Mermaid timeout** — 60s → 120s. Wide diagrams with many nodes can exceed 60s on cold starts; 120s costs nothing on fast renders.
+- **Pandoc `--dpi=300`** — added to the pandoc args list so embedded images render at print resolution in the generated `.docx`. Previously relied on pandoc's default DPI which produced softer images on high-DPI displays and print.
+
 ## v5.4.0 (2026-04-28)
 
 ### md-to-word.cjs

@@ -20,6 +20,8 @@ Generate visually consistent SVG banners for any document in this heir using the
 - Creating a significant new document (README, PLAN-*.md, ROADMAP, CHANGELOG)
 - User mentions adding a "header" or "branded image" to a doc
 
+> **Looking for a lighter, hand-authored variant?** The Mall ships [`document-banner-pastel`](https://github.com/fabioc-aloha/Alex_Skill_Mall/blob/main/skills/media/document-banner-pastel/SKILL.md) — pastel 1200×240 banners with content-specific iconography (tracks / hub-and-spokes / mockup / badge / symbol). Use that pattern for branding, education, or audience-facing docs; use this muscle for technical artifacts that need brand-stamped consistency.
+
 ## Brand Constants (do not change)
 
 | Element | Value |
