@@ -6,6 +6,10 @@
   on top of the Edition's copilot-instructions.md.
 -->
 
+## North Star
+
+**Publish v0.4.0 to npm + VS Code Marketplace.** v0.3.0 (real MCP server + CI) and v0.4.0 (no-API-key transcript tools, URL parsing, transcript cache) both shipped 2026-04-29. The next meaningful milestone is getting the package onto npm (so `npx youtube-mcp-server` actually works for external MCP clients) and the VSIX onto the VS Code Marketplace. Use the `release-preflight` and `distribution-security` local skills.
+
 ## Project Context
 
 **YouTube MCP Tools** — a VS Code extension (publisher: `fabioc-aloha`, package: `youtube-mcp-tools`) that lets users search YouTube, analyze videos, extract transcripts, and generate flashcards directly from VS Code via a local MCP server the extension manages itself. Zero external runtime dependencies beyond what ships with VS Code + the MCP server. Owned by Fabio Correa (Director of Business Analytics at Microsoft, DBA candidate, AI researcher).
