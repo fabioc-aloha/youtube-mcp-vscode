@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Technical Writing — clear documentation for peers, developers, and technical audiences"
 application: "When writing documentation, API descriptions, architecture explanations, or technical guides"
 applyTo: "**/*doc*,**/*readme*,**/*guide*,**/*api*"
-currency: 2026-04-28
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Technical Writing
@@ -120,7 +121,7 @@ For long-form docs (plans, architecture, postmortems, ARCHITECTURE.md, READMEs),
 | Trailing `\` line break | ✅ | CommonMark/GFM-compliant; survives `prettier`; renders correctly in pandoc DOCX |
 | Two trailing spaces | ❌ | Invisible whitespace; auto-formatters strip it |
 | Bullets inside blockquote (`> - **Key**: ...`) | ⚠️ | Works but adds visual noise; bullet glyph competes with the bold key |
-| Adjacent `> ` lines without breaks | ❌ | Most renderers collapse into one paragraph — produces a wall of text in Word |
+| Adjacent `>` lines without breaks | ❌ | Most renderers collapse into one paragraph — produces a wall of text in Word |
 | Blank `>` between every line | ⚠️ | Each line becomes its own paragraph with extra spacing |
 
 The trailing backslash is two characters of source-side overhead; the payoff is correct rendering in every common surface, especially Word/PDF exports.

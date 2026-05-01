@@ -1,6 +1,7 @@
 ---
 description: "File feedback to the user (and their Supervisor, if any) via AI-Memory — guided through stripping rules and file naming"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Feedback

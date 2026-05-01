@@ -1,6 +1,7 @@
 ---
 description: "Append a quick session note to AI-Memory/notes.md for cross-session continuity"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Save Session Note

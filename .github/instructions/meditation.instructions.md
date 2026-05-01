@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Knowledge consolidation — transform working memory into permanent architecture"
 application: "When ending significant sessions or when patterns emerge worth persisting"
 applyTo: "**/*meditat*,**/*consolidat*"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Meditation Protocol
@@ -24,6 +25,7 @@ Consolidate learning into permanent architecture. Transform session insights int
 ### 1. Review — What happened?
 
 Scan the session:
+
 - What problems did we solve?
 - What mistakes did we make?
 - What patterns emerged?
@@ -43,6 +45,7 @@ Scan the session:
 ### 3. Write — Persist the knowledge
 
 For skills and instructions:
+
 - Use proper frontmatter (type, lifecycle, description, applyTo)
 - Include concrete examples, not just abstractions
 - Add tables with real data (thresholds, trade-offs)
@@ -117,6 +120,7 @@ Tag failures in the chronicle for retrieval: `#failure #<category>`
 ## Quality Bar
 
 A meditation is complete when:
+
 - [ ] Key patterns are persisted (not just acknowledged)
 - [ ] Chronicle captures session narrative
 - [ ] Session handoff enables continuity

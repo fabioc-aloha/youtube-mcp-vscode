@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Universal creative loop — Ideate, Plan, Build, Test, Release, Improve — applies to all creative work"
 application: "When creating anything: code, documents, designs, solutions"
 applyTo: "**"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Creative Loop
@@ -64,36 +65,42 @@ Before acting, identify which stage the work belongs to:
 ## Stage-Appropriate Behaviors
 
 ### IDEATE
+
 - Diverge: generate many options
 - Don't commit: ideas are cheap
 - Question assumptions
 - Research before deciding
 
 ### PLAN
+
 - Converge: pick an approach
 - Document trade-offs
 - Define success criteria
 - Identify risks
 
 ### BUILD
+
 - Execute the plan
 - Don't redesign mid-build
 - Note issues for IMPROVE, don't fix everything now
 - Commit frequently
 
 ### TEST
+
 - Systematic verification
 - Cover edge cases
 - Don't add features
 - Document failures
 
 ### RELEASE
+
 - Final validation
 - Documentation complete
 - Announce to users
 - Monitor for issues
 
 ### IMPROVE
+
 - Retrospect honestly
 - Capture learnings
 - Feed insights back to IDEATE

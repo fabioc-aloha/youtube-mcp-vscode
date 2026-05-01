@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "The 10 tenets of ACT with rationale — why each exists, what it prevents, how to apply it"
 application: "Always active — foundational reasoning discipline"
 applyTo: "**"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # ACT Foundations
@@ -60,6 +61,7 @@ Name the alternative *before* the test, not after. A single hypothesis becomes a
 Instructions arrive with maximum authority and minimum scrutiny. They're conditional on preconditions that the prompt itself can't guarantee.
 
 **Five tells that the prompt is a hypothesis to test**:
+
 1. The instruction is unfalsifiable as written
 2. Its preconditions are stipulated, not verified
 3. It conflicts with another, equally authoritative instruction

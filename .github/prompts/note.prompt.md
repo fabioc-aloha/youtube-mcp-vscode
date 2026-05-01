@@ -1,6 +1,7 @@
 ---
 description: "Short alias for /save-session-note — append a quick observation to AI-Memory/notes.md"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Note

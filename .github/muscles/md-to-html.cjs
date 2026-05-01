@@ -6,7 +6,7 @@
  * @lifecycle stable
  * @inheritance inheritable
  * @description Convert Markdown to standalone HTML with embedded assets
- * @version 1.0.0
+ * @version 1.1.0
  * @skill md-to-html
  * @reviewed 2026-04-15
  * @platform windows,macos,linux
@@ -297,7 +297,7 @@ function convertMarkdownToHtml(sourcePath, outputPath, options = {}) {
   const embedImages = options.embedImages !== false;
   const stripFrontmatter = options.stripFrontmatter !== false;
   const usePngMermaid = !!options.mermaidPng;
-  const generateToc = !!options.toc;
+  let generateToc = !!options.toc;
 
   let markdown = fs.readFileSync(sourcePath, 'utf8');
   const sourceDir = path.dirname(path.resolve(sourcePath));
@@ -317,7 +317,17 @@ function convertMarkdownToHtml(sourcePath, outputPath, options = {}) {
     markdown = sharedPreprocessor.preprocessMarkdown(markdown, {
       format: 'html',
       stripFrontmatter,
+      replaceEmDashes: options.replaceEmDashes,
+      stripDecorativeRules: options.stripDecorativeRules,
     });
+
+    // [toc] marker auto-detection
+    const tocResult = sharedPreprocessor.detectTocMarker(markdown);
+    markdown = tocResult.content;
+    if (tocResult.hasTocMarker && !generateToc) {
+      generateToc = true;
+      console.log('   \u{1f4d1} [toc] marker detected -- enabling Table of Contents');
+    }
   } else if (stripFrontmatter) {
     markdown = markdown.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
   }
@@ -401,6 +411,9 @@ function parseCliArgs() {
     else if (arg === '--toc') { options.toc = true; }
     else if (arg === '--embed-images') { options.embedImages = true; }
     else if (arg === '--no-embed-images') { options.embedImages = false; }
+    else if (arg === '--no-replace-em-dashes') { options.replaceEmDashes = false; }
+    else if (arg === '--strip-decorative-rules') { options.stripDecorativeRules = true; }
+    else if (arg === '--no-strip-decorative-rules') { options.stripDecorativeRules = false; }
     else if (arg === '--strip-frontmatter') { options.stripFrontmatter = true; }
     else if (arg === '--no-strip-frontmatter') { options.stripFrontmatter = false; }
     else if (arg === '--mermaid-png') { options.mermaidPng = true; }

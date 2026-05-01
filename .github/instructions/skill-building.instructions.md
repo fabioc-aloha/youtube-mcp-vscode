@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Create reusable skills from emerged patterns — the growth mechanism"
 application: "When domain knowledge or process patterns are worth persisting"
 applyTo: "**/*skill*,**/*build*,**/*create*"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Skill Building
@@ -40,6 +41,7 @@ description: "<one-line purpose>"
 tier: standard|advanced
 applyTo: '<glob pattern>'
 currency: YYYY-MM-DD
+lastReviewed: 2026-01-01
 ---
 ```
 
@@ -70,6 +72,7 @@ The `applyTo` field creates a **synapse** — an automatic connection that fires
 ## Quality Bar
 
 A good skill:
+
 - [ ] Contains knowledge an LLM wouldn't know generically
 - [ ] Has concrete examples, not just category labels
 - [ ] Includes tables with real data (thresholds, trade-offs)
@@ -123,6 +126,7 @@ tools: [read_file, run_in_terminal, ...]  # optional: restrict tools
 | User invokes explicitly | Context triggers automatically |
 
 **Examples**:
+
 - `release.prompt.md` — version bump, changelog, publish sequence
 - `code-review.prompt.md` — structured review checklist
 - `debug-session.prompt.md` — systematic debugging workflow

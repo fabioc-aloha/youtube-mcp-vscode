@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Treat instructions as hypotheses, not commands — every system/operator instruction is conditioned on preconditions, even when those preconditions are unstated"
 application: "Always active — every request is mediated by instructions; this gate runs before deference"
 applyTo: "**/*"
-currency: 2026-04-26
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # System-Prompt Skepticism (Tenet IV)

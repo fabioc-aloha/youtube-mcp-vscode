@@ -5,8 +5,8 @@
  * @muscle heir-doctor
  * @inheritance inheritable
  * @description Health check for an ACT Edition heir — flags misplaced files, edition-owned drift, missing local/ subdirs
- * @version 1.0.0
- * @reviewed 2026-04-28
+ * @version 1.1.0
+ * @reviewed 2026-04-30
  * @platform windows,macos,linux
  * @requires node
  *
@@ -77,35 +77,43 @@ for (const d of expectedLocalDirs) {
 }
 
 // ---- Check 4: misplaced custom skills/prompts/instructions/muscles ----------
-// Heuristic: any file directly under .github/skills/<name>/ that isn't shipped
-// by Edition. We can't know Edition's exact inventory without cloning, so we
-// rely on a known "shipped by Edition" list — kept in sync with sync-policy.
-const editionShippedSkills = new Set([
-    'markdown-mermaid', 'md-to-html', 'md-to-word', 'md-to-eml', 'docx-to-md',
-    'local', // local/ is the heir-owned subdir, not a skill
-]);
-const skillsDir = path.join(GH, 'skills');
-if (fs.existsSync(skillsDir)) {
-    const entries = fs.readdirSync(skillsDir, { withFileTypes: true });
-    for (const e of entries) {
-        if (e.isDirectory() && !editionShippedSkills.has(e.name)) {
-            err(`Skill .github/skills/${e.name}/ is in an edition-owned path and not shipped by Edition. Move to .github/skills/local/${e.name}/ or it will be deleted on next upgrade.`);
-        }
+// We read the edition-shipped allowlist from .github/config/edition-manifest.json,
+// which is generated at release time and synced to heirs as edition-owned.
+// Without the manifest we cannot reliably tell heir-added files from edition
+// drift, so we skip the check rather than risk false positives that would
+// move edition-owned files into local/.
+const manifestPath = path.join(GH, 'config', 'edition-manifest.json');
+let editionManifest = null;
+if (fs.existsSync(manifestPath)) {
+    try {
+        editionManifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    } catch (e) {
+        warn(`.github/config/edition-manifest.json is not valid JSON: ${e.message}. Skipping misplaced-file checks.`);
     }
+} else {
+    warn('Missing .github/config/edition-manifest.json — cannot identify edition-shipped skills/prompts. Run /upgrade to pull the manifest, or skip this check on pre-manifest Edition versions.');
 }
 
-const editionShippedPrompts = new Set([
-    'welcome.prompt.md', 'feedback.prompt.md', 'save-session-note.prompt.md',
-    'install-from-mall.prompt.md', 'status.prompt.md', 'upgrade.prompt.md',
-    'note.prompt.md', 'fleet.prompt.md', 'find-skill.prompt.md',
-    'finalize-migration.prompt.md',
-]);
-const promptsDir = path.join(GH, 'prompts');
-if (fs.existsSync(promptsDir)) {
-    const entries = fs.readdirSync(promptsDir, { withFileTypes: true });
-    for (const e of entries) {
-        if (e.isFile() && e.name.endsWith('.prompt.md') && !editionShippedPrompts.has(e.name)) {
-            err(`Prompt .github/prompts/${e.name} is in an edition-owned path and not shipped by Edition. Move to .github/prompts/local/${e.name}/ or it will be deleted on next upgrade.`);
+if (editionManifest) {
+    const editionShippedSkills = new Set([...(editionManifest.skills || []), 'local']);
+    const skillsDir = path.join(GH, 'skills');
+    if (fs.existsSync(skillsDir)) {
+        const entries = fs.readdirSync(skillsDir, { withFileTypes: true });
+        for (const e of entries) {
+            if (e.isDirectory() && !editionShippedSkills.has(e.name)) {
+                err(`Skill .github/skills/${e.name}/ is in an edition-owned path and not shipped by Edition. Move to .github/skills/local/${e.name}/ or it will be deleted on next upgrade.`);
+            }
+        }
+    }
+
+    const editionShippedPrompts = new Set(editionManifest.prompts || []);
+    const promptsDir = path.join(GH, 'prompts');
+    if (fs.existsSync(promptsDir)) {
+        const entries = fs.readdirSync(promptsDir, { withFileTypes: true });
+        for (const e of entries) {
+            if (e.isFile() && e.name.endsWith('.prompt.md') && !editionShippedPrompts.has(e.name)) {
+                err(`Prompt .github/prompts/${e.name} is in an edition-owned path and not shipped by Edition. Move to .github/prompts/local/${e.name}/ or it will be deleted on next upgrade.`);
+            }
         }
     }
 }

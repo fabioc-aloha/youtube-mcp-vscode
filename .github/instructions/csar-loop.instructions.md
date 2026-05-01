@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "CSAR Loop protocol — Clarify, Summarize, Act, Reflect for structured human-AI dialog"
 application: "When working on multi-step tasks, complex requests, or any work requiring iteration"
 applyTo: "**/*"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # CSAR Loop

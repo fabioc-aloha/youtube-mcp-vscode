@@ -5,7 +5,7 @@
  * @lifecycle stable
  * @inheritance inheritable
  * @description Convert Markdown to production-quality Word documents
- * @version 5.4.0
+ * @version 5.5.0
  * @skill md-to-word
  * @reviewed 2026-04-28
  * @platform windows,macos,linux
@@ -21,7 +21,9 @@
  * Options:
  *   --no-format-tables   Skip table styling (borders, shading, headers)
  *   --keep-temp          Keep temporary files for debugging
- *   --toc                Generate Table of Contents
+ *   --toc                Generate Table of Contents (also auto-detected from `[toc]` marker line)
+ *   --no-replace-em-dashes  Disable em-dash --> comma replacement (default: enabled)
+ *   --no-strip-decorative-rules  Disable removal of decorative `---` thematic breaks (default: enabled)
  *   --cover              Generate cover page from H1 + metadata
  *   --no-cover           Skip cover page (default)
  *   --page-size SIZE     Page size: letter (default), a4, 6x9
@@ -81,7 +83,7 @@ try {
 // ---------------------------------------------------------------------------
 // Shared module imports
 // ---------------------------------------------------------------------------
-const { preprocessMarkdown, validateHeadingHierarchy, embedLocalImages, validateLinks } = require(path.join(__dirname, 'shared', 'markdown-preprocessor.cjs'));
+const { preprocessMarkdown, detectTocMarker, validateHeadingHierarchy, embedLocalImages, validateLinks } = require(path.join(__dirname, 'shared', 'markdown-preprocessor.cjs'));
 const { findMermaidBlocks, analyzeMermaid, injectPalette } = require(path.join(__dirname, 'shared', 'mermaid-pipeline.cjs'));
 
 // ---------------------------------------------------------------------------
@@ -835,7 +837,9 @@ function parseArgs(argv) {
     stripFrontmatter: false,
     recursive: false,
     dryRun: false,
-    noDefaultPalette: false
+    noDefaultPalette: false,
+    replaceEmDashes: true,
+    stripDecorativeRules: true
   };
 
   const positional = [];
@@ -846,6 +850,10 @@ function parseArgs(argv) {
       result.keepTemp = true;
     } else if (args[i] === '--toc') {
       result.toc = true;
+    } else if (args[i] === '--no-replace-em-dashes') {
+      result.replaceEmDashes = false;
+    } else if (args[i] === '--no-strip-decorative-rules') {
+      result.stripDecorativeRules = false;
     } else if (args[i] === '--cover') {
       result.cover = true;
     } else if (args[i] === '--no-cover') {
@@ -945,7 +953,19 @@ async function build(args) {
       }
     }
 
-    content = preprocessMarkdown(content, { format: 'docx' });
+    content = preprocessMarkdown(content, {
+      format: 'docx',
+      replaceEmDashes: args.replaceEmDashes,
+      stripDecorativeRules: args.stripDecorativeRules
+    });
+
+    // [toc] marker auto-detection -- strips the marker line and enables TOC.
+    const tocResult = detectTocMarker(content);
+    content = tocResult.content;
+    if (tocResult.hasTocMarker && !args.toc) {
+      args.toc = true;
+      console.log('   \u{1f4d1} [toc] marker detected -- enabling Table of Contents');
+    }
 
     // Validate heading hierarchy
     const headingResult = validateHeadingHierarchy(content);

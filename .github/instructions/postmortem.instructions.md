@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Postmortem writing — structured incident analysis for root cause and prevention"
 application: "After failures, incidents, or mistakes that reveal novel failure modes"
 applyTo: "**/*postmortem*,**/*incident*,**/*failure*,**/*retro*"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Postmortem Writing
@@ -24,14 +25,17 @@ Structured analysis of failures to prevent recurrence. Not blame — learning.
 ## Template Structure
 
 ### 1. Summary
+
 One paragraph: What happened? When? What was the impact?
 
 ### 2. Impact
+
 - Who was affected?
 - Duration of impact
 - Severity level (critical/high/medium/low)
 
 ### 3. Timeline
+
 Chronological events from first signal to resolution:
 
 | Time | Event |
@@ -41,13 +45,16 @@ Chronological events from first signal to resolution:
 | 15:10 | Fix deployed |
 
 ### 4. Root Cause
+
 **Technical cause chain**, not "human error."
 
 Bad: "Developer forgot to test edge case"
 Good: "No automated test covered this code path; manual testing doesn't scale"
 
 ### 5. Contributing Factors
+
 What made detection or resolution slower?
+
 - Missing monitoring?
 - Unclear ownership?
 - Documentation gaps?
@@ -62,6 +69,7 @@ What made detection or resolution slower?
 Every action needs an owner and deadline. No orphan actions.
 
 ### 7. Lessons Learned
+
 - What worked well?
 - What didn't?
 - What was lucky (caught by chance)?

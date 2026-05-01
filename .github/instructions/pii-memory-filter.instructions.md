@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "PII filter at memory write boundaries — prevent sensitive data from entering persistent storage tiers"
 application: "Always active — unconscious filter before writing to any persistent memory tier"
 applyTo: "**"
-currency: 2026-04-20
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # PII Memory Filter

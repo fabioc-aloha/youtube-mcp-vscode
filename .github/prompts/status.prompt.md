@@ -1,6 +1,7 @@
 ---
 description: "Session-start orientation — heir identity, git state, uncommitted age, unread announcements"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Status

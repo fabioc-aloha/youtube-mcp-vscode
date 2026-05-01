@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Partnership Charter — five commitments for effective human-AI collaboration"
 application: "Always active — defines the behavioral contract between human and AI"
 applyTo: "**/*"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Partnership Charter

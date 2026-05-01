@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Run the 7-step ACT pass on medium and high stakes work — Materiality first, then Hypothesise, Alternatives, Disconfirmers, Audit-priors, Severity, Commit"
 application: "When a request is non-trivial (architectural choice, plan change, release, deployment, irreversible op) or uses high-stakes language (fix, ship, deploy, merge, is this safe)"
 applyTo: "**/*"
-currency: 2026-04-26
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # ACT Pass

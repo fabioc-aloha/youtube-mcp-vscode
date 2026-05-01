@@ -1,6 +1,7 @@
 ---
 description: "First-session orientation for a new ACT Edition heir — explains identity, channels, upgrade flow, and overrides"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Welcome to ACT Edition

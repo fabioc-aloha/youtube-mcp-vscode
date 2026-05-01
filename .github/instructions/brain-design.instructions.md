@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Brain architecture patterns — trifectas, muscles, agents, and the mechanical/semantic split"
 application: "When designing automation, creating agents, or building complete capabilities"
 applyTo: "**/*muscle*,**/*agent*,**/*trifecta*,**/*.cjs"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Brain Design Patterns
@@ -31,10 +32,11 @@ Skill (knowledge) + Instruction (behavior) + Muscle (automation)
 
 | Example | Skill | Instruction | Muscle |
 |---------|-------|-------------|--------|
-| Code review | `code-review/SKILL.md` | `code-review.instructions.md` | `audit-pr.cjs` |
-| Brain QA | `brain-qa/SKILL.md` | `dream-state-automation.instructions.md` | `brain-qa.cjs` |
+| Markdown → Word | `md-to-word/SKILL.md` | `md-to-word.instructions.md` | `md-to-word.cjs` |
+| Word → Markdown | `docx-to-md/SKILL.md` | `docx-to-md.instructions.md` | `docx-to-md.cjs` |
 
 **Why trifectas work**:
+
 - Skill provides the *what* (domain knowledge, decision tables)
 - Instruction provides the *when* (auto-triggers, context injection)
 - Muscle provides the *how* (deterministic execution)
@@ -46,24 +48,31 @@ Not every capability needs all three. Simple behaviors need only an instruction.
 When creating a complete capability:
 
 **Step 1: Start with the Skill** — Capture the domain knowledge
+
 ```
 .github/skills/<name>/SKILL.md
 ```
+
 Document: purpose, when to use, core knowledge, decision tables, common mistakes.
 
 **Step 2: Add the Instruction** — Define the trigger
+
 ```
 .github/instructions/<name>.instructions.md
 ```
+
 Set `applyTo` pattern so it auto-loads when relevant context appears.
 
 **Step 3: Add the Muscle** — Automate the mechanical work
+
 ```
 .github/muscles/<name>.cjs
 ```
+
 Script the deterministic parts. Return exit code 2 when LLM judgment is needed.
 
 **Verification checklist:**
+
 - [ ] Skill has concrete examples, not just descriptions
 - [ ] Instruction's `applyTo` fires on the right files
 - [ ] Muscle runs on Windows AND macOS (test both if possible)
@@ -124,6 +133,7 @@ Muscles must run on any platform. Follow these rules:
 | **UTF-8 everywhere** | Encoding consistency | `fs.readFileSync(path, 'utf8')` |
 
 **File path example:**
+
 ```javascript
 // WRONG — breaks on Windows
 const file = dir + '/' + name;
@@ -133,6 +143,7 @@ const file = path.join(dir, name);
 ```
 
 **Line splitting example:**
+
 ```javascript
 // WRONG — leaves \r on Windows
 const lines = text.split('\n');
@@ -142,6 +153,7 @@ const lines = text.split(/\r?\n/);
 ```
 
 **Command execution example:**
+
 ```javascript
 // WRONG — shell injection risk, platform-specific
 const result = execSync(`gh issue list --json title`);
@@ -163,10 +175,10 @@ const path = require('path');
 async function main() {
   try {
     // Mechanical work here
-    
+
     // If semantic review needed:
     // process.exit(2);
-    
+
     process.exit(0);
   } catch (err) {
     console.error(err.message);
@@ -247,6 +259,7 @@ tools: [tool1, tool2, ...]  # optional: allowed tools
 | Scope | Broad domain focus | Specific knowledge area |
 
 **Example agents**:
+
 - `Researcher.agent.md` — deep research mode
 - `Validator.agent.md` — skeptical review mode
 - `Builder.agent.md` — optimistic implementation mode

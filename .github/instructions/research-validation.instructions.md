@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Research validation — verify assumptions against authoritative sources before implementing; LLM knowledge is almost always outdated"
 application: "Before implementing any API, library, framework, or technology-dependent solution"
 applyTo: "**/*api*,**/*integrat*,**/*implement*,**/*build*"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Research Validation
@@ -25,6 +26,7 @@ Before implementing anything technology-dependent, validate against authoritativ
 | Authentication flow | New OAuth scopes required |
 
 **Training data cutoff means**:
+
 - Breaking changes after cutoff are invisible to me
 - Deprecations aren't flagged
 - New best practices aren't known
@@ -119,5 +121,5 @@ Research validation is ACT applied to technology knowledge:
 ## Remember
 
 > **I don't know what I don't know about recent changes.**
-> 
+>
 > Every technology claim I make should be verified against authoritative sources before implementation.

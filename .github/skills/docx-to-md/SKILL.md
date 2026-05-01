@@ -7,13 +7,13 @@ tier: extended
 inheritance: inheritable
 applyTo: '**/*.docx,**/*word*,**/*docx*'
 muscle: .github/muscles/docx-to-md.cjs
-currency: 2026-04-22
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Word to Markdown Conversion
 
 > Ingest Word documents into your Markdown workflow — clean, linted, version-control ready
-
 
 Convert .docx files into clean, linted Markdown with extracted images, normalized headings, and cleaned table formatting. The reverse converter for ingesting external documents into a Markdown-based workflow.
 

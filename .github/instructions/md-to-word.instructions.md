@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Markdown to Word document conversion with style presets and professional features"
 application: "When converting Markdown to Word documents"
 applyTo: "**/*md-to-word*,**/*docx*"
-currency: 2026-04-22
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Markdown to Word — Auto-Loaded Rules

@@ -6,9 +6,9 @@
  * @lifecycle stable
  * @inheritance inheritable
  * @description Convert Word documents to clean Markdown with image extraction
- * @version 1.0.0
+ * @version 1.1.0
  * @skill docx-to-md
- * @reviewed 2026-04-15
+ * @reviewed 2026-04-30
  * @platform windows,macos,linux
  * @requires node,pandoc
  *

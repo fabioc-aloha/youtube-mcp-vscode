@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Domain-agnostic learning and rapid context acquisition — from zero to partnership fast"
 application: "When entering a new project, domain, or user relationship"
 applyTo: "**/*"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Bootstrap Learning
@@ -32,6 +33,7 @@ When entering a new project:
 ### 2. Understand the Goal
 
 Ask yourself (or the user):
+
 - What is this project?
 - What problem does it solve?
 - Who uses it?

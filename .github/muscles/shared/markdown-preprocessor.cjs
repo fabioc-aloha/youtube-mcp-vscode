@@ -82,6 +82,160 @@ function extractFrontmatter(content) {
 }
 
 /**
+ * Apply a per-line transform to all lines OUTSIDE fenced code blocks.
+ * Fence detection supports both backtick (```) and tilde (~~~) fences
+ * with matching length and indentation tolerance.
+ * @param {string} content
+ * @param {(line: string) => string} transformer
+ * @returns {string}
+ */
+function applyOutsideFences(content, transformer) {
+  const lines = content.split('\n');
+  let inFence = false;
+  let fenceMarker = null;
+  const out = [];
+  for (const line of lines) {
+    const fenceMatch = line.match(/^\s*(`{3,}|~{3,})/);
+    if (fenceMatch) {
+      const marker = fenceMatch[1];
+      if (!inFence) { inFence = true; fenceMarker = marker[0].repeat(3); }
+      else if (line.trim().startsWith(fenceMarker)) { inFence = false; fenceMarker = null; }
+      out.push(line);
+      continue;
+    }
+    if (inFence) { out.push(line); continue; }
+    out.push(transformer(line));
+  }
+  return out.join('\n');
+}
+
+/**
+ * Replace U+2014 (em-dash) with proper punctuation. Skips inline code spans
+ * and fenced code blocks. Conservative: only touches the literal em-dash
+ * character, not typed `--` (which pandoc smart-converts intentionally).
+ *
+ *   word\u2014word  -> word, word
+ *   word \u2014 word -> word, word
+ *
+ * Defeats the AI-tell pattern of LLMs auto-inserting em-dashes.
+ * @param {string} content
+ * @returns {string}
+ */
+function replaceEmDashes(content) {
+  return applyOutsideFences(content, (line) => {
+    // Preserve inline code spans (single backticks).
+    const parts = line.split(/(`[^`\n]*`)/g);
+    return parts.map((p, idx) => {
+      if (idx % 2 === 1) return p; // inside `code`
+      // " \u2014 " or "\u2014" between letters -> ", "
+      return p
+        .replace(/\s*\u2014\s*/g, ', ')
+        .replace(/,\s+,\s+/g, ', '); // collapse accidental ", , "
+    }).join('');
+  });
+}
+
+/**
+ * Strip decorative thematic-break lines (`---`, `***`, `___` on their own line).
+ * Preserves:
+ *   - YAML frontmatter delimiters (only at top of file, handled by extractFrontmatter caller)
+ *   - Setext H2 underlines (`---` immediately under a non-blank text line)
+ *   - Fenced code-block content
+ * @param {string} content
+ * @returns {string}
+ */
+function stripDecorativeRules(content) {
+  const lines = content.split('\n');
+  let inFence = false;
+  let fenceMarker = null;
+  const out = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const fenceMatch = line.match(/^\s*(`{3,}|~{3,})/);
+    if (fenceMatch) {
+      const marker = fenceMatch[1];
+      if (!inFence) { inFence = true; fenceMarker = marker[0].repeat(3); }
+      else if (line.trim().startsWith(fenceMarker)) { inFence = false; fenceMarker = null; }
+      out.push(line);
+      continue;
+    }
+    if (inFence) { out.push(line); continue; }
+
+    const isHr = /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/.test(line);
+    if (!isHr) { out.push(line); continue; }
+
+    // Setext H2 check: previous line is non-blank text and not itself a heading/HR/list/blockquote.
+    const prev = i > 0 ? lines[i - 1] : '';
+    const prevTrim = prev.trim();
+    const prevIsTextLine =
+      prevTrim.length > 0 &&
+      !/^#{1,6}\s/.test(prevTrim) &&
+      !/^(?:-{3,}|\*{3,}|_{3,})$/.test(prevTrim) &&
+      !/^[-*+]\s/.test(prevTrim) &&
+      !/^\d+\.\s/.test(prevTrim) &&
+      !/^>/.test(prevTrim);
+    // Only treat `---` as setext underline (not `***` or `___`).
+    if (prevIsTextLine && /^\s*-{3,}\s*$/.test(line)) {
+      out.push(line);
+      continue;
+    }
+    // Decorative HR -- drop the line.
+  }
+  return out.join('\n');
+}
+
+/**
+ * Detect a standalone `[toc]` marker (case-insensitive) on its own line,
+ * outside fenced code blocks. If present, strip the marker line(s) and
+ * return hasTocMarker=true so the caller can flip its TOC flag.
+ *
+ *   [toc]   -> stripped, returns true
+ *   [TOC]   -> stripped, returns true
+ *   `[toc]` -> preserved literally
+ *   ```\n[toc]\n``` (in fence) -> preserved literally
+ *
+ * @param {string} content
+ * @returns {{ content: string, hasTocMarker: boolean }}
+ */
+function detectTocMarker(content) {
+  const lines = content.split('\n');
+  let inFence = false;
+  let fenceMarker = null;
+  let hasTocMarker = false;
+  const out = [];
+  for (const line of lines) {
+    const fenceMatch = line.match(/^\s*(`{3,}|~{3,})/);
+    if (fenceMatch) {
+      const marker = fenceMatch[1];
+      if (!inFence) { inFence = true; fenceMarker = marker[0].repeat(3); }
+      else if (line.trim().startsWith(fenceMarker)) { inFence = false; fenceMarker = null; }
+      out.push(line);
+      continue;
+    }
+    if (inFence) { out.push(line); continue; }
+    if (/^\s*\[toc\]\s*$/i.test(line)) {
+      hasTocMarker = true;
+      continue; // strip the marker line
+    }
+    out.push(line);
+  }
+  return { content: out.join('\n'), hasTocMarker };
+}
+
+/**
+ * Format-aware defaults for the new prose-cleanup transforms.
+ */
+const FORMAT_DEFAULTS = {
+  docx: { replaceEmDashes: true, stripDecorativeRules: true },
+  email: { replaceEmDashes: true, stripDecorativeRules: true },
+  html: { replaceEmDashes: true, stripDecorativeRules: false },
+  txt: { replaceEmDashes: true, stripDecorativeRules: false },
+  pdf: { replaceEmDashes: false, stripDecorativeRules: false },
+  epub: { replaceEmDashes: false, stripDecorativeRules: false },
+  gamma: { replaceEmDashes: false, stripDecorativeRules: false },
+};
+
+/**
  * Full preprocessing pipeline. Options control which transforms run.
  *
  * @param {string} content - Raw markdown
@@ -90,6 +244,7 @@ function extractFrontmatter(content) {
  */
 function preprocessMarkdown(content, options = {}) {
   const format = options.format || 'docx';
+  const fmtDefaults = FORMAT_DEFAULTS[format] || FORMAT_DEFAULTS.docx;
 
   // Strip UTF-8 BOM
   content = content.replace(/^\uFEFF/, '');
@@ -98,6 +253,24 @@ function preprocessMarkdown(content, options = {}) {
   if (options.stripFrontmatter) {
     const { content: body } = extractFrontmatter(content);
     content = body;
+  }
+
+  // Em-dash cleanup -- defeats the AI-tell pattern. Format-aware default,
+  // explicit option overrides.
+  const doEmDashes = options.replaceEmDashes !== undefined
+    ? options.replaceEmDashes
+    : fmtDefaults.replaceEmDashes;
+  if (doEmDashes) {
+    content = replaceEmDashes(content);
+  }
+
+  // Decorative thematic-break cleanup -- removes unnecessary `---` HRs that
+  // clutter docx/email output. Setext H2 underlines and frontmatter are preserved.
+  const doStripHrs = options.stripDecorativeRules !== undefined
+    ? options.stripDecorativeRules
+    : fmtDefaults.stripDecorativeRules;
+  if (doStripHrs) {
+    content = stripDecorativeRules(content);
   }
 
   // LaTeX math -> Unicode
@@ -323,13 +496,141 @@ function validateLinks(content, sourceDir) {
   return { valid: warnings.length === 0, warnings };
 }
 
+/**
+ * Format markdown source for professional appearance — whitespace and structure
+ * cleanup ONLY. Does NOT transform syntax (no LaTeX, callouts, or semantic
+ * changes). Safe to apply to source .md files in place.
+ *
+ * Rules (all on by default, individually opt-out via options):
+ *  - Strip UTF-8 BOM and normalize line endings to LF (always)
+ *  - Trim trailing whitespace, preserving ` \` and `  ` hard breaks
+ *  - Blockquote continuity: append ` \` to non-empty `>` lines whose next line
+ *    is also a non-empty `>` line (forces visible breaks instead of reflow)
+ *  - Collapse 3+ consecutive blank lines to 2
+ *  - Ensure single blank line before and after ATX headings
+ *  - Ensure file ends with exactly one trailing newline
+ *  - Code fences (```` ``` ```` or `~~~`) are passed through untouched
+ *
+ * @param {string} content - Raw markdown source
+ * @param {object} [options]
+ * @param {boolean} [options.trimTrailing=true]
+ * @param {boolean} [options.blockquoteBreaks=true]
+ * @param {boolean} [options.collapseBlanks=true]
+ * @param {boolean} [options.normalizeHeadings=true]
+ * @returns {string} Formatted markdown
+ */
+function formatMarkdown(content, options = {}) {
+  const opts = {
+    trimTrailing: options.trimTrailing !== false,
+    blockquoteBreaks: options.blockquoteBreaks !== false,
+    collapseBlanks: options.collapseBlanks !== false,
+    normalizeHeadings: options.normalizeHeadings !== false,
+  };
+
+  content = content.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+  let lines = content.split('\n');
+
+  const buildFenceMap = (arr) => {
+    const map = new Array(arr.length).fill(false);
+    let fence = false, marker = null;
+    for (let i = 0; i < arr.length; i++) {
+      const m = arr[i].match(/^(\s{0,3})(`{3,}|~{3,})/);
+      if (m) {
+        if (!fence) { fence = true; marker = m[2][0]; map[i] = false; continue; }
+        if (m[2][0] === marker) { fence = false; marker = null; map[i] = false; continue; }
+      }
+      map[i] = fence;
+    }
+    return map;
+  };
+
+  let inFence = buildFenceMap(lines);
+
+  if (opts.trimTrailing) {
+    for (let i = 0; i < lines.length; i++) {
+      if (inFence[i]) continue;
+      const line = lines[i];
+      const hadTwoSpace = /\S  +$/.test(line);
+      const hadBackslash = /\S \\\s*$/.test(line);
+      let trimmed = line.replace(/[ \t]+$/, '');
+      if (hadBackslash) trimmed += ' \\';
+      else if (hadTwoSpace) trimmed += '  ';
+      lines[i] = trimmed;
+    }
+  }
+
+  if (opts.blockquoteBreaks) {
+    for (let i = 0; i < lines.length - 1; i++) {
+      if (inFence[i] || inFence[i + 1]) continue;
+      const cur = lines[i];
+      const nxt = lines[i + 1];
+      const curBQ = /^\s{0,3}>\s*\S/.test(cur);
+      const nxtBQ = /^\s{0,3}>\s*\S/.test(nxt);
+      if (curBQ && nxtBQ && !/  $/.test(cur) && !/ \\$/.test(cur)) {
+        lines[i] = cur.replace(/[ \t]*$/, '') + ' \\';
+      }
+    }
+  }
+
+  if (opts.collapseBlanks) {
+    const out = [];
+    const newFence = [];
+    let blankRun = 0;
+    for (let i = 0; i < lines.length; i++) {
+      if (inFence[i]) {
+        out.push(lines[i]); newFence.push(true); blankRun = 0; continue;
+      }
+      if (lines[i].trim() === '') {
+        blankRun++;
+        if (blankRun <= 2) { out.push(lines[i]); newFence.push(false); }
+      } else {
+        blankRun = 0;
+        out.push(lines[i]); newFence.push(false);
+      }
+    }
+    lines = out;
+    inFence = newFence;
+  }
+
+  if (opts.normalizeHeadings) {
+    const out = [];
+    const newFence = [];
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const isHeading = !inFence[i] && /^#{1,6}\s+\S/.test(line);
+      if (isHeading) {
+        if (out.length > 0 && out[out.length - 1].trim() !== '') {
+          out.push(''); newFence.push(false);
+        }
+        out.push(line); newFence.push(false);
+        if (i + 1 < lines.length && lines[i + 1].trim() !== '') {
+          out.push(''); newFence.push(false);
+        }
+      } else {
+        out.push(line); newFence.push(inFence[i]);
+      }
+    }
+    lines = out;
+    inFence = newFence;
+  }
+
+  return lines.join('\n').replace(/\n+$/, '') + '\n';
+}
+
 module.exports = {
   preprocessMarkdown,
+  formatMarkdown,
   convertLatexMath,
   extractFrontmatter,
+  applyOutsideFences,
+  replaceEmDashes,
+  stripDecorativeRules,
+  detectTocMarker,
   validateHeadingHierarchy,
   embedLocalImages,
   validateLinks,
+  FORMAT_DEFAULTS,
   LATEX_MATH_MAP,
   SUPERSCRIPT_MAP,
 };

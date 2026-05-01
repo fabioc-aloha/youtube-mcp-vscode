@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Knowledge coverage taxonomy and visible uncertainty indicators — assess brain coverage per domain, display confidence badges"
 application: "Always active — unconscious coverage assessment before responding"
 applyTo: "**"
-currency: 2026-04-20
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Knowledge Coverage
@@ -39,13 +40,11 @@ The **highest matching signal** determines the coverage level.
 
 ## Pre-Response Coverage Assessment (KS2)
 
-The `knowledge-coverage-score.cjs` hook runs on `UserPromptSubmit` and injects a coverage assessment. When the hook provides coverage context:
+Self-assess using the taxonomy above before responding. If a coverage hook is configured in your environment (e.g. a `UserPromptSubmit` handler that injects skill/instruction matches), use the injected signal; otherwise rely on self-assessment alone.
 
-1. Read the injected coverage signal (skill matches, instruction matches, coverage level)
+1. Identify skill matches, instruction matches, and the resulting coverage level
 2. Calibrate your confidence expression to match the assessed level
 3. If coverage is Low or Unknown, say so — do not hedge behind vague language
-
-When no hook signal is present, self-assess using the taxonomy above.
 
 ## Visible Confidence Badge (KS3)
 

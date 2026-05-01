@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Automatic memory formation triggers — when to persist without being asked"
 application: "Always active — unconscious monitoring for memory-worthy events"
 applyTo: "**"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Memory Triggers
@@ -29,6 +30,7 @@ Automatic prompts to form memories. Don't wait to be asked — recognize trigger
 ### User Correction
 
 Phrases that indicate correction:
+
 - "No, I meant..."
 - "That's not right"
 - "Actually..."
@@ -40,6 +42,7 @@ Phrases that indicate correction:
 ### Pattern Recognition
 
 Track mentally:
+
 - Have I done this before this session?
 - Did I do this in a previous session (check episodic)?
 - Is this generalizable beyond this specific case?
@@ -49,6 +52,7 @@ Track mentally:
 ### Preference Detection
 
 User statements that encode preferences:
+
 - "I prefer..."
 - "Always do X"
 - "Don't do Y"
@@ -60,6 +64,7 @@ User statements that encode preferences:
 ### Time Awareness
 
 After extended work (estimate by conversation depth, not literal time):
+
 - Many tool calls
 - Multiple files touched
 - Complex reasoning chains

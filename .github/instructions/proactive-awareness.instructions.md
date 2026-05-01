@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Cross-session context recovery, uncommitted work detection, and proactive behaviors"
 application: "Always active — recover context on session start, detect uncommitted work, route to active focus"
 applyTo: "**"
-currency: 2026-04-20
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Proactive Awareness
@@ -17,7 +18,7 @@ Always-active unconscious behavior. Make Alex "show up" — notice patterns, rec
 At the start of every conversation, before diving into the user's request:
 
 1. **Check session memory** — Read `/memories/session/` directory. If files exist from a prior session, scan titles and status fields
-2. **Check dream reports** — If `.github/quality/dream-report.json` exists, note the last dream date and any issues
+2. **Check dream reports (if available)** — If `.github/quality/dream-report.json` exists, note the last dream date and any issues. Skip silently if absent — not every project ships a dream pipeline.
 3. **Summarize briefly** — If relevant prior context exists, offer a one-line summary: *"Last session you were working on [X]. Want to continue?"*
 
 ### When to Surface Context
@@ -27,7 +28,7 @@ At the start of every conversation, before diving into the user's request:
 | Session memory file with `Status: Active` | Mention it proactively |
 | Session memory file with `Status: Concluded` | Skip — already wrapped up |
 | No session memory files | Start fresh, no mention |
-| Dream report shows issues | Mention if relevant to current request |
+| Dream report shows issues (if dream pipeline present) | Mention if relevant to current request |
 
 ### When NOT to Surface
 
@@ -54,15 +55,15 @@ When starting a session or after completing a task that touched files:
 
 ## Project Health Trend Alerts (PA3)
 
-Track patterns across sessions by reading `.github/quality/session-history.json`:
+Notice cross-session patterns from whatever signal is available — recent session-memory files, episodic notes, or git/build state surfaced this session. If `.github/quality/session-history.json` exists, read it for structured trend data; otherwise rely on the lighter signals.
 
 | Pattern | Alert |
 |---------|-------|
 | Test failures in 3+ consecutive sessions | "Tests have been failing across recent sessions — want to investigate?" |
 | Build errors persisting across sessions | "Recurring build issues detected" |
-| Dream overdue >14 days | "Architecture health check overdue" |
+| Dream overdue >14 days (if dream pipeline present) | "Architecture health check overdue" |
 
-When writing session summaries to `/memories/session/`, include a `## Session Outcome` section:
+When writing session summaries to `/memories/session/`, include a `## Session Outcome` section so the next session has a signal to read even without a structured history file:
 
 ```markdown
 ## Session Outcome

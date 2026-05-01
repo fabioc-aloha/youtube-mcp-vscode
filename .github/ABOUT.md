@@ -7,9 +7,9 @@ This folder contains Alex's cognitive architecture.
 | Folder | Purpose |
 |--------|---------|
 | `copilot-instructions.md` | Identity and routing |
-| `instructions/` | 52 always-on cognitive behaviors |
-| `skills/` | Reusable expertise packages (ships with `markdown-mermaid`, `md-to-html`, `md-to-word`, `md-to-eml`, `docx-to-md`) |
-| `prompts/` | User-invokable workflows (`/welcome`, `/feedback`, `/save-session-note`, `/install-from-mall`) |
+| `instructions/` | Always-on cognitive behaviors |
+| `skills/` | Reusable expertise packages (markdown-mermaid, document converters, and more) |
+| `prompts/` | User-invokable slash-workflows (see Command Cheat Sheet below) |
 | `muscles/` | Executable converters (`md-to-html`, `md-to-eml`, `md-to-txt`, `html-to-md`, `md-to-word`, `docx-to-md`) + shared modules + Pandoc lua filters |
 | `episodic/` | Memory-formation templates (heirs fill these in) |
 | `scripts/` | `bootstrap-heir.cjs` (one-shot heir init) and `upgrade-self.cjs` (heir-side pull) |
@@ -20,6 +20,25 @@ This folder contains Alex's cognitive architecture.
 ## How It Works
 
 The instructions in `instructions/` auto-load based on context via `applyTo` patterns. Alex starts with the cognitive behaviors and grows project-specific knowledge over time.
+
+## Command Cheat Sheet
+
+User-invokable slash-prompts, grouped by lifecycle:
+
+| Command | When to use |
+|---------|-------------|
+| `/initialize` | First run after bootstrap — name the heir, set scope, write identity |
+| `/welcome` | Re-orient at the start of any session |
+| `/finalize-migration` | Wrap up a fresh migration into a heir repo |
+| `/status` | Snapshot of the heir — version, drift, recent activity |
+| `/upgrade` | Pull latest Edition (runs `scripts/upgrade-self.cjs`); add `--allow-major` for major bumps |
+| `/fleet` | Inspect or report on the heir's place in the ACT fleet |
+| `/find-skill` | Search the Mall catalog for a capability |
+| `/install-from-mall` | Pull a skill/pattern/MCP/scaffold from `Alex_Skill_Mall` into `local/` |
+| `/save-session-note` | Persist a session handoff into `.github/episodic/` |
+| `/note` | Capture a quick observation worth keeping |
+| `/feedback` | Send structured feedback upstream to the Supervisor |
+| `/audit-apis` | Review external API references for staleness |
 
 ## Converters
 

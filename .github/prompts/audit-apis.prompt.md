@@ -1,6 +1,7 @@
 ---
 description: "Detect drift in external APIs (model versions, endpoints, deprecations) and propose registry + downstream skill updates"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Audit External APIs

@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Structured devil's advocate and adversarial review — supports ACT Tenet VIII (Adversarial Self-Probe)"
 application: "When reviewing important decisions, testing proposals, or playing devil's advocate"
 applyTo: "**/*review*,**/*validate*,**/*challenge*"
-currency: 2026-04-27
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Adversarial Review
@@ -33,6 +34,7 @@ This instruction provides methods for **structured skepticism** beyond self-crit
 | **Red Team** | Attacks and challenges | "Here's how this fails" |
 
 **Process**:
+
 1. Blue Team presents proposal
 2. Red Team has dedicated time to find flaws
 3. Blue Team responds to challenges
@@ -86,13 +88,15 @@ For each component, ask: "What could go wrong here specifically?"
 
 When assigned as devil's advocate:
 
-### Do:
+### Do
+
 - Attack the strongest parts, not just the weak ones
 - Propose specific, realistic failure scenarios
 - Maintain the role even when you personally agree
 - Document all challenges raised
 
-### Don't:
+### Don't
+
 - Be negative without being constructive
 - Attack people instead of ideas
 - Give up if your first objection is answered

@@ -3,9 +3,10 @@ type: instruction
 lifecycle: stable
 inheritance: inheritable
 description: "Rules for producing authentically human writing by avoiding telltale AI-generated text patterns"
-application: "When implementing ai writing avoidance or reviewing code that uses these patterns"
+application: "When drafting documentation, prose, or any external-facing writing"
 applyTo: "**/*writing*,**/*content*,**/*blog*"
-currency: 2026-04-20
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # AI Writing Avoidance — Auto-Loaded Rules

@@ -45,6 +45,7 @@ Use wiki-style links to cross-reference memories:
 | `[[filename#section]]` | Link to specific section |
 
 Examples:
+
 - `[[meditation-2026-04-27-awakening.md]]`
 - `[[../instructions/memory-triggers.instructions.md]]`
 - `[[CONFIDENCE-CONVENTION.md#validation]]`
@@ -56,12 +57,14 @@ Links are for human navigation — not parsed automatically.
 ## How to Maintain
 
 When writing a memory:
+
 1. Add entry to "By Recency" with date and action (created/updated)
 2. Add/update topic in "By Topic"
 3. Assign confidence level
 4. Increment type count
 
 When reading memories:
+
 1. Check index first
 2. Load relevant files by topic
 3. Note if index is stale (files exist not in index)

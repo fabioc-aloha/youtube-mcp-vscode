@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Markdown to email (.eml) conversion with preview support"
 application: "When converting Markdown files to email format"
 applyTo: "**/*eml*,**/*email*convert*"
-currency: 2026-04-22
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Markdown to Email Conversion

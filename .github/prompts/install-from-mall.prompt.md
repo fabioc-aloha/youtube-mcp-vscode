@@ -1,6 +1,7 @@
 ---
 description: "Guided install of a skill, trifecta, pattern, or MCP config from Alex_Skill_Mall into the heir's local/ subdirs"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Install from Mall

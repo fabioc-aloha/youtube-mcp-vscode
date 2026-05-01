@@ -6,7 +6,7 @@
  * @lifecycle stable
  * @inheritance inheritable
  * @description Convert Markdown to plain text via pandoc
- * @version 1.0.0
+ * @version 1.1.0
  * @reviewed 2026-04-21
  * @platform windows,macos,linux
  * @requires node,pandoc
@@ -23,6 +23,8 @@
  *   --strip-frontmatter   Remove YAML frontmatter
  *   --strip-mermaid       Remove Mermaid diagrams entirely
  *   --strip-images        Remove image references
+ *   --no-replace-em-dashes  Disable em-dash --> comma (default: enabled for txt)
+ *   --strip-decorative-rules  Strip decorative `---` (default: disabled for txt)
  *
  * Requirements:
  *   - Node.js 18+
@@ -42,6 +44,10 @@ const path = require('path');
 const os = require('os');
 const { execSync } = require('child_process');
 
+// Best-effort load of the shared preprocessor (em-dash + decorative-HR transforms).
+let sharedPreprocessor = null;
+try { sharedPreprocessor = require(path.join(__dirname, 'shared', 'markdown-preprocessor.cjs')); } catch { /* optional */ }
+
 // ---------------------------------------------------------------------------
 // CLI argument parsing
 // ---------------------------------------------------------------------------
@@ -50,6 +56,7 @@ function parseArgs(argv) {
   const result = {
     source: null, output: null, wrap: 80,
     stripFrontmatter: false, stripMermaid: false, stripImages: false,
+    replaceEmDashes: undefined, stripDecorativeRules: undefined,
   };
   const positional = [];
   for (let i = 0; i < args.length; i++) {
@@ -57,6 +64,9 @@ function parseArgs(argv) {
     else if (args[i] === '--strip-frontmatter') result.stripFrontmatter = true;
     else if (args[i] === '--strip-mermaid') result.stripMermaid = true;
     else if (args[i] === '--strip-images') result.stripImages = true;
+    else if (args[i] === '--no-replace-em-dashes') result.replaceEmDashes = false;
+    else if (args[i] === '--strip-decorative-rules') result.stripDecorativeRules = true;
+    else if (args[i] === '--no-strip-decorative-rules') result.stripDecorativeRules = false;
     else if (!args[i].startsWith('--')) positional.push(args[i]);
   }
   if (positional.length === 0) {
@@ -99,6 +109,16 @@ async function build(args) {
   // Strip image references
   if (args.stripImages) {
     content = content.replace(/!\[([^\]]*)\]\([^)]+\)/g, '[$1]');
+  }
+
+  // Apply shared preprocessor transforms (em-dash -> comma; optional HR strip).
+  if (sharedPreprocessor) {
+    content = sharedPreprocessor.preprocessMarkdown(content, {
+      format: 'txt',
+      stripFrontmatter: false, // already handled above if requested
+      replaceEmDashes: args.replaceEmDashes,
+      stripDecorativeRules: args.stripDecorativeRules,
+    });
   }
 
   const tempMd = path.join(tempDir, '_temp.md');

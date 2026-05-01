@@ -1,6 +1,7 @@
 ---
 description: "Finalize a heir migration to Alex_ACT_Edition — semantic pass over the .github-old-*/ snapshot to port custom content into local/ slots and identity into copilot-instructions.local.md"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Finalize Migration

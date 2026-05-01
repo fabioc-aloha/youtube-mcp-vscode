@@ -6,7 +6,8 @@ description: "Clear documentation through visual excellence"
 tier: standard
 inheritance: inheritable
 applyTo: '**/*.md,**/*mermaid*,**/*diagram*'
-currency: 2026-04-22
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Markdown & Mermaid
@@ -14,7 +15,6 @@ currency: 2026-04-22
 > Clear documentation through visual excellence
 
 A skill for markdown authoring, Mermaid diagramming, multi-tool visualization, VS Code integration, and cross-platform rendering consistency.
-
 
 ## When to Use
 
@@ -128,6 +128,7 @@ VS Code 1.109 introduces **native Mermaid rendering in chat** via the `renderMer
 ### When to Use Native Rendering
 
 When creating diagrams **in Copilot Chat** (not markdown files), use the native tool for:
+
 - **Interactive exploration**: Pan, zoom, and full-screen viewing
 - **Immediate feedback**: See diagrams without switching to markdown preview
 - **Iterative refinement**: Quick edits with instant re-render
@@ -482,8 +483,9 @@ linkStyle default stroke:#57606a,stroke-width:1.5px
 **Complete Example**: Use the MANDATORY template at the top, with only the classDefs you need.
 
 **Key Principles**:
+
 1. **Light fills** (#fff1e5, #ddf4ff) — Easy on the eyes
-2. **Medium text** (#953800, #0550ae) — Readable but not harsh  
+2. **Medium text** (#953800, #0550ae) — Readable but not harsh
 3. **Soft strokes** matching fill family
 4. **Gray arrows** (#57606a) — Neutral, doesn't compete with nodes
 5. **1.5-2px stroke-width** — Visible but not heavy
@@ -909,7 +911,6 @@ This provides a clean white background for edge labels, ensuring readability on 
 ### Dark Mermaid Backgrounds
 
 **Problem**: Diagrams have dark backgrounds in VS Code preview
-
 
 **Solution 2**: Apply included `markdown-light.css` via settings
 
@@ -1464,6 +1465,7 @@ xychart-beta
 **Alternative Solutions:**
 
 1. **Pie chart** — Use `pie` with theming when showing proportions:
+
    ```text
    pie showData
        title "Task Distribution"
@@ -1472,6 +1474,7 @@ xychart-beta
    ```
 
 2. **Visual ASCII table** — Use markdown table with visual bars:
+
    ```markdown
    | Task | Value | Visual |
    | ---- | ----- | ------ |
@@ -1525,9 +1528,9 @@ Identify all Mermaid diagrams in the target scope:
 
 ```powershell
 # Find all markdown files with mermaid blocks
-Get-ChildItem -Recurse -Filter "*.md" | 
-  Select-String -Pattern '```mermaid' | 
-  Group-Object Path | 
+Get-ChildItem -Recurse -Filter "*.md" |
+  Select-String -Pattern '```mermaid' |
+  Group-Object Path |
   Select-Object Name, Count
 ```
 
@@ -1547,9 +1550,9 @@ Create an inventory table to track diagram state:
 
 Apply fixes in batches by issue type:
 
-2. **Reserved word errors** — Rephrase or quote labels
-3. **Parse errors** — Apply 4 safety rules
-4. **Style inconsistencies** — Apply GitHub Pastel v2 palette
+1. **Reserved word errors** — Rephrase or quote labels
+2. **Parse errors** — Apply 4 safety rules
+3. **Style inconsistencies** — Apply GitHub Pastel v2 palette
 
 ### Step 4: Validate
 

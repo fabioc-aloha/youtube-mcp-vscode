@@ -5,7 +5,8 @@ inheritance: inheritable
 description: "Word to Markdown document conversion"
 application: "When converting Word documents to Markdown format"
 applyTo: "**/*.docx,**/*docx*"
-currency: 2026-04-22
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Word to Markdown Conversion

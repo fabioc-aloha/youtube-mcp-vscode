@@ -1,6 +1,7 @@
 ---
 description: "List all heirs registered in AI-Memory/heirs/registry.json — heir IDs, edition versions, last sync, repo paths"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Fleet

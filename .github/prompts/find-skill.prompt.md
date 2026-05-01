@@ -1,6 +1,7 @@
 ---
 description: "Search Alex_Skill_Mall by keyword and surface matching skills with ready-to-copy install commands"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Find Skill
