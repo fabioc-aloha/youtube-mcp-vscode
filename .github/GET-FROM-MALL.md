@@ -1,39 +1,58 @@
 # GET-FROM-MALL — youtube-mcp-vscode
 
-This heir was reset to a fresh Alex_ACT_Edition v0.9.0 baseline on 2026-04-30.
-Use this file to reinstall project-specific skills from the Mall.
+Reset to Alex_ACT_Edition v0.9.0 on 2026-04-30.
 
 ## Install from Alex_Skill_Mall
 
-Run these commands from the project root to reinstall project-specific skills:
+```powershell
+# Run from the project root in PowerShell
+$mall = "C:\Development\Alex_Skill_Mall"
+New-Item -ItemType Directory -Path .github\skills\local -Force | Out-Null
 
-```bash
-# Clone the Mall (if not already cloned)
-git clone https://github.com/fabioc-aloha/Alex_Skill_Mall.git ~/Alex_Skill_Mall
+# mcp-builder
+New-Item -ItemType Directory -Path .github\skills\local\mcp-builder -Force | Out-Null
+Copy-Item "$mall\skills\ai-llm\mcp-builder\*" .github\skills\local\mcp-builder\ -Recurse -Force
 
-# Install skills into local/ (heir-owned, survives Edition upgrades)
-mkdir -p .github/skills/local
-cp -r ~/Alex_Skill_Mall/skills/ai-llm/mcp-builder/ .github/skills/local/mcp-builder/
-cp -r ~/Alex_Skill_Mall/skills/ai-llm/mcp-development/ .github/skills/local/mcp-development/
-cp -r ~/Alex_Skill_Mall/skills/ai-llm/sse-streaming/ .github/skills/local/sse-streaming/
-cp -r ~/Alex_Skill_Mall/skills/process/release-preflight/ .github/skills/local/release-preflight/
-cp -r ~/Alex_Skill_Mall/skills/vscode/vscode-extension-patterns/ .github/skills/local/vscode-extension-patterns/
-cp -r ~/Alex_Skill_Mall/skills/quality/testing-strategies/ .github/skills/local/testing-strategies/
-cp -r ~/Alex_Skill_Mall/skills/security/secrets-management/ .github/skills/local/secrets-management/
-cp -r ~/Alex_Skill_Mall/skills/security/distribution-security/ .github/skills/local/distribution-security/
-cp -r ~/Alex_Skill_Mall/skills/quality/extension-audit-methodology/ .github/skills/local/extension-audit-methodology/
+# mcp-development
+New-Item -ItemType Directory -Path .github\skills\local\mcp-development -Force | Out-Null
+Copy-Item "$mall\skills\ai-llm\mcp-development\*" .github\skills\local\mcp-development\ -Recurse -Force
+
+# sse-streaming
+New-Item -ItemType Directory -Path .github\skills\local\sse-streaming -Force | Out-Null
+Copy-Item "$mall\skills\ai-llm\sse-streaming\*" .github\skills\local\sse-streaming\ -Recurse -Force
+
+# release-preflight
+New-Item -ItemType Directory -Path .github\skills\local\release-preflight -Force | Out-Null
+Copy-Item "$mall\skills\process\release-preflight\*" .github\skills\local\release-preflight\ -Recurse -Force
+
+# vscode-extension-patterns
+New-Item -ItemType Directory -Path .github\skills\local\vscode-extension-patterns -Force | Out-Null
+Copy-Item "$mall\skills\vscode\vscode-extension-patterns\*" .github\skills\local\vscode-extension-patterns\ -Recurse -Force
+
+# testing-strategies
+New-Item -ItemType Directory -Path .github\skills\local\testing-strategies -Force | Out-Null
+Copy-Item "$mall\skills\quality\testing-strategies\*" .github\skills\local\testing-strategies\ -Recurse -Force
+
+# secrets-management
+New-Item -ItemType Directory -Path .github\skills\local\secrets-management -Force | Out-Null
+Copy-Item "$mall\skills\security\secrets-management\*" .github\skills\local\secrets-management\ -Recurse -Force
+
+# distribution-security
+New-Item -ItemType Directory -Path .github\skills\local\distribution-security -Force | Out-Null
+Copy-Item "$mall\skills\security\distribution-security\*" .github\skills\local\distribution-security\ -Recurse -Force
+
+# extension-audit-methodology
+New-Item -ItemType Directory -Path .github\skills\local\extension-audit-methodology -Force | Out-Null
+Copy-Item "$mall\skills\quality\extension-audit-methodology\*" .github\skills\local\extension-audit-methodology\ -Recurse -Force
+
 ```
 
-## Project-Specific Customizations (removed — recreate from git history if needed)
+## After installing
 
-- `instructions/local/release-process.instructions.md` — release workflow
-- `prompts/local/debug.prompt.md` — debugging workflow
-- `prompts/local/mcp-server.prompt.md` — MCP server workflow
-- `prompts/local/release.prompt.md` — release workflow
-- `prompts/local/tests.prompt.md` — test invocation
-- `prompts/local/vscode-extension-audit.prompt.md` — extension audit
+Delete this file, stage, and commit:
 
-## After reinstalling
-
-1. Delete this file
-2. Commit: `git add -A && git commit -m "chore: reset to Edition v0.9.0 + reinstall local skills"`
+```powershell
+Remove-Item .github\GET-FROM-MALL.md
+git add -A
+git commit -m "chore: reinstall Mall skills for youtube-mcp-vscode"
+```
