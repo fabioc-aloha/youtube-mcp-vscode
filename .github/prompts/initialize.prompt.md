@@ -26,13 +26,13 @@ To detect dirty state in B vs C: run `git status --porcelain .github/` and check
 ## Inputs to Gather
 
 1. **Edition checkout location**. Look in this order:
-   - `$env:TEMP\edition\.github\scripts\bootstrap-heir.cjs`
-   - `$env:USERPROFILE\Development\Alex_ACT_Edition\.github\scripts\bootstrap-heir.cjs`
+   - `/tmp/edition/.github/scripts/bootstrap-heir.cjs`
+   - `~/Development/Alex_ACT_Edition/.github/scripts/bootstrap-heir.cjs`
    - Any sibling directory of the current workspace named `Alex_ACT_Edition`
    - If none found, ask the user to run:
 
-     ```powershell
-     git clone --depth 1 https://github.com/fabioc-aloha/Alex_ACT_Edition.git $env:TEMP\edition
+     ```bash
+     git clone --depth 1 https://github.com/fabioc-aloha/Alex_ACT_Edition.git /tmp/edition
      ```
 
 2. **`heir-id`**. Derive from `git remote get-url origin` (slug after the last `/`, strip `.git`). If no remote, ask the user. Validate: lowercase alphanumeric + hyphens, 2–64 chars.
@@ -45,20 +45,25 @@ To detect dirty state in B vs C: run `git status --porcelain .github/` and check
 
 ## Path A or B — Full Bootstrap
 
-```powershell
-node <edition-path>\.github\scripts\bootstrap-heir.cjs `
-  --target . `
-  --heir-id <slug> `
-  --heir-name "<display name>" `
-  --repo-url <url> `
+```bash
+node <edition-path>/.github/scripts/bootstrap-heir.cjs \
+  --target . \
+  --heir-id <slug> \
+  --heir-name "<display name>" \
+  --repo-url <url> \
   --owner <handle>
 ```
 
 1. Run dry-run first (omit `--apply`). Summarize: file count, marker fields.
 2. Confirm with user.
 3. Re-run with `--apply`.
-4. Run `node .github/muscles/heir-doctor.cjs` — must exit 0.
-5. Stage but do NOT commit. Suggest commit message: `chore: bootstrap as Alex_ACT_Edition heir`.
+4. Run `node .github/muscles/heir-doctor.cjs` -- must exit 0.
+5. **AI-Memory setup**: The bootstrap script auto-detects cloud drives and creates `AI-Memory/` if none exists. If it reports "No AI-Memory folder found", help the user:
+   - List detected cloud drives (OneDrive variants, iCloud, Dropbox)
+   - Ask which one to use for fleet communication
+   - Run: `node -e "require('./.github/scripts/_registry.cjs').initAiMemory('<drive-name>')"`
+   - Verify `ai_memory_root` was persisted in `.github/config/cognitive-config.json`
+6. Stage but do NOT commit. Suggest commit message: `chore: bootstrap as Alex_ACT_Edition heir`.
 
 ## Path C — Quick Register (path-1)
 

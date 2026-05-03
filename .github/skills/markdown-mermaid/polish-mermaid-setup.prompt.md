@@ -19,13 +19,14 @@ Configure markdown preview and Mermaid diagrams for optimal rendering based on t
 
 Run these commands to understand the user's setup:
 
-```powershell
-# Check installed markdown/mermaid extensions
-code --list-extensions | Select-String -Pattern "mermaid|markdown"
+```bash
+# bash/zsh (macOS/Linux)
+code --list-extensions | grep -iE "mermaid|markdown"
+```
 
-# Check current mermaid-related settings
-$settings = Get-Content "$env:APPDATA\Code\User\settings.json" -Raw | ConvertFrom-Json
-$settings.PSObject.Properties | Where-Object { $_.Name -like "*mermaid*" -or $_.Name -like "*markdown*" } | ForEach-Object { Write-Host "$($_.Name) = $($_.Value)" }
+```powershell
+# PowerShell (Windows)
+code --list-extensions | Select-String -Pattern "mermaid|markdown"
 ```
 
 ### Step 2: Resolve Extension Conflicts
@@ -39,8 +40,8 @@ $settings.PSObject.Properties | Where-Object { $_.Name -like "*mermaid*" -or $_.
 
 **Recommendation**: Keep only ONE. `bierner.markdown-mermaid` integrates better with native VS Code.
 
-```powershell
-# Uninstall the conflicting extension if present
+```bash
+# bash/zsh/PowerShell (cross-platform)
 code --uninstall-extension shd101wyy.markdown-preview-enhanced
 ```
 

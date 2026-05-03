@@ -165,8 +165,8 @@ Image references in markdown are updated automatically:
 node .github/muscles/docx-to-md.cjs stakeholder-spec.docx \
   --add-frontmatter --fix-headings --strip-comments
 
-# Validate output
-node .github/muscles/markdown-lint.cjs stakeholder-spec.md
+# Validate formatting (exits 1 if file would be reformatted)
+node .github/muscles/md-format.cjs stakeholder-spec.md --check
 
 # Review and commit
 git add stakeholder-spec.md images/
@@ -247,7 +247,6 @@ Get-ChildItem *.docx | ForEach-Object {
 - **lint-clean-markdown** — Post-validate converted Markdown
 - **md-scaffold** — Template for structuring imported content
 - **md-to-html** — Convert result to HTML for web
-- **md-to-eml** — Convert result to email
 
 ---
 

@@ -68,6 +68,7 @@ const expectedLocalDirs = [
     '.github/instructions/local',
     '.github/muscles/local',
     '.github/prompts/local',
+    '.github/agents/local',
 ];
 for (const d of expectedLocalDirs) {
     const full = path.join(HEIR_ROOT, d);
@@ -113,6 +114,17 @@ if (editionManifest) {
         for (const e of entries) {
             if (e.isFile() && e.name.endsWith('.prompt.md') && !editionShippedPrompts.has(e.name)) {
                 err(`Prompt .github/prompts/${e.name} is in an edition-owned path and not shipped by Edition. Move to .github/prompts/local/${e.name}/ or it will be deleted on next upgrade.`);
+            }
+        }
+    }
+
+    const editionShippedAgents = new Set(editionManifest.agents || []);
+    const agentsDir = path.join(GH, 'agents');
+    if (fs.existsSync(agentsDir)) {
+        const entries = fs.readdirSync(agentsDir, { withFileTypes: true });
+        for (const e of entries) {
+            if (e.isFile() && e.name.endsWith('.agent.md') && !editionShippedAgents.has(e.name)) {
+                err(`Agent .github/agents/${e.name} is in an edition-owned path and not shipped by Edition. Move to .github/agents/local/${e.name} or it will be deleted on next upgrade.`);
             }
         }
     }

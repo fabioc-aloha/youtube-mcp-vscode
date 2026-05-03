@@ -52,5 +52,4 @@ Override via flags above.
 ## Related
 
 - [lint-clean-markdown](../lint-clean-markdown/SKILL.md) — pre-flight the source
-- [md-to-eml](../md-to-eml/SKILL.md) — for email-with-formatting
-- [md-to-word](../md-to-word/SKILL.md) — for formatted output
+- - [md-to-word](../md-to-word/SKILL.md) — for formatted output

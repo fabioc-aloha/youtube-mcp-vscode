@@ -16,8 +16,8 @@ Multiple skills cover this domain. Pick the one that matches the work — they d
 | When working on | Use skill |
 |---|---|
 | Authoring markdown, choosing a diagram type, GitHub Pastel palette, ATACCU workflow | [markdown-mermaid](../skills/markdown-mermaid/SKILL.md) |
-| Mermaid renders blank or garbled (timeline / gitGraph / gantt with colons) | [mermaid-mode-fragility](../skills/mermaid-mode-fragility/SKILL.md) |
+| Mermaid renders blank or garbled (timeline / gitGraph / gantt with colons) | [markdown-mermaid § Mode Fragility](../skills/markdown-mermaid/SKILL.md) |
 | Writing markdown that has to pass `markdownlint` on first attempt | [lint-clean-markdown](../skills/lint-clean-markdown/SKILL.md) |
 | Rendering user-supplied markdown in an app (XSS prevention) | [markdown-sanitization-chain](../skills/markdown-sanitization-chain/SKILL.md) |
 
-`markdown-mermaid` is the primary reference. The other three are gotcha-and-pattern specialists — load when their trigger fires.
+`markdown-mermaid` is the primary reference (including the Mode Fragility section). The other two are gotcha-and-pattern specialists — load when their trigger fires.

@@ -93,5 +93,5 @@ const config = {
 ## Related
 
 - [markdown-mermaid](../markdown-mermaid/SKILL.md) — markdown + Mermaid style guide
-- [mermaid-mode-fragility](../mermaid-mode-fragility/SKILL.md) — silent render failures
+- [markdown-mermaid § Mode Fragility](../markdown-mermaid/SKILL.md) — silent render failures
 - [lint-clean-markdown](../lint-clean-markdown/SKILL.md) — author-side hygiene

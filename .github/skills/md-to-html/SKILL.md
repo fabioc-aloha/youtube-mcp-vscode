@@ -213,7 +213,6 @@ Get-ChildItem docs/*.md | ForEach-Object {
 ## Related Skills
 
 - **md-to-word** — Sister converter for Word document output
-- **md-to-eml** — Sister converter for email distribution
 - **md-scaffold** — Generate converter-ready Markdown templates
 - **markdown-mermaid** — Diagram authoring for embedded Mermaid
 - **lint-clean-markdown** — Pre-validate markdown before conversion

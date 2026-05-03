@@ -821,9 +821,15 @@ Blank lines inside a blockquote break it into separate quotes for the linter. Ei
 
 **Problem**: Emojis stored as `\ud83d\udcbb` display as raw codes instead of 💻
 
-**Detection (PowerShell):**
+**Detection:**
+
+```bash
+# bash/zsh
+grep -rn '\\u[0-9a-fA-F]\{4\}' --include='*.md'
+```
 
 ```powershell
+# PowerShell
 Get-ChildItem -Recurse -Filter "*.md" | Select-String -Pattern '\\u[0-9a-fA-F]{4}' | Group-Object Path
 ```
 
@@ -1526,8 +1532,13 @@ When performing comprehensive diagram audits across a project or documentation s
 
 Identify all Mermaid diagrams in the target scope:
 
+```bash
+# bash/zsh
+grep -rl '```mermaid' --include='*.md' | while read f; do echo "$f: $(grep -c '```mermaid' "$f")"; done
+```
+
 ```powershell
-# Find all markdown files with mermaid blocks
+# PowerShell
 Get-ChildItem -Recurse -Filter "*.md" |
   Select-String -Pattern '```mermaid' |
   Group-Object Path |
@@ -1614,3 +1625,23 @@ KISS means removing **unnecessary** complexity while preserving **meaningful** i
 - Tufte, E.R. - *The Visual Display of Quantitative Information*
 - Cairo, A. - *The Functional Art*
 - Knaflic, C.N. - *Storytelling with Data*
+
+## Mode Fragility Reference
+
+Several Mermaid modes fail silently on colons and special characters. Default to `flowchart` for arbitrary text content.
+
+| Mode | Status | Constraint |
+|------|--------|------------|
+| `flowchart` | Safe | None — handles any content |
+| `sequenceDiagram` | Safe | Standard message format |
+| `classDiagram` | Safe | Standard notation |
+| `erDiagram` | Safe | Standard notation |
+| `stateDiagram` | Caution | Colons in state names |
+| `journey` | Caution | Score format sensitive |
+| `timeline` | Fragile | No colons in events; `:` is separator |
+| `gitGraph` | Fragile | Long chains with quoted colon-tags break |
+| `gantt` | Fragile | `dateFormat HH:mm` mis-parses task lines |
+
+**Rule**: If your labels contain colons, times (`HH:MM`), or complex text, use `flowchart` and structure with subgraphs instead.
+
+**Debug silent failures**: Check browser console, simplify content, test incrementally, try flowchart — if it works in flowchart, the mode is the problem.

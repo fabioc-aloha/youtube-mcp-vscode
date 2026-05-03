@@ -14,7 +14,7 @@ Centralized source-of-truth for external APIs, models, and services referenced b
 ```text
 node .github/muscles/audit-api-drift.cjs                  # report stale entries
 node .github/muscles/audit-api-drift.cjs --probe          # also HEAD-check source URLs
-/audit-apis                                                # full LLM-driven refresh
+/audit-apis                                               # full LLM-driven refresh
 ```
 
 The script catches **time-based drift** (entries older than 30 days). The `/audit-apis` prompt catches **content drift** (new model versions, deprecated endpoints, breaking changes) — that's the LLM's job, not the script's.
@@ -22,7 +22,7 @@ The script catches **time-based drift** (entries older than 30 days). The `/audi
 ## Freshness Policy
 
 | Age of `Last Checked` | Status |
-|---|---|
+| --- | --- |
 | ≤ 30 days | Fresh |
 | 31–90 days | Stale (warn) |
 | > 90 days | Expired (fail) |
@@ -31,40 +31,36 @@ Override the threshold with `--max-age-days=N`.
 
 ## Registries
 
-> **No entries yet.** This Edition installation has no skills that depend on external AI APIs. Add a table below when a skill lands that needs version tracking — typical categories are listed in the template at the bottom of this file. The audit muscle will report `0 entries` until populated.
+The Edition baseline ships these external dependencies. Each entry tracks one tool, package, or API surface. The `audit-api-drift` muscle reports staleness; the `/audit-apis` prompt drives the semantic refresh.
 
-<!-- Add tables here. Example structure:
+### CLI Tools
 
-## Replicate Image Models
+| Tool | Min Version | Source URL | Last Checked | Brain Files |
+| --- | --- | --- | --- | --- |
+| Pandoc | 2.19+ | <https://github.com/jgm/pandoc/releases> | 2026-05-01 | muscles/docx-to-md, muscles/md-to-word, muscles/md-to-html, muscles/md-to-eml, muscles/md-to-txt, muscles/html-to-md, muscles/converter-qa |
+| mermaid-cli (mmdc) | 11.x+ | <https://github.com/mermaid-js/mermaid-cli/releases> | 2026-05-01 | muscles/md-to-word (SVG render), muscles/md-to-html (--mermaid-png), muscles/converter-qa, skills/markdown-mermaid |
+| GitHub CLI (gh) | 2.x+ | <https://github.com/cli/cli/releases> | 2026-05-01 | instructions/mall-installation, prompts/mall-search, prompts/mall-install |
 
-| Vendor | Latest Models | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
-| Black Forest Labs (FLUX) | `flux-2-max`, `flux-2-pro` | <https://replicate.com/black-forest-labs> | 2026-04-26 | skills/image-handling, instructions/image-generation-guidelines |
+### npm Packages
 
-## Replicate Video Models
+| Package | Purpose | Source URL | Last Checked | Brain Files |
+| --- | --- | --- | --- | --- |
+| jszip | Word .docx generation (ZIP container) | <https://www.npmjs.com/package/jszip> | 2026-05-01 | muscles/md-to-word |
 
-| Vendor | Latest Models | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
+### GitHub APIs
 
-## Replicate TTS / Audio Models
-
-| Vendor | Latest Models | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
-
-## Microsoft APIs
-
-| API | Endpoints / Versions | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
-
-## CLI Tools (Pandoc, Mermaid, etc.)
+| API | Endpoint | Last Checked | Brain Files |
+| --- | --- | --- | --- |
+| GitHub REST (Contents) | `repos/{owner}/{repo}/contents/{path}` | 2026-05-01 | instructions/mall-installation, prompts/mall-search, prompts/mall-install |
+| GitHub REST (Repos) | `repos/{owner}/{repo}` | 2026-05-01 | scripts/upgrade-self, scripts/bootstrap-heir |
 
 | Tool | Tested Version | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 
 -->
 
 ## When a Mall Skill Adds an API
 
-When you install a skill from [Alex_Skill_Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) that wraps an external API, the skill's README will tell you which row(s) to add to this registry. Add them under the appropriate category, set `Last Checked` to today's date, and run `/audit-apis` to verify.
+When you install a plugin from the [Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) that wraps an external API, the plugin's README will tell you which row(s) to add to this registry. Add them under the appropriate category, set `Last Checked` to today's date, and run `/audit-apis` to verify.
 
 If a skill wraps an API not covered by any existing category, add a new `## <Category>` heading with the same five-column table structure.

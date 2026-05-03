@@ -3,13 +3,12 @@
     "spec_version": "1.0",
     "edition_owned": [
         ".github/copilot-instructions.md",
-        ".github/ABOUT.md",
         ".github/EXTERNAL-API-REGISTRY.md",
         ".github/instructions/**",
         ".github/skills/**",
         ".github/prompts/**",
         ".github/muscles/**",
-        ".github/episodic/**",
+        ".github/agents/**",
         ".github/config/sync-policy.json",
         ".github/config/edition-manifest.json",
         ".github/config/markdown-light.css",
@@ -19,8 +18,7 @@
         ".github/scripts/bootstrap-heir.cjs",
         ".github/scripts/build-edition-manifest.cjs",
         ".github/scripts/_registry.cjs",
-        ".github/VERSION",
-        ".github/LICENSE"
+        ".github/VERSION"
     ],
     "heir_owned": [
         ".github/.act-heir.json",
@@ -32,6 +30,8 @@
         ".github/skills/local/**",
         ".github/prompts/local/**",
         ".github/muscles/local/**",
+        ".github/agents/local/**",
+        ".github/episodic/**",
         ".vscode/extensions.json",
         ".vscode/settings.json"
     ],

@@ -486,7 +486,7 @@ node .github/muscles/md-to-word.cjs spec.md --watch
 | **markdown-mermaid** | Mermaid syntax and ATACCU compliance |
 | **lint-clean-markdown** | Pre-flight the source — pass clean Markdown in |
 | **markdown-sanitization-chain** | Sanitize user-supplied Markdown before conversion |
-| **mermaid-mode-fragility** | Why we default to flowchart mode |
+| **markdown-mermaid § Mode Fragility** | Why we default to flowchart mode |
 | **svg-graphics** | Vector graphics creation |
 | **brand-asset-management** | Visual identity for headers/footers |
 | **pptx-generation** | Similar workflow for PowerPoint output |
