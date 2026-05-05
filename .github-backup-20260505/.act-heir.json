@@ -1,0 +1,21 @@
+{
+  "$schema": "https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/fleet/schema/act-heir.schema.json",
+  "spec_version": "1.0",
+  "edition": "Alex_ACT_Edition",
+  "edition_version": "1.2.0",
+  "heir_id": "youtube-mcp-vscode",
+  "heir_name": "YouTube MCP Tools",
+  "repo_url": "",
+  "deployed_at": "2026-04-28T22:35:31Z",
+  "last_sync_at": "2026-05-05T20:55:00Z",
+  "contact": {
+    "owner": "fabioc-aloha",
+    "feedback_channel": "issues"
+  },
+  "opt_in": {
+    "fleet_inventory": true,
+    "announcements": true,
+    "telemetry": false
+  },
+  "notes": ""
+}
