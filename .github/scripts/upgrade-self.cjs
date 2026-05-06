@@ -270,6 +270,49 @@ if (relocations.length > 0) {
     }
 }
 
+// ─── Implement "unmatched: preserve" from sync-policy ────────────────────────
+// Walk current .github/ and preserve any file that is NOT edition-owned.
+// This catches .github/workflows/, .github/ISSUE_TEMPLATE/, dependabot.yml, etc.
+
+const dotGithubDir = path.join(HEIR_ROOT, '.github');
+if (fs.existsSync(dotGithubDir)) {
+    const currentPolicy = fs.existsSync(currentPolicyPath)
+        ? JSON.parse(fs.readFileSync(currentPolicyPath, 'utf8'))
+        : {};
+    const editionOwnedPatterns = currentPolicy.edition_owned || [];
+
+    function isEditionOwned(relPath) {
+        const normalized = relPath.replace(/\\/g, '/');
+        for (const pattern of editionOwnedPatterns) {
+            const p = pattern.replace(/\\/g, '/');
+            if (p.endsWith('/**')) {
+                const prefix = p.slice(0, -3); // strip /**
+                if (normalized === prefix || normalized.startsWith(prefix + '/')) return true;
+            } else if (p.includes('*')) {
+                // Single-level wildcard: convert to regex
+                const escaped = p.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[^/]*');
+                if (new RegExp('^' + escaped + '$').test(normalized)) return true;
+            } else {
+                if (normalized === p) return true;
+            }
+        }
+        return false;
+    }
+
+    let unmatchedCount = 0;
+    for (const absPath of walkDir(dotGithubDir)) {
+        const rel = path.relative(HEIR_ROOT, absPath).replace(/\\/g, '/');
+        if (isEditionOwned(rel)) continue;
+        if (heirOwnedFiles.includes(rel)) continue;
+        heirOwnedFiles.push(rel);
+        unmatchedCount++;
+    }
+
+    if (unmatchedCount > 0) {
+        console.log(`Unmatched files preserved (not edition-owned): ${unmatchedCount}`);
+    }
+}
+
 console.log(`Heir-owned files to recover: ${heirOwnedFiles.length}`);
 if (heirOwnedFiles.length > 0) {
     heirOwnedFiles.slice(0, 10).forEach(f => console.log(`  ${f}`));
