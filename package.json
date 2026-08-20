@@ -37,13 +37,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/fabioc-aloha/youtube-mcp-vscode"
+    "url": "https://github.com/fabioc-aloha/youtube-mcp-tools"
   },
-  "homepage": "https://github.com/fabioc-aloha/youtube-mcp-vscode#readme",
+  "homepage": "https://github.com/fabioc-aloha/youtube-mcp-tools#readme",
   "bugs": {
-    "url": "https://github.com/fabioc-aloha/youtube-mcp-vscode/issues"
+    "url": "https://github.com/fabioc-aloha/youtube-mcp-tools/issues"
   },
-  "qna": "https://github.com/fabioc-aloha/youtube-mcp-vscode/discussions",
+  "qna": "https://github.com/fabioc-aloha/youtube-mcp-tools/discussions",
   "license": "MIT",
   "activationEvents": [
     "onStartupFinished"

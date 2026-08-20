@@ -1,5 +1,10 @@
 # YouTube MCP Tools for VS Code
 
+> **Migration notice:** Active development has moved to
+> [fabioc-aloha/youtube-mcp-tools](https://github.com/fabioc-aloha/youtube-mcp-tools).
+> This repository remains available for the published extension's historical
+> source and maintenance while the canonical project assumes release ownership.
+
 <p align="center">
   <img src="media/banner.png" alt="YouTube MCP Tools Banner" width="100%">
 </p>
@@ -11,7 +16,7 @@
   <a href="https://marketplace.visualstudio.com/items?itemName=fabioc-aloha.youtube-mcp-tools">
     <img src="https://img.shields.io/badge/Marketplace-VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code" alt="VS Code Marketplace">
   </a>
-  <a href="https://github.com/fabioc-aloha/youtube-mcp-vscode/blob/main/LICENSE">
+  <a href="https://github.com/fabioc-aloha/youtube-mcp-tools/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT">
   </a>
 </p>
