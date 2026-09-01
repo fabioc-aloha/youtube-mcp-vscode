@@ -7,7 +7,7 @@ Configuration files used by Alex's instructions and converters.
 | File | Owner | Behavior on upgrade |
 |------|-------|---------------------|
 | `sync-policy.json` | Edition | Overwritten — declares which paths are edition vs heir owned |
-| `markdown-light.css` | Edition | Overwritten — GitHub-flavored markdown preview theme. Reference from VS Code via `"markdown.styles": [".github/config/markdown-light.css"]` |
+| `markdown-light.css` | Edition | Overwritten — optional reference only; not installed or activated by the project. |
 | `mcp.json.template` | Edition | Overwritten — recommended MCP server starting set. Copy to `.vscode/mcp.json` on first bootstrap; that copy is heir-owned. Diff after each upgrade to pick up new recommended servers. |
 | `cognitive-config.json` | Heir | First-installed, then frozen. Read by `knowledge-coverage.instructions.md` (e.g., `showConfidenceBadge`). Tweak freely. |
 | `goals.json` | Heir | First-installed, then frozen. Read by `proactive-awareness.instructions.md` (active focus routing). Add your own goals. |

@@ -65,26 +65,7 @@ For `bierner.markdown-mermaid` (recommended):
 
 ### Step 4: Custom CSS (Optional)
 
-For additional styling control, copy the CSS from this skill:
-
-```powershell
-# Copy markdown-light.css to workspace
-$skillPath = ".github/skills/markdown-mermaid/markdown-light.css"
-$targetPath = ".vscode/markdown-light.css"
-
-if (Test-Path $skillPath) {
-    Copy-Item $skillPath $targetPath -Force
-    Write-Host "Copied CSS to $targetPath"
-}
-```
-
-Then add to settings:
-
-```json
-{
-  "markdown.styles": [".vscode/markdown-light.css"]
-}
-```
+Markdown Preview uses VS Code user-level defaults. Optional personal styling belongs in the user profile, not project configuration.
 
 ### Step 5: Test Rendering
 
